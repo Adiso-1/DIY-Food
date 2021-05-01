@@ -37,9 +37,11 @@ const restaurantSchema = new Schema({
 		{
 			dish: {
 				type: String,
+				required: true,
 			},
 			price: {
 				type: Number,
+				required: true,
 			},
 		},
 	],
@@ -47,6 +49,7 @@ const restaurantSchema = new Schema({
 		{
 			orderId: {
 				type: String,
+				required: true,
 			},
 		},
 	],
