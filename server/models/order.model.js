@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const orederSchema = new Schema({
-	username: {
+	owner: {
 		type: String,
 		required: true,
 	},

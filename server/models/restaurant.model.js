@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
@@ -7,16 +9,19 @@ const restaurantSchema = new Schema({
 		type: String,
 		required: true,
 		trim: true,
+		unique: true,
 	},
 	email: {
 		type: String,
 		required: true,
 		trim: true,
+		unique: true,
 	},
 	phone: {
 		type: String,
 		required: true,
 		trim: true,
+		unique: true,
 	},
 	password: {
 		type: String,
@@ -28,11 +33,20 @@ const restaurantSchema = new Schema({
 		required: true,
 		trim: true,
 	},
+	menu: [
+		{
+			dish: {
+				type: String,
+			},
+			price: {
+				type: Number,
+			},
+		},
+	],
 	orders: [
 		{
 			orderId: {
 				type: String,
-				required: true,
 			},
 		},
 	],
@@ -44,8 +58,45 @@ const restaurantSchema = new Schema({
 			},
 		},
 	],
-	timestamps: true,
 });
+
+restaurantSchema.pre('save', async function (next) {
+	const restaurant = this;
+	if (restaurant.isModified('password')) {
+		restaurant.password = await bcrypt.hash(restaurant.password, 8);
+	}
+	next();
+});
+
+restaurantSchema.statics.findByCredentials = async (email, password) => {
+	const restaurant = await Restaurant.findOne({ email });
+	if (!restaurant) {
+		throw new Error('Unable to login');
+	}
+	const isMatch = await bcrypt.compare(password, restaurant.password);
+	if (!isMatch) {
+		throw new Error('Unable to login');
+	}
+	return restaurant;
+};
+
+restaurantSchema.methods.generateAuthToken = async function () {
+	const restaurant = this;
+	const token = jwt.sign({ _id: restaurant._id.toString() }, 'hashhashhash');
+	restaurant.tokens = [...restaurant.tokens, { token }];
+	await restaurant.save();
+	return token;
+};
+
+restaurantSchema.methods.toJSON = function () {
+	const restaurant = this;
+	const restaurantObject = restaurant.toObject();
+
+	delete restaurantObject.password;
+	delete restaurantObject.tokens;
+
+	return restaurantObject;
+};
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 module.exports = Restaurant;
