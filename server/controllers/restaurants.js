@@ -63,8 +63,31 @@ const editDish = async (req, res) => {
 		const index = req.restaurant.menu.findIndex((restaurant) => {
 			return restaurant.dish === req.body.dish;
 		});
-		req.restaurant.menu[index] = { ..._id, ...req.body };
-		res.send(req.restaurant.menu[index]);
+		req.restaurant.menu[index] = {
+			...req.restaurant.menu[index].toObject(),
+			...req.body,
+		};
+		await req.restaurant.save();
+		res.send(req.restaurant.menu);
+	} catch (error) {
+		res.status(400).send(error);
+	}
+};
+const deleteDish = async (req, res) => {
+	try {
+		req.restaurant.menu = req.restaurant.menu.filter((rest) => {
+			return rest.dish !== req.body.dish;
+		});
+		await req.restaurant.save();
+		res.send(req.restaurant.menu);
+	} catch (error) {
+		res.status(400).send(error);
+	}
+};
+const deleteRestaurant = async (req, res) => {
+	try {
+		const restaurnat = await Restaurant.findByIdAndDelete(req.restaurant._id);
+		res.send(restaurnat);
 	} catch (error) {
 		res.status(400).send(error);
 	}
@@ -78,4 +101,6 @@ module.exports = {
 	getProfile,
 	addDish,
 	editDish,
+	deleteDish,
+	deleteRestaurant,
 };
