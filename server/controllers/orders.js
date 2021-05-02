@@ -1,6 +1,4 @@
 const Order = require('../models/order.model');
-const User = require('../models/user.model');
-const Restaurant = require('../models/restaurant.model');
 
 const addOrder = async (req, res) => {
 	let price = 0;
@@ -20,7 +18,7 @@ const addOrder = async (req, res) => {
 	}
 };
 
-const getOrders = async (req, res) => {
+const getUserOrders = async (req, res) => {
 	try {
 		await req.user.populate('orders').execPopulate();
 		console.log(req.user);
@@ -29,4 +27,15 @@ const getOrders = async (req, res) => {
 		res.status(404).send();
 	}
 };
-module.exports = { addOrder, getOrders };
+
+const getRestaurantsOrders = async (req, res) => {
+	try {
+		await req.restaurant.populate('orders').execPopulate();
+		console.log(req.restaurant);
+		res.send(req.restaurant.orders);
+	} catch (error) {
+		res.status(404).send();
+	}
+};
+
+module.exports = { addOrder, getUserOrders, getRestaurantsOrders };
