@@ -26,7 +26,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
 	try {
 		req.restaurant.tokens = req.restaurant.tokens.filter((token) => {
-			return token.token !== req.token;
+			return token.token !== req.restaurantToken;
 		});
 		await req.restaurant.save();
 		res.send();

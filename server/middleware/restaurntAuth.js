@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
 		if (!restaurant) {
 			throw new Error();
 		}
-		req.token = token;
+		req.restaurantToken = token;
 		req.restaurant = restaurant;
 		next();
 	} catch (error) {

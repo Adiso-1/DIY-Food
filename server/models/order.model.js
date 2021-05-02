@@ -4,30 +4,35 @@ const Schema = mongoose.Schema;
 
 const orederSchema = new Schema({
 	owner: {
-		type: String,
+		type: mongoose.Schema.Types.ObjectId,
 		required: true,
+		ref: 'User',
 	},
-	resturant: {
-		type: String,
+	restaurant: {
+		type: mongoose.Schema.Types.ObjectId,
 		required: true,
+		ref: 'Restaurant',
 	},
-	details: {
-		food: [
-			{
+	orderDetails: [
+		{
+			dish: {
 				type: String,
 				required: true,
 			},
-		],
-		price: {
-			type: Number,
-			required: true,
+			price: {
+				type: String,
+				required: true,
+			},
 		},
-		dateAdded: {
-			type: Date,
-			default: new Date(),
-		},
+	],
+	price: {
+		type: Number,
+		required: true,
 	},
-	timestamps: true,
+	dateAdded: {
+		type: Date,
+		default: new Date(),
+	},
 });
 
 const Order = mongoose.model('Order', orederSchema);

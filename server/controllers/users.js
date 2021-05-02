@@ -26,7 +26,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
 	try {
 		req.user.tokens = req.user.tokens.filter((token) => {
-			return token.token !== req.token;
+			return token.token !== req.userToken;
 		});
 		await req.user.save();
 		res.send();
@@ -47,4 +47,5 @@ const logoutAll = async (req, res) => {
 const getProfile = (req, res) => {
 	res.send(req.user);
 };
+
 module.exports = { signUp, login, logout, logoutAll, getProfile };
