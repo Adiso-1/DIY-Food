@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -27,6 +28,8 @@ const userSchema = new Schema(
 			required: true,
 			trim: true,
 		},
+		resetPasswordToken: String,
+		resetPasswordExpire: Date,
 		tokens: [
 			{
 				token: {
@@ -44,8 +47,6 @@ userSchema.virtual('orders', {
 	localField: '_id',
 	foreignField: 'owner',
 });
-// userSchema.set('toObject', { virtuals: true });
-// userSchema.set('toJSON', { virtuals: true });
 
 userSchema.pre('save', async function (next) {
 	const user = this;
@@ -73,6 +74,16 @@ userSchema.methods.generateAuthToken = async function () {
 	user.tokens = [...user.tokens, { token }];
 	await user.save();
 	return token;
+};
+
+userSchema.methods.getResetPasswordToken = function () {
+	const resetToken = crypto.randomBytes(20).toString('hex');
+	this.resetPasswordToken = crypto
+		.createHash('sha256')
+		.update(resetToken)
+		.digest('hex');
+	this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
+	return resetToken;
 };
 
 userSchema.methods.toJSON = function () {

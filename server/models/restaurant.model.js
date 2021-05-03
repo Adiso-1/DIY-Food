@@ -55,12 +55,6 @@ const restaurantSchema = new Schema({
 	],
 });
 
-menuSchema.virtual('orders', {
-	ref: 'Order',
-	localField: '_id',
-	foreignField: 'menu',
-});
-
 restaurantSchema.virtual('orders', {
 	ref: 'Order',
 	localField: '_id',
@@ -89,7 +83,11 @@ restaurantSchema.statics.findByCredentials = async (email, password) => {
 
 restaurantSchema.methods.generateAuthToken = async function () {
 	const restaurant = this;
-	const token = jwt.sign({ _id: restaurant._id.toString() }, 'hashhashhash');
+	const token = jwt.sign(
+		{ _id: restaurant._id.toString() },
+		process.env.JWT_SECRET,
+		{ expiresIn: process.env.JWT_EXPIRE }
+	);
 	restaurant.tokens = [...restaurant.tokens, { token }];
 	await restaurant.save();
 	return token;
