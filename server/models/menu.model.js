@@ -29,7 +29,7 @@ const menuSchema = new Schema({
 menuSchema.virtual('orders', {
 	ref: 'Order',
 	localField: '_id',
-	foreignField: 'orderDetails.dish',
+	foreignField: 'orderDetails',
 });
 
 const Menu = mongoose.model('Menu', menuSchema);

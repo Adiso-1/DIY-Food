@@ -15,11 +15,9 @@ const orederSchema = new Schema({
 	},
 	orderDetails: [
 		{
-			dish: {
-				type: mongoose.Schema.Types.ObjectId,
-				required: true,
-				ref: 'Menu',
-			},
+			type: mongoose.Schema.Types.ObjectId,
+			required: true,
+			ref: 'Menu',
 		},
 	],
 	price: {

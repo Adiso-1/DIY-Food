@@ -1,13 +1,9 @@
 const Order = require('../models/order.model');
 
 const addOrder = async (req, res) => {
-	let price = 0;
-	req.body.orderDetails.forEach((el) => {
-		price += el.price;
-	});
 	const order = new Order({
 		...req.body,
-		price,
+		price: req.price,
 		owner: req.user._id,
 	});
 	try {
