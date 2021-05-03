@@ -5,10 +5,8 @@ const {
 	login,
 	logout,
 	getProfile,
+	getProfileMenu,
 	logoutAll,
-	addDish,
-	editDish,
-	deleteDish,
 	deleteRestaurant,
 } = require('../controllers/restaurants.js');
 
@@ -17,9 +15,7 @@ router.post('/login', login);
 router.post('/logout', auth, logout);
 router.post('/logoutAll', auth, logoutAll);
 router.get('/profile', auth, getProfile);
+router.get('/profile/menu', auth, getProfileMenu);
 router.delete('/delete', auth, deleteRestaurant);
-router.patch('/add-dish', auth, addDish);
-router.patch('/edit-dish', auth, editDish);
-router.patch('/delete-dish', auth, deleteDish);
 
 module.exports = router;

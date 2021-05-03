@@ -4,17 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
-const menuSchema = new Schema({
-	dish: {
-		type: String,
-		required: true,
-	},
-	price: {
-		type: Number,
-		required: true,
-	},
-});
-
 const restaurantSchema = new Schema({
 	name: {
 		type: String,
@@ -44,7 +33,6 @@ const restaurantSchema = new Schema({
 		required: true,
 		trim: true,
 	},
-	menu: [menuSchema],
 	tokens: [
 		{
 			token: {
@@ -57,6 +45,12 @@ const restaurantSchema = new Schema({
 
 restaurantSchema.virtual('orders', {
 	ref: 'Order',
+	localField: '_id',
+	foreignField: 'restaurant',
+});
+
+restaurantSchema.virtual('menu', {
+	ref: 'Menu',
 	localField: '_id',
 	foreignField: 'restaurant',
 });
