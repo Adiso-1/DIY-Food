@@ -1,3 +1,4 @@
+const { findOneAndDelete } = require('../models/menu.model');
 const Menu = require('../models/menu.model');
 
 const addDish = async (req, res) => {
@@ -14,16 +15,20 @@ const addDish = async (req, res) => {
 };
 
 const editDish = async (req, res) => {
+	let preDish = await Menu.findOne({ dish: req.body.dish });
 	try {
-		const index = req.restaurant.menu.findIndex((restaurant) => {
-			return restaurant.dish === req.body.dish;
-		});
-		req.restaurant.menu[index] = {
-			...req.restaurant.menu[index].toObject(),
-			...req.body,
-		};
-		await req.restaurant.save();
-		res.send(req.restaurant.menu);
+		const dish = await Menu.findOneAndUpdate(
+			{ dish: req.body.dish },
+			{
+				price: req.body.price || preDish.price,
+				description: req.body.description || preDish.description,
+			},
+			{
+				useFindAndModify: false,
+				new: true,
+			}
+		);
+		res.send(dish);
 	} catch (error) {
 		res.status(400).send(error);
 	}
@@ -31,11 +36,8 @@ const editDish = async (req, res) => {
 
 const deleteDish = async (req, res) => {
 	try {
-		req.restaurant.menu = req.restaurant.menu.filter((rest) => {
-			return rest.dish !== req.body.dish;
-		});
-		await req.restaurant.save();
-		res.send(req.restaurant.menu);
+		const dish = await Menu.findOneAndDelete({ dish: req.body.dish });
+		res.send(dish);
 	} catch (error) {
 		res.status(400).send(error);
 	}
