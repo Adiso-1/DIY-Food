@@ -11,9 +11,11 @@ const RegisterScreen = ({ history }) => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 
+	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+
 	useEffect(() => {
 		if (localStorage.getItem('authToken')) {
-			history.push('/');
+			history.push(path);
 		}
 	}, [history]);
 
@@ -36,13 +38,13 @@ const RegisterScreen = ({ history }) => {
 		}
 		try {
 			const { data } = await axios.post(
-				'users/signup',
+				`${path}/signup`,
 				{ username, email, phone, password },
 				config
 			);
 			localStorage.setItem('authToken', data.token);
 
-			history.push('/login');
+			history.push(`${path}/login`);
 		} catch (error) {
 			setError(error.response.date);
 			setTimeout(() => {
@@ -120,7 +122,7 @@ const RegisterScreen = ({ history }) => {
 				</button>
 
 				<span className="register-screen__subtext">
-					Already have an account? <Link to="/login">Login</Link>
+					Already have an account? <Link to={`${path}/login`}>Login</Link>
 				</span>
 			</form>
 		</div>

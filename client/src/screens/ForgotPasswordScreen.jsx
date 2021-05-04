@@ -7,11 +7,13 @@ const ForgotPasswordScreen = () => {
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 
+	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+
 	const forgotPasswordHandler = async (e) => {
 		e.preventDefault();
 
 		try {
-			const { data } = await axios.post('/users/forgotpassword', { email });
+			const { data } = await axios.post(`${path}/forgotpassword`, { email });
 			setSuccess(data);
 		} catch (error) {
 			setError(error.response.data.error);

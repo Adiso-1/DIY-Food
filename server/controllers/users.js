@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/user.model');
+const multer = require('multer');
 const sendEmail = require('../utils/sendEmail');
 
 const signUp = async (req, res) => {
@@ -19,7 +20,7 @@ const login = async (req, res) => {
 			req.body.password
 		);
 		const token = await user.generateAuthToken();
-		res.send({ user, token });
+		res.json({ user, token });
 	} catch (error) {
 		res.status(400).json('Error:' + error);
 	}
@@ -35,7 +36,7 @@ const forgotPassword = async (req, res) => {
 		const resetToken = await user.getResetPasswordToken();
 		await user.save();
 
-		const resetUrl = `http://localhost:3000/passwordreset/${resetToken}`;
+		const resetUrl = `http://localhost:3000/users/resetpassword/${resetToken}`;
 
 		const message = `
 			<h1>Yow have requested a password reset</h1>
@@ -87,6 +88,7 @@ const resetPassword = async (req, res, next) => {
 };
 
 const logout = async (req, res) => {
+	console.log(req.user);
 	try {
 		req.user.tokens = req.user.tokens.filter((token) => {
 			return token.token !== req.userToken;
@@ -111,6 +113,31 @@ const getProfile = (req, res) => {
 	res.send(req.user);
 };
 
+const uploadProfileImage = async (req, res) => {
+	req.user.avatar = req.file.buffer;
+	await req.user.save();
+	res.send();
+};
+
+const deleteProfileImage = async (req, res) => {
+	req.user.avatar = undefined;
+	await req.user.save();
+	res.send(req.user);
+};
+const getUserPicture = async () => {
+	try {
+		const user = await User.findById(req.user._id);
+
+		if (!user || !user.avatar) {
+			throw new Error();
+		}
+		res.set('Content-Type', 'image/jpg');
+		res.send(user.avatar);
+	} catch (error) {
+		res.status(404).send();
+	}
+};
+
 module.exports = {
 	signUp,
 	login,
@@ -119,4 +146,7 @@ module.exports = {
 	getProfile,
 	forgotPassword,
 	resetPassword,
+	uploadProfileImage,
+	deleteProfileImage,
+	getUserPicture,
 };

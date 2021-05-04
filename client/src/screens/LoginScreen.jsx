@@ -7,21 +7,24 @@ const LoginScreen = ({ history }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	useEffect(() => {
 		if (localStorage.getItem('authToken')) {
-			history.push('/');
+			history.push(`${path}/login`);
 		}
 	}, [history]);
 
 	const loginHandler = async (e) => {
 		e.preventDefault();
-
 		try {
-			const { data } = await axios.post('users/login', { email, password });
+			const { data } = await axios.post(`${path}/login`, {
+				email,
+				password,
+			});
 			localStorage.setItem('authToken', data.token);
 
-			history.push('/');
+			history.push(path);
 		} catch (error) {
 			console.log(error);
 			setError('Couldt login');
@@ -52,7 +55,7 @@ const LoginScreen = ({ history }) => {
 				<div className="form-group">
 					<label htmlFor="password">Password:</label>
 					<Link
-						to="/forgotpassword"
+						to={`${path}/forgotpassword`}
 						className="login-screen__forgotpassword"
 						tabIndex={4}
 					>
@@ -74,7 +77,7 @@ const LoginScreen = ({ history }) => {
 				</button>
 
 				<span className="login-screen__subtext">
-					Don't have an account? <Link to="/register">Register</Link>
+					Don't have an account? <Link to={`${path}/register`}>Register</Link>
 				</span>
 			</form>
 		</div>

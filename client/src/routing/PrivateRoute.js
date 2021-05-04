@@ -1,6 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
+	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 	return (
 		<Route
 			{...rest}
@@ -8,7 +9,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 				localStorage.getItem('authToken') ? (
 					<Component {...props} />
 				) : (
-					<Redirect to="/login" />
+					<Redirect to={`${path}/login`} />
 				)
 			}
 		/>
