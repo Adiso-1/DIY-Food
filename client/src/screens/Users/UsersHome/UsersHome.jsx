@@ -1,11 +1,14 @@
+import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import './UsersHome.css';
 
 const UsersHome = ({ history }) => {
-	const [data, setData] = useState(null);
+	const [userData, setUserData] = useState(null);
+	const [restaurantsData, setRestaurantsData] = useState([]);
 
-	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+	// const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -15,28 +18,83 @@ const UsersHome = ({ history }) => {
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			history.push(`${path}/login`);
+			history.push(`/users/login`);
 		}
 		const fetchUser = async () => {
 			try {
 				const { data } = await axios.get('/users/profile', config);
-				console.log(data);
-				setData(data);
+				setUserData(data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
 		fetchUser();
+		const getAllRestaurants = async () => {
+			try {
+				const { data } = await axios.get('/users/getAllRestaurants');
+				setRestaurantsData(data);
+				console.log(data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getAllRestaurants();
 	}, []);
 
+	const renderRestaurants = () => {
+		return restaurantsData.map((el) => {
+			return (
+				// TODO - Find a path name to make an order
+				<Fragment key={el._id}>
+					<Link to={`/${el._id}`}>
+						<div className="restaurant-profile">
+							<p>Name: {el.name}</p>
+							<p>Email: {el.email}</p>
+							<p>Phone: {el.phone}</p>
+						</div>
+					</Link>
+				</Fragment>
+			);
+		});
+	};
+
+	const handleSelect = async (e) => {
+		if (e.target.value === 'Logout') {
+			try {
+				await axios.post('/users/logout', {}, config);
+				localStorage.removeItem('authToken');
+				history.push('/users/login');
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
 	return (
-		<div>
-			{data && (
-				<img
-					className="user-avatar"
-					src={`data:image/png;base64,${data.avatar}`}
-				/>
-			)}
+		<div className="user-home">
+			<div>
+				<select
+					onChange={handleSelect}
+					name="profile-select"
+					id="profile-select"
+				>
+					<option>Menu</option>
+					<option onChange={handleSelect}>Logout</option>
+				</select>
+			</div>
+			<div className="profile-container">
+				{userData && (
+					<img
+						className="user-avatar"
+						src={
+							userData.avatar
+								? `data:image/png;base64,${userData.avatar}`
+								: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
+						}
+						alt="user-profile-image"
+					/>
+				)}
+			</div>
+			<div className="restaurants-grid">{renderRestaurants()}</div>
 		</div>
 	);
 };
