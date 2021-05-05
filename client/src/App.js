@@ -4,6 +4,7 @@ import RestaurantsHome from './screens/Restaurants/RestaurantsHome/RestaurantsHo
 import UsersHome from './screens/Users/UsersHome/UsersHome';
 import LoginScreen from './screens/Authorization/LoginScreen';
 import ForgotPasswordScreen from './screens/Authorization/ForgotPasswordScreen';
+import RegisterScreen from './screens/Authorization/RegisterScreen';
 
 const App = () => {
 	return (
@@ -17,6 +18,7 @@ const App = () => {
 					path="/users/forgotpassword"
 					component={ForgotPasswordScreen}
 				/>
+				<Route exact path="/users/register" component={RegisterScreen} />
 				<Route path="/" component={Home} />
 			</Switch>
 		</Router>

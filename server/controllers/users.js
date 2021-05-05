@@ -67,13 +67,11 @@ const resetPassword = async (req, res, next) => {
 		.createHash('sha256')
 		.update(req.params.resetToken)
 		.digest('hex');
-	console.log(resetPasswordToken);
 	try {
 		const user = await User.findOne({
 			resetPasswordToken,
 			resetPasswordExpire: { $gt: Date.now() },
 		});
-		console.log(user);
 		if (!user) {
 			throw new Error('Invalid Reset Token');
 		}
@@ -89,7 +87,6 @@ const resetPassword = async (req, res, next) => {
 };
 
 const logout = async (req, res) => {
-	console.log(req.user);
 	try {
 		req.user.tokens = req.user.tokens.filter((token) => {
 			return token.token !== req.userToken;
@@ -127,7 +124,6 @@ const deleteProfileImage = async (req, res) => {
 };
 
 const getUserPicture = async (req, res) => {
-	console.log(req.user._id);
 	try {
 		const user = await User.findById(req.user._id);
 
