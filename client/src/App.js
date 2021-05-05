@@ -1,21 +1,17 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
-import UserHome from './components/UserHome/UsersHome';
-import RestaurantsHome from './components/RestaurantsHome/RestaurantsHome';
+import RestaurantsHome from './screens/Restaurants/RestaurantsHome/RestaurantsHome';
+import UsersHome from './screens/Users/UsersHome/UsersHome';
+import LoginScreen from './screens/Authorization/LoginScreen';
 
 const App = () => {
 	return (
 		<Router>
 			<Switch>
-				<Route path="/restaurant">
-					<RestaurantsHome />
-				</Route>
-				<Route path="/users">
-					<UserHome />
-				</Route>
-				<Route path="/">
-					<Home />
-				</Route>
+				<Route exact path="/restaurants" component={RestaurantsHome} />
+				<Route exact path="/users" component={UsersHome} />
+				<Route exact path="/users/login" component={LoginScreen} />
+				<Route path="/" component={Home} />
 			</Switch>
 		</Router>
 	);

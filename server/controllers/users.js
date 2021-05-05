@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const User = require('../models/user.model');
-const multer = require('multer');
+const Restaurant = require('../models/restaurant.model');
 const sendEmail = require('../utils/sendEmail');
 
 const signUp = async (req, res) => {
@@ -124,17 +124,27 @@ const deleteProfileImage = async (req, res) => {
 	await req.user.save();
 	res.send(req.user);
 };
-const getUserPicture = async () => {
+
+const getUserPicture = async (req, res) => {
+	console.log(req.user._id);
 	try {
 		const user = await User.findById(req.user._id);
 
 		if (!user || !user.avatar) {
 			throw new Error();
 		}
-		res.set('Content-Type', 'image/jpg');
+		res.set('Content-Type', 'image/png');
 		res.send(user.avatar);
 	} catch (error) {
 		res.status(404).send();
+	}
+};
+const getAllRestaurants = async (req, res) => {
+	try {
+		const restaurants = await Restaurant.find({});
+		res.status(200).json(restaurants);
+	} catch (error) {
+		res.status(400).send();
 	}
 };
 
@@ -149,4 +159,5 @@ module.exports = {
 	uploadProfileImage,
 	deleteProfileImage,
 	getUserPicture,
+	getAllRestaurants,
 };

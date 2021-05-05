@@ -1,0 +1,16 @@
+.navigation {
+	width: 800px;
+	margin: 0 auto;
+	text-align: center;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	height: 20vh;
+}
+.navigation a {
+	text-decoration: none;
+	margin-right: 25px;
+	text-align: center;
+	border: 1px solid #333;
+	padding: 20px;
+}

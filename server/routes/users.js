@@ -12,8 +12,12 @@ const {
 	uploadProfileImage,
 	deleteProfileImage,
 	getUserPicture,
+	getAllRestaurants,
 } = require('../controllers/users.js');
 
+router.get('/getAllRestaurants', getAllRestaurants);
+router.get('/profile', auth, getProfile);
+router.get('/profile/avatar', auth, getUserPicture);
 router.post('/signup', signUp);
 router.post('/login', login);
 router.post('/forgotpassword', forgotPassword);
@@ -37,6 +41,5 @@ router.delete(
 		res.status(400).send({ error: error.message });
 	}
 );
-router.get('/profile', auth, getProfile);
-router.get('/profile/avatar/:id', auth, getUserPicture);
+
 module.exports = router;

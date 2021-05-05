@@ -5,7 +5,6 @@ const dotenv = require('dotenv').config();
 const auth = async (req, res, next) => {
 	try {
 		const token = req.header('Authorization').replace('Bearer ', '');
-		console.log(token);
 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
 		// search for a user by _id and token fron the user's tokens array
