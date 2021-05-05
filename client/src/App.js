@@ -14,9 +14,15 @@ const App = () => {
 				<Route exact path="/restaurants" component={RestaurantsHome} />
 				<Route exact path="/users" component={UsersHome} />
 				<Route exact path="/users/login" component={LoginScreen} />
+				<Route exact path="/restaurants/login" component={LoginScreen} />
 				<Route
 					exact
 					path="/users/forgotpassword"
+					component={ForgotPasswordScreen}
+				/>
+				<Route
+					exact
+					path="/restaurants/forgotpassword"
 					component={ForgotPasswordScreen}
 				/>
 				<Route exact path="/users/register" component={RegisterScreen} />

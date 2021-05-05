@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
 const Restaurant = require('../models/restaurant.model');
 
 const signUp = async (req, res) => {
@@ -20,6 +22,42 @@ const login = async (req, res) => {
 		res.send({ restaurant, token });
 	} catch (error) {
 		res.status(400).json('Error:' + error);
+	}
+};
+
+const forgotPassword = async (req, res) => {
+	const { email } = req.body;
+	try {
+		const restaurant = await Restaurant.findOne({ email });
+		if (!restaurant) {
+			res.status(400).json('Email could not be sent');
+			return new Error('Email could not be sent');
+		}
+		const resetToken = await restaurant.getResetPasswordToken();
+		await restaurant.save();
+
+		const resetUrl = `http://localhost:3000/restaurants/resetpassword/${resetToken}`;
+
+		const message = `
+			<h1>Yow have requested a password reset</h1>
+			<p>Please go to this link to reset your password</p>
+			<a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+		`;
+		try {
+			await sendEmail({
+				to: restaurant.email,
+				subject: 'Password Reset Request',
+				text: message,
+			});
+			res.status(200).json('Email sent');
+		} catch (error) {
+			restaurant.resetPasswordToken = undefined;
+			restaurant.resetPasswordExpire = undefined;
+			await restaurant.save();
+			throw new Error('Email could not be sent');
+		}
+	} catch (error) {
+		res.status(404).send(error);
 	}
 };
 
@@ -75,4 +113,5 @@ module.exports = {
 	getProfile,
 	getProfileMenu,
 	deleteRestaurant,
+	forgotPassword,
 };

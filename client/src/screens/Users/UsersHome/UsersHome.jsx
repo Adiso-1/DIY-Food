@@ -7,7 +7,7 @@ const UsersHome = ({ history }) => {
 	const [userData, setUserData] = useState(null);
 	const [restaurantsData, setRestaurantsData] = useState([]);
 
-	// const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	const config = {
 		headers: {
@@ -18,11 +18,11 @@ const UsersHome = ({ history }) => {
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			history.push(`/users/login`);
+			history.push(`${path}/login`);
 		}
 		const fetchUser = async () => {
 			try {
-				const { data } = await axios.get('/users/profile', config);
+				const { data } = await axios.get(`${path}/profile`, config);
 				setUserData(data);
 			} catch (error) {
 				console.log(error);
@@ -31,7 +31,7 @@ const UsersHome = ({ history }) => {
 		fetchUser();
 		const getAllRestaurants = async () => {
 			try {
-				const { data } = await axios.get('/users/getAllRestaurants');
+				const { data } = await axios.get(`${path}/getAllRestaurants`);
 				setRestaurantsData(data);
 				console.log(data);
 			} catch (error) {
@@ -61,9 +61,18 @@ const UsersHome = ({ history }) => {
 	const handleSelect = async (e) => {
 		if (e.target.value === 'Logout') {
 			try {
-				await axios.post('/users/logout', {}, config);
+				await axios.post(`${path}/logout`, {}, config);
 				localStorage.removeItem('authToken');
-				history.push('/users/login');
+				history.push(`${path}/login`);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		if (e.target.value === 'Logout All Devices') {
+			try {
+				await axios.post(`${path}/logoutAll`, {}, config);
+				localStorage.removeItem('authToken');
+				history.push(`${path}/login`);
 			} catch (error) {
 				console.log(error);
 			}
@@ -79,6 +88,7 @@ const UsersHome = ({ history }) => {
 				>
 					<option>Menu</option>
 					<option onChange={handleSelect}>Logout</option>
+					<option onChange={handleSelect}>Logout All Devices</option>
 				</select>
 			</div>
 			<div className="profile-container">

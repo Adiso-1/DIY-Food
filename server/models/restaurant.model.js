@@ -1,6 +1,9 @@
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const Order = require('../models/order.model');
+const dotenv = require('dotenv').config();
 
 const Schema = mongoose.Schema;
 
@@ -33,6 +36,8 @@ const restaurantSchema = new Schema({
 		required: true,
 		trim: true,
 	},
+	resetPasswordToken: String,
+	resetPasswordExpire: Date,
 	tokens: [
 		{
 			token: {
@@ -87,12 +92,24 @@ restaurantSchema.methods.generateAuthToken = async function () {
 	return token;
 };
 
+restaurantSchema.methods.getResetPasswordToken = function () {
+	const resetToken = crypto.randomBytes(20).toString('hex');
+	this.resetPasswordToken = crypto
+		.createHash('sha256')
+		.update(resetToken)
+		.digest('hex');
+	this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
+	return resetToken;
+};
+
 restaurantSchema.methods.toJSON = function () {
 	const restaurant = this;
 	const restaurantObject = restaurant.toObject();
 
 	delete restaurantObject.password;
 	delete restaurantObject.tokens;
+	delete restaurantObject.resetPasswordToken;
+	delete restaurantObject.resetPasswordExpire;
 
 	return restaurantObject;
 };
