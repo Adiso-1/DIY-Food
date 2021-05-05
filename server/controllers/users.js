@@ -31,6 +31,7 @@ const forgotPassword = async (req, res) => {
 	try {
 		const user = await User.findOne({ email });
 		if (!user) {
+			res.status(400).json('Email could not be sent');
 			return new Error('Email could not be sent');
 		}
 		const resetToken = await user.getResetPasswordToken();

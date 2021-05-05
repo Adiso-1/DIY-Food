@@ -48,7 +48,10 @@ const LoginScreen = ({ history }) => {
 				<div className="form-group">
 					<label htmlFor="password">
 						Password:{' '}
-						<Link to="/forgotpassword" className="login-screen__forgotpassword">
+						<Link
+							to={`${path}/forgotpassword`}
+							className="login-screen__forgotpassword"
+						>
 							Forgot Password?
 						</Link>
 					</label>
