@@ -1,0 +1,15 @@
+.navbar-button {
+	width: 150px;
+	background: #fff;
+	color: var(--main-color);
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+}
+.navbar-button:hover {
+	transform: scale(1.1);
+}

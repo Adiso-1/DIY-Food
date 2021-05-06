@@ -8,6 +8,7 @@ import RegisterScreen from './screens/Authorization/RegisterScreen';
 import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegisterScreen';
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 import Page404 from './screens/Page404/Page404';
+import Navbar from './components/NavbarBig/NavbarBig';
 
 const App = () => {
 	console.log(process.env.NODE_ENV);

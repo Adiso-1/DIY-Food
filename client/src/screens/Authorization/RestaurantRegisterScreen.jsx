@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import api from '../../api/api';
 import { Link } from 'react-router-dom';
+import Navbar from '../../components/NavbarMedium/NavbarMedium';
 import './RestaurantRegisterScreen.css';
 
 const RegisterScreen = ({ history }) => {
@@ -50,6 +51,7 @@ const RegisterScreen = ({ history }) => {
 
 	return (
 		<div className="register-screen">
+			<Navbar />
 			<form onSubmit={registerHandler} className="register-screen__form">
 				<h3 className="register-screen__title">Register</h3>
 				{error && <span className="error-message">{error}</span>}

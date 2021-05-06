@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import Navbar from '../../components/NavbarMedium/NavbarMedium';
 import api from '../../api/api';
 
 import './ResetPasswordScreen.css';
@@ -45,6 +46,7 @@ const ResetPasswordScreen = ({ history, match }) => {
 
 	return (
 		<div className="resetpassword-screen">
+			<Navbar />
 			<form
 				onSubmit={resetPasswordHandler}
 				className="resetpassword-screen__form"

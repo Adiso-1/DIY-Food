@@ -1,0 +1,15 @@
+.navbar-big-container {
+	background: var(--main-color);
+	padding: 10px 30px;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	top: 0;
+	width: 100%;
+}
+.navbar-big-container img {
+	width: 200px;
+}
+.button-container {
+	align-self: center;
+}

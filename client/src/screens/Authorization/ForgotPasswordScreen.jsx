@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import Navbar from '../../components/NavbarMedium/NavbarMedium';
 import api from '../../api/api';
 import './ForgotPasswordScreen.css';
 
@@ -31,6 +32,7 @@ const ForgotPasswordScreen = ({ history }) => {
 
 	return (
 		<div className="forgotpassword-screen">
+			<Navbar />
 			<form
 				onSubmit={forgotPasswordHandler}
 				className="forgotpassword-screen__form"

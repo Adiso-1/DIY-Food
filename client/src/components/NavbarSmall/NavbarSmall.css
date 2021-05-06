@@ -1,0 +1,16 @@
+.navbar-container {
+	background: var(--main-color);
+	padding: 10px 30px;
+	display: flex;
+	justify-content: center;
+	position: sticky;
+	margin-bottom: 20px;
+	top: 0;
+	width: 100%;
+}
+.navbar-container img {
+	width: 200px;
+}
+.button-container {
+	align-self: center;
+}

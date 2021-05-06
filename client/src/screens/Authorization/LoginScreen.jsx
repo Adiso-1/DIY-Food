@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import api from '../../api/api';
 import { Link } from 'react-router-dom';
 import './LoginScreen.css';
+import Navbar from '../../components/NavbarMedium/NavbarMedium';
 
 const LoginScreen = ({ history }) => {
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
@@ -32,6 +33,7 @@ const LoginScreen = ({ history }) => {
 	};
 	return (
 		<div className="login-screen">
+			<Navbar />
 			<form onSubmit={loginHandler} className="login-screen__form">
 				<h3 className="login-screen__title">Login</h3>
 				{error && <span className="error-message">{error}</span>}
