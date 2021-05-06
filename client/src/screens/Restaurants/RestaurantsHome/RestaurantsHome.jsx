@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import './RestaurantsHome.css';
 
 const RestaurantsHome = ({ history }) => {

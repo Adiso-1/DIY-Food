@@ -31,6 +31,11 @@ const restaurantSchema = new Schema({
 		required: true,
 		trim: true,
 	},
+	address: {
+		type: String,
+		required: true,
+		trim: true,
+	},
 	category: {
 		type: String,
 		required: true,

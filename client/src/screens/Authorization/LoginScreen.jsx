@@ -5,11 +5,13 @@ import './LoginScreen.css';
 
 const LoginScreen = ({ history }) => {
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
 	useEffect(() => {
+		const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 		if (localStorage.getItem('authToken')) {
 			history.push(path);
 		}

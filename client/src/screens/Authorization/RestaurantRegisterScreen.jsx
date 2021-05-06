@@ -1,18 +1,19 @@
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './RegisterScreen.css';
+import './RestaurantRegisterScreen.css';
 
 const RegisterScreen = ({ history }) => {
-	const [username, setUsername] = useState('');
+	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
+	const [category, setCategory] = useState('');
+	const [address, setAddress] = useState('');
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 	const buttonRef = useRef(null);
-
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	const registerHandler = (e) => {
@@ -27,12 +28,14 @@ const RegisterScreen = ({ history }) => {
 		}
 		try {
 			axios.post(`${path}/signup`, {
-				username,
+				name,
 				email,
 				phone,
+				category,
+				address,
 				password,
 			});
-			setSuccess(`${username} registered successfully`);
+			setSuccess(`${name} registered successfully`);
 			buttonRef.current.disabled = true;
 			setTimeout(() => {
 				history.push(`${path}/login`);
@@ -56,14 +59,14 @@ const RegisterScreen = ({ history }) => {
 					</span>
 				)}
 				<div className="form-group">
-					<label htmlFor="name">Username:</label>
+					<label htmlFor="name">Restaurant Name:</label>
 					<input
 						type="text"
 						required
 						id="name"
-						placeholder="Enter username"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
+						placeholder="Enter Restaurant Name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
 					/>
 				</div>
 				<div className="form-group">
@@ -88,6 +91,37 @@ const RegisterScreen = ({ history }) => {
 						value={phone}
 						onChange={(e) => setPhone(e.target.value)}
 					/>
+				</div>
+
+				<div className="form-group">
+					<label htmlFor="address">Address:</label>
+					<input
+						type="address"
+						required
+						id="address"
+						placeholder="Enter address"
+						value={address}
+						onChange={(e) => setAddress(e.target.value)}
+					/>
+				</div>
+
+				<div className="form-group">
+					<label htmlFor="category">Select Restaurant Category:</label>
+					<select
+						onChange={(e) => setCategory(e.target.value)}
+						name="category"
+						id="category"
+						defaultValue="Select Category"
+					>
+						<option disabled>Select Category</option>
+						<option value="burger">Burger</option>
+						<option value="sushi">Sushi</option>
+						<option value="pizza">Pizza</option>
+						<option value="mexican">Mexican</option>
+						<option value="asian">Asian</option>
+						<option value="italian">Italian</option>
+						<option value="cafe">Cafe</option>
+					</select>
 				</div>
 
 				<div className="form-group">

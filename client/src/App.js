@@ -5,6 +5,7 @@ import UsersHome from './screens/Users/UsersHome/UsersHome';
 import LoginScreen from './screens/Authorization/LoginScreen';
 import ForgotPasswordScreen from './screens/Authorization/ForgotPasswordScreen';
 import RegisterScreen from './screens/Authorization/RegisterScreen';
+import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegisterScreen';
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 
 const App = () => {
@@ -26,6 +27,11 @@ const App = () => {
 					component={ForgotPasswordScreen}
 				/>
 				<Route exact path="/users/register" component={RegisterScreen} />
+				<Route
+					exact
+					path="/restaurants/register"
+					component={RestaurantRegisterScreen}
+				/>
 				<Route
 					exact
 					path="/users/resetpassword/:resetToken"
