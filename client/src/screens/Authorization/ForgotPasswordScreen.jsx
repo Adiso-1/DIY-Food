@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
+import api from '../../api/api';
 import './ForgotPasswordScreen.css';
 
 const ForgotPasswordScreen = ({ history }) => {
@@ -14,7 +14,7 @@ const ForgotPasswordScreen = ({ history }) => {
 		e.preventDefault();
 		buttonRef.current.disabled = true;
 		try {
-			const response = await axios.post(`${path}/forgotpassword`, { email });
+			const response = await api.post(`${path}/forgotpassword`, { email });
 			setSuccess(response.data);
 			setTimeout(() => {
 				buttonRef.current.disabled = false;

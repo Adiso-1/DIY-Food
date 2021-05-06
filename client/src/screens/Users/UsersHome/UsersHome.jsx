@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../../api/api';
 import { useState, useEffect, Fragment } from 'react';
 import './UsersHome.css';
 
@@ -22,7 +22,7 @@ const UsersHome = ({ history }) => {
 		}
 		const fetchUser = async () => {
 			try {
-				const { data } = await axios.get(`${path}/profile`, config);
+				const { data } = await api.get(`${path}/profile`, config);
 				setUserData(data);
 			} catch (error) {
 				console.log(error);
@@ -31,7 +31,7 @@ const UsersHome = ({ history }) => {
 		fetchUser();
 		const getAllRestaurants = async () => {
 			try {
-				const { data } = await axios.get(`${path}/getAllRestaurants`);
+				const { data } = await api.get(`${path}/getAllRestaurants`);
 				setRestaurantsData(data);
 				console.log(data);
 			} catch (error) {
@@ -61,7 +61,7 @@ const UsersHome = ({ history }) => {
 	const handleSelect = async (e) => {
 		if (e.target.value === 'Logout') {
 			try {
-				await axios.post(`${path}/logout`, {}, config);
+				await api.post(`${path}/logout`, {}, config);
 				localStorage.removeItem('authToken');
 				history.push(`${path}/login`);
 			} catch (error) {
@@ -70,7 +70,7 @@ const UsersHome = ({ history }) => {
 		}
 		if (e.target.value === 'Logout All Devices') {
 			try {
-				await axios.post(`${path}/logoutAll`, {}, config);
+				await api.post(`${path}/logoutAll`, {}, config);
 				localStorage.removeItem('authToken');
 				history.push(`${path}/login`);
 			} catch (error) {

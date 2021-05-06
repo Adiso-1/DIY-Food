@@ -10,6 +10,7 @@ import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 import Page404 from './screens/Page404/Page404';
 
 const App = () => {
+	console.log(process.env.NODE_ENV);
 	return (
 		<Router>
 			<Switch>

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../../api/api';
 import { useState, useEffect } from 'react';
 import './RestaurantsHome.css';
 
@@ -20,7 +20,7 @@ const RestaurantsHome = ({ history }) => {
 		}
 		const fetchUser = async () => {
 			try {
-				const { data } = await axios.get(`${path}/profile`, config);
+				const { data } = await api.get(`${path}/profile`, config);
 				setRestaurantData(data);
 			} catch (error) {
 				console.log(error);
@@ -32,7 +32,7 @@ const RestaurantsHome = ({ history }) => {
 	const handleSelect = async (e) => {
 		if (e.target.value === 'Logout') {
 			try {
-				await axios.post(`${path}/logout`, {}, config);
+				await api.post(`${path}/logout`, {}, config);
 				localStorage.removeItem('authToken');
 				history.push(`${path}/login`);
 			} catch (error) {
@@ -42,7 +42,7 @@ const RestaurantsHome = ({ history }) => {
 
 		if (e.target.value === 'Logout All Devices') {
 			try {
-				await axios.post(`${path}/logoutAll`, {}, config);
+				await api.post(`${path}/logoutAll`, {}, config);
 				localStorage.removeItem('authToken');
 				history.push(`${path}/login`);
 			} catch (error) {

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api/api';
 import { Link } from 'react-router-dom';
 import './LoginScreen.css';
 
@@ -20,7 +20,7 @@ const LoginScreen = ({ history }) => {
 	const loginHandler = async (e) => {
 		e.preventDefault();
 		try {
-			const { data } = await axios.post(`${path}/login`, { email, password });
+			const { data } = await api.post(`${path}/login`, { email, password });
 			localStorage.setItem('authToken', data.token);
 			history.push(path);
 		} catch (error) {

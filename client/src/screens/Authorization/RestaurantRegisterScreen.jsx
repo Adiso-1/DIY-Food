@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
+import api from '../../api/api';
 import { Link } from 'react-router-dom';
 import './RestaurantRegisterScreen.css';
 
@@ -27,7 +27,7 @@ const RegisterScreen = ({ history }) => {
 			return setError('Passwords do not match');
 		}
 		try {
-			axios.post(`${path}/signup`, {
+			api.post(`${path}/signup`, {
 				name,
 				email,
 				phone,

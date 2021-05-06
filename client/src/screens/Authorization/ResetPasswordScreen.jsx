@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/api';
 
 import './ResetPasswordScreen.css';
 
@@ -24,7 +24,7 @@ const ResetPasswordScreen = ({ history, match }) => {
 			return setError("Passwords don't match");
 		}
 		try {
-			const { data } = await axios.put(
+			const { data } = await api.put(
 				`${path}/resetpassword/${match.params.resetToken}`,
 				{
 					password,

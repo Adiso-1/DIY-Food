@@ -58,3 +58,4 @@ main();
 
 const test = () => {};
 test();
+console.log(process.env.NODE_ENV);
