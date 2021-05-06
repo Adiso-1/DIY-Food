@@ -1,9 +1,9 @@
 .navbar-big-container {
 	background: var(--main-color);
-	padding: 10px 30px;
+	padding: 10px 100px;
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 20px;
+	margin-bottom: 10%;
 	top: 0;
 	width: 100%;
 }
