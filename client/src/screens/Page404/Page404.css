@@ -1,0 +1,11 @@
+.container-404 {
+	background: url('https://symbanservices.com/wp-content/uploads/2017/10/404-error-donut.png')
+		no-repeat center center/cover;
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+}
+.container-404 a {
+	width: 100vw;
+	height: 100vh;
+}

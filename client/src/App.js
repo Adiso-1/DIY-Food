@@ -7,6 +7,7 @@ import ForgotPasswordScreen from './screens/Authorization/ForgotPasswordScreen';
 import RegisterScreen from './screens/Authorization/RegisterScreen';
 import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegisterScreen';
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
+import Page404 from './screens/Page404/Page404';
 
 const App = () => {
 	return (
@@ -42,7 +43,8 @@ const App = () => {
 					path="/restaurants/resetpassword/:resetToken"
 					component={ResetPasswordScreen}
 				/>
-				<Route path="/" component={Home} />
+				<Route exact path="/" component={Home} />
+				<Route path="*" component={Page404} />
 			</Switch>
 		</Router>
 	);
