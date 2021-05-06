@@ -31,6 +31,11 @@ const App = () => {
 					path="/users/resetpassword/:resetToken"
 					component={ResetPasswordScreen}
 				/>
+				<Route
+					exact
+					path="/restaurants/resetpassword/:resetToken"
+					component={ResetPasswordScreen}
+				/>
 				<Route path="/" component={Home} />
 			</Switch>
 		</Router>

@@ -61,6 +61,30 @@ const forgotPassword = async (req, res) => {
 	}
 };
 
+const resetPassword = async (req, res, next) => {
+	const resetPasswordToken = crypto
+		.createHash('sha256')
+		.update(req.params.resetToken)
+		.digest('hex');
+	try {
+		const restaurant = await Restaurant.findOne({
+			resetPasswordToken,
+			resetPasswordExpire: { $gt: Date.now() },
+		});
+		if (!restaurant) {
+			throw new Error('Invalid Reset Token');
+		}
+		restaurant.password = req.body.password;
+		restaurant.resetPasswordToken = undefined;
+		restaurant.resetPasswordExpire = undefined;
+
+		await restaurant.save();
+		res.status(201).json('Password Reset Success');
+	} catch (error) {
+		res.status(400).json(error);
+	}
+};
+
 const logout = async (req, res) => {
 	try {
 		req.restaurant.tokens = req.restaurant.tokens.filter((token) => {
@@ -114,4 +138,5 @@ module.exports = {
 	getProfileMenu,
 	deleteRestaurant,
 	forgotPassword,
+	resetPassword,
 };

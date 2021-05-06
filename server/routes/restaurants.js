@@ -9,13 +9,13 @@ const {
 	logoutAll,
 	deleteRestaurant,
 	forgotPassword,
-	// resetPassword,
+	resetPassword,
 } = require('../controllers/restaurants.js');
 
 router.post('/signup', signUp);
 router.post('/login', login);
 router.post('/forgotpassword', forgotPassword);
-// router.put('/resetpassword/:resetToken', resetPassword);
+router.put('/resetpassword/:resetToken', resetPassword);
 router.post('/logout', auth, logout);
 router.post('/logoutAll', auth, logoutAll);
 router.get('/profile', auth, getProfile);
