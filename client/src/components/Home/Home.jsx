@@ -26,7 +26,10 @@ const Home = () => {
 					</p>
 					<div className="home-main-button-container">
 						<Link to="/users/login">
-							<Button text="Make An Order" />
+							<Button text="I Want To Make An Order" />
+						</Link>
+						<Link to="/users/register">
+							<Button text="This Is My First Order" />
 						</Link>
 					</div>
 				</div>

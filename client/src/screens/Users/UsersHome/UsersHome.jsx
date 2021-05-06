@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import api from '../../../api/api';
 import { useState, useEffect, Fragment } from 'react';
 import './UsersHome.css';
+import Navbar from '../../../components/NavbarSmall/NavbarSmall';
 
 const UsersHome = ({ history }) => {
 	const [userData, setUserData] = useState(null);
@@ -57,40 +58,10 @@ const UsersHome = ({ history }) => {
 			);
 		});
 	};
-
-	const handleSelect = async (e) => {
-		if (e.target.value === 'Logout') {
-			try {
-				await api.post(`${path}/logout`, {}, config);
-				localStorage.removeItem('authToken');
-				history.push(`${path}/login`);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-		if (e.target.value === 'Logout All Devices') {
-			try {
-				await api.post(`${path}/logoutAll`, {}, config);
-				localStorage.removeItem('authToken');
-				history.push(`${path}/login`);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-	};
 	return (
 		<div className="user-home">
-			<div>
-				<select
-					onChange={handleSelect}
-					name="profile-select"
-					id="profile-select"
-				>
-					<option>Menu</option>
-					<option onChange={handleSelect}>Logout</option>
-					<option onChange={handleSelect}>Logout All Devices</option>
-				</select>
-			</div>
+			<Navbar />
+
 			<div className="profile-container">
 				{userData && (
 					<img

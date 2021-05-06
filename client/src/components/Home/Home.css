@@ -1,7 +1,7 @@
 .home-main {
 	display: flex;
 	max-width: 1400px;
-	margin: 0 auto;
+	margin: 50px auto;
 	justify-content: space-around;
 }
 .home-main-image {
@@ -17,15 +17,16 @@
 	display: flex;
 	justify-content: center;
 	margin: 10px 0;
+	justify-content: space-evenly;
 }
 .home-main-about button {
-	width: 150px;
+	width: auto;
 	background: var(--main-color);
 	color: #fff;
 	outline: none;
 	border: none;
 	border-radius: 20px;
-	padding: 12px;
+	padding: 12px 15px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: 0.3s;
