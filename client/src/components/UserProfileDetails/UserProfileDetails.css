@@ -15,3 +15,15 @@
 .update-details > .profile-picture-container {
 	flex-wrap: wrap;
 }
+.profile-picture-container button {
+	width: 100px;
+	background: var(--main-color);
+	color: #fff;
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+}

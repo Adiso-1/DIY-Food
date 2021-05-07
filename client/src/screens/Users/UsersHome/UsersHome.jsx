@@ -19,7 +19,7 @@ const UsersHome = ({ history }) => {
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			return history.push(`users/login`);
+			return history.push(`${path}/login`);
 		}
 		const getAllRestaurants = async () => {
 			try {

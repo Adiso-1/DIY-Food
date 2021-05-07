@@ -16,12 +16,11 @@ const Navbar = () => {
 		const fetchUser = async () => {
 			try {
 				const { data } = await api.get(`users/profile`, config);
-				console.log(data);
 				setPersonalDetails(data);
 			} catch (error) {
 				console.log(error);
 				localStorage.removeItem('authToken');
-				history.push('users/login');
+				history.push('/users/login');
 			}
 		};
 		fetchUser();
@@ -29,7 +28,7 @@ const Navbar = () => {
 	useEffect(() => {
 		if (personalDetails) {
 			const getImage = async () => {
-				await api.get(`users/profile/${personalDetails._id}`);
+				await api.get(`/users/profile/${personalDetails._id}`);
 			};
 			getImage();
 		}
@@ -55,7 +54,7 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`/`);
+					history.push(`http://localhost3000/`);
 				} catch (error) {
 					console.log(error);
 				}

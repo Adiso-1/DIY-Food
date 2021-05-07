@@ -120,7 +120,7 @@ const uploadProfileImage = async (req, res) => {
 		.toBuffer();
 	req.user.avatar = buffer;
 	await req.user.save();
-	res.send();
+	res.status(201).send();
 };
 
 const getUserImage = async (req, res) => {
