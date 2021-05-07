@@ -5,9 +5,9 @@ import Button from '../Button/Button';
 import './NavbarSmall.css';
 
 const Navbar = () => {
+	const [isOpen, setIsOpen] = useState(false);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
-	const [isOpen, setIsOpen] = useState(false);
 
 	const config = {
 		headers: {
@@ -20,7 +20,7 @@ const Navbar = () => {
 			try {
 				await api.post(`${path}/logout`, {}, config);
 				localStorage.removeItem('authToken');
-				history.push(`${path}/login`);
+				history.push(`/`);
 			} catch (error) {
 				console.log(error);
 			}
@@ -29,7 +29,7 @@ const Navbar = () => {
 			try {
 				await api.post(`${path}/logoutAll`, {}, config);
 				localStorage.removeItem('authToken');
-				history.push(`${path}/login`);
+				history.push(`/`);
 			} catch (error) {
 				console.log(error);
 			}
@@ -66,7 +66,7 @@ const Navbar = () => {
 					<div className="menu-btn__burger"></div>
 				</div>
 				<Link to="/">
-					<img src="/images/delicious-logo.PNG" alt="delicious-logo" />
+					<img src="/images/delicious-logo-small.PNG" alt="delicious-logo" />
 				</Link>
 			</div>
 		</div>

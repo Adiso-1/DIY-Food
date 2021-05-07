@@ -9,6 +9,7 @@ const RegisterScreen = ({ history }) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
+	const [address, setAddress] = useState('');
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
@@ -31,6 +32,7 @@ const RegisterScreen = ({ history }) => {
 				username,
 				email,
 				phone,
+				address,
 				password,
 			});
 			setSuccess(`${username} registered successfully`);
@@ -89,6 +91,18 @@ const RegisterScreen = ({ history }) => {
 						placeholder="Enter phone"
 						value={phone}
 						onChange={(e) => setPhone(e.target.value)}
+					/>
+				</div>
+
+				<div className="form-group">
+					<label htmlFor="address">Address:</label>
+					<input
+						type="address"
+						required
+						id="address"
+						placeholder="Enter address"
+						value={address}
+						onChange={(e) => setAddress(e.target.value)}
 					/>
 				</div>
 

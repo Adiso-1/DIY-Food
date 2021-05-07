@@ -10,7 +10,7 @@
 	align-items: center;
 }
 .navbar-container-small img {
-	width: 200px;
+	width: 55px;
 }
 .button-container {
 	align-self: center;
@@ -20,34 +20,34 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 80px;
-	height: 80px;
+	width: 40px;
+	height: 40px;
 	cursor: pointer;
 	transition: all 0.5s ease-in-out;
 	z-index: 10;
 }
 .menu-btn__burger {
-	width: 50px;
-	height: 6px;
+	width: 40px;
+	height: 4px;
 	background: #fff;
-	border-radius: 5px;
+	border-radius: 10px;
 	transition: all 0.5s ease-in-out;
 }
 .menu-btn__burger::before,
 .menu-btn__burger::after {
 	content: '';
 	position: absolute;
-	width: 50px;
-	height: 6px;
+	width: 40px;
+	height: 4px;
 	background: #fff;
-	border-radius: 5px;
+	border-radius: 10px;
 	transition: all 0.5s ease-in-out;
 }
 .menu-btn__burger::before {
-	transform: translateY(-16px);
+	transform: translateY(-12px);
 }
 .menu-btn__burger::after {
-	transform: translateY(16px);
+	transform: translateY(12px);
 }
 .menu-btn.open .menu-btn__burger {
 	transform: translateX(-50px);
@@ -63,13 +63,13 @@
 
 .menu-open {
 	position: absolute;
-	height: calc(100% - 164px);
+	height: calc(100% - 96px);
 	width: 100%;
 	background: transparent;
 	overflow: hidden;
 	z-index: 1;
 	display: flex;
-	top: 164px;
+	top: 96px;
 }
 .left-side {
 	width: 30%;
@@ -80,14 +80,13 @@
 }
 
 .left-side > div {
-	padding: 10px;
-	width: 90%;
+	width: 100%;
 	cursor: pointer;
 	margin: 0 auto;
 	border-bottom: 1px dotted #333;
 }
 .left-side .inner-text {
-	padding: 5px;
+	padding: 15px;
 }
 .left-side div:hover {
 	color: #fff;

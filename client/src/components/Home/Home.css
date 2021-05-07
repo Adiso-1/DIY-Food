@@ -15,6 +15,7 @@
 .home-main-button-container {
 	width: 100%;
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	margin: 10px 0;
 	justify-content: space-evenly;
@@ -30,6 +31,7 @@
 	font-weight: bold;
 	cursor: pointer;
 	transition: 0.3s;
+	margin: 5px;
 }
 @media screen and (max-width: 960px) {
 	.navbar-big-container {

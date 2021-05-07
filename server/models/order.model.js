@@ -24,6 +24,10 @@ const orederSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	isCompleted: {
+		type: String,
+		default: false,
+	},
 	dateAdded: {
 		type: Date,
 		default: new Date(),

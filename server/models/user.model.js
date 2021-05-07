@@ -29,6 +29,11 @@ const userSchema = new Schema(
 			required: true,
 			trim: true,
 		},
+		address: {
+			type: String,
+			required: true,
+			trim: true,
+		},
 		resetPasswordToken: String,
 		resetPasswordExpire: Date,
 		tokens: [
@@ -74,7 +79,9 @@ userSchema.statics.findByCredentials = async (email, password) => {
 
 userSchema.methods.generateAuthToken = async function () {
 	const user = this;
-	const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET);
+	const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRE,
+	});
 	user.tokens = [...user.tokens, { token }];
 	await user.save();
 	return token;
