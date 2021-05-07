@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../middleware/userAuth');
-const uploadImage = require('../utils/uploadImage');
+const multer = require('multer');
 const {
 	signUp,
 	login,
@@ -11,13 +11,24 @@ const {
 	resetPassword,
 	uploadProfileImage,
 	deleteProfileImage,
-	getUserPicture,
+	getUserImage,
 	getAllRestaurants,
 } = require('../controllers/users.js');
 
+const upload = multer({
+	limits: {
+		fieldSize: 1000000,
+	},
+	fileFilter(req, file, cb) {
+		if (!file.originalname.match(/\.(jpg|jpeg|png)$/gi)) {
+			return cb(new Error('Please upload an image'));
+		}
+		cb(undefined, true);
+	},
+});
+
 router.get('/getAllRestaurants', getAllRestaurants);
 router.get('/profile', auth, getProfile);
-router.get('/profile/avatar', auth, getUserPicture);
 router.post('/signup', signUp);
 router.post('/login', login);
 router.post('/forgotpassword', forgotPassword);
@@ -27,7 +38,7 @@ router.post('/logoutAll', auth, logoutAll);
 router.post(
 	'/profile/upload',
 	auth,
-	uploadImage,
+	upload.single('avatar'),
 	uploadProfileImage,
 	(error, req, res, next) => {
 		res.status(400).send({ error: error.message });
@@ -41,5 +52,6 @@ router.delete(
 		res.status(400).send({ error: error.message });
 	}
 );
+router.get('/profile/:id', getUserImage);
 
 module.exports = router;

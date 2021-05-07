@@ -1,0 +1,17 @@
+.update-details {
+	width: 95%;
+	background: #f4f4f4;
+	margin: 0 auto;
+	padding: 20px;
+	border-radius: 10px;
+	line-height: 2;
+}
+.update-details > div {
+	display: flex;
+}
+.update-details > div > span {
+	min-width: 100px;
+}
+.update-details > .profile-picture-container {
+	flex-wrap: wrap;
+}

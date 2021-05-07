@@ -8,15 +8,19 @@ import RegisterScreen from './screens/Authorization/RegisterScreen';
 import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegisterScreen';
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 import Page404 from './screens/Page404/Page404';
-import Navbar from './components/NavbarBig/NavbarBig';
+import UserProfileDetails from './components/UserProfileDetails/UserProfileDetails';
 
 const App = () => {
-	console.log(process.env.NODE_ENV);
 	return (
 		<Router>
 			<Switch>
 				<Route exact path="/restaurants" component={RestaurantsHome} />
 				<Route exact path="/users" component={UsersHome} />
+				<Route
+					exact
+					path="/users/UserProfileDetails"
+					component={UserProfileDetails}
+				/>
 				<Route exact path="/users/login" component={LoginScreen} />
 				<Route exact path="/restaurants/login" component={LoginScreen} />
 				<Route

@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const User = require('../models/user.model');
 const Restaurant = require('../models/restaurant.model');
 const sendEmail = require('../utils/sendEmail');
+const sharp = require('sharp');
 
 const signUp = async (req, res) => {
 	const user = new User(req.body);
@@ -113,20 +114,18 @@ const getProfile = (req, res) => {
 };
 
 const uploadProfileImage = async (req, res) => {
-	req.user.avatar = req.file.buffer;
+	const buffer = await sharp(req.file.buffer)
+		.resize({ width: 250, height: 250 })
+		.png()
+		.toBuffer();
+	req.user.avatar = buffer;
 	await req.user.save();
 	res.send();
 };
 
-const deleteProfileImage = async (req, res) => {
-	req.user.avatar = undefined;
-	await req.user.save();
-	res.send(req.user);
-};
-
-const getUserPicture = async (req, res) => {
+const getUserImage = async (req, res) => {
 	try {
-		const user = await User.findById(req.user._id);
+		const user = await User.findById(req.params.id);
 
 		if (!user || !user.avatar) {
 			throw new Error();
@@ -137,6 +136,13 @@ const getUserPicture = async (req, res) => {
 		res.status(404).send();
 	}
 };
+
+const deleteProfileImage = async (req, res) => {
+	req.user.avatar = undefined;
+	await req.user.save();
+	res.send();
+};
+
 const getAllRestaurants = async (req, res) => {
 	try {
 		const restaurants = await Restaurant.find({});
@@ -145,7 +151,6 @@ const getAllRestaurants = async (req, res) => {
 		res.status(400).send();
 	}
 };
-
 module.exports = {
 	signUp,
 	login,
@@ -156,6 +161,6 @@ module.exports = {
 	resetPassword,
 	uploadProfileImage,
 	deleteProfileImage,
-	getUserPicture,
+	getUserImage,
 	getAllRestaurants,
 };

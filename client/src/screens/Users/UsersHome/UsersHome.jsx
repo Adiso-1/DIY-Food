@@ -19,17 +19,8 @@ const UsersHome = ({ history }) => {
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			history.push(`${path}/login`);
+			return history.push(`users/login`);
 		}
-		const fetchUser = async () => {
-			try {
-				const { data } = await api.get(`${path}/profile`, config);
-				setUserData(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchUser();
 		const getAllRestaurants = async () => {
 			try {
 				const { data } = await api.get(`${path}/getAllRestaurants`);
@@ -62,19 +53,6 @@ const UsersHome = ({ history }) => {
 		<div className="user-home">
 			<Navbar />
 
-			<div className="profile-container">
-				{userData && (
-					<img
-						className="user-avatar"
-						src={
-							userData.avatar
-								? `data:image/png;base64,${userData.avatar}`
-								: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
-						}
-						alt="user-profile-image"
-					/>
-				)}
-			</div>
 			<div className="restaurants-grid">{renderRestaurants()}</div>
 		</div>
 	);

@@ -97,6 +97,14 @@
 	height: 100%;
 	background: inherit;
 }
+.welcome-container {
+	display: flex;
+	align-items: center;
+}
+.welcome-container img {
+	border-radius: 50%;
+	margin-right: 10px;
+}
 @media screen and (max-width: 768px) {
 	.left-side div:active {
 		color: #fff;
