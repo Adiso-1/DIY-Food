@@ -87,7 +87,7 @@ const UserProfileDetails = ({ history }) => {
 					<h2>Update your details</h2>
 					<div className="username">
 						<span>Username: </span>
-						{personalDetails.username}
+						{personalDetails.name}
 					</div>
 					<div className="email">
 						<span>Email: </span>

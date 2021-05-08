@@ -9,29 +9,33 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
 	{
-		username: {
+		name: {
 			type: String,
-			required: true,
+			required: [true, 'Please provide username'],
 			trim: true,
 		},
 		email: {
 			type: String,
-			required: true,
-			trim: true,
+			required: [true, 'Please provide email address'],
+			unique: true,
+			match: [
+				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+				'Please provide a valid email',
+			],
 		},
 		phone: {
 			type: String,
-			required: true,
+			required: [true, 'Please provide a phone number'],
 			trim: true,
 		},
 		password: {
 			type: String,
-			required: true,
-			trim: true,
+			required: [true, 'Please add a password'],
+			minlength: 6,
 		},
 		address: {
 			type: String,
-			required: true,
+			required: [true, 'Please provide address'],
 			trim: true,
 		},
 		resetPasswordToken: String,
@@ -74,6 +78,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
 	if (!isMatch) {
 		throw new Error('Unable to login');
 	}
+	console.log(user);
 	return user;
 };
 

@@ -3,6 +3,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const errorHandler = require('./middleware/error');
 
 const publicDirectory = path.join(__dirname, '../client/build');
 
@@ -26,15 +27,11 @@ connection.once('open', () => {
 	console.log('MongoDB database connection established successfully');
 });
 
-const usersRouter = require('./routes/users');
-const restaurantsRouter = require('./routes/restaurants');
-const ordersRouter = require('./routes/orders');
-const menuRouter = require('./routes/menus');
-
-app.use('/users', usersRouter);
-app.use('/restaurants', restaurantsRouter);
-app.use('/orders', ordersRouter);
-app.use('/menu', menuRouter);
+app.use('/users', require('./routes/users'));
+app.use('/restaurants', require('./routes/restaurants'));
+app.use('/orders', require('./routes/orders'));
+app.use('/menu', require('./routes/menus'));
+app.use(errorHandler);
 
 app.listen(port, () => {
 	console.log(`Server is running on port: ${port}`);

@@ -17,7 +17,7 @@ const RegisterScreen = ({ history }) => {
 	const buttonRef = useRef(null);
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
-	const registerHandler = (e) => {
+	const registerHandler = async (e) => {
 		e.preventDefault();
 		if (password !== confirmpassword) {
 			setPassword('');
@@ -28,7 +28,7 @@ const RegisterScreen = ({ history }) => {
 			return setError('Passwords do not match');
 		}
 		try {
-			api.post(`${path}/signup`, {
+			await api.post(`${path}/signup`, {
 				name,
 				email,
 				phone,
@@ -42,10 +42,10 @@ const RegisterScreen = ({ history }) => {
 				history.push(`${path}/login`);
 			}, 10000);
 		} catch (error) {
-			setError(error.response.date);
+			setError(error.response.data.error);
 			setTimeout(() => {
 				setError('');
-			}, 5000);
+			}, 3000);
 		}
 	};
 

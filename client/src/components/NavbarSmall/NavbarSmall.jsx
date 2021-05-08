@@ -106,7 +106,7 @@ const Navbar = () => {
 								alt="user-avatar"
 							/>
 						</Link>
-						<span>Hello {personalDetails.username}</span>
+						<span>Hello, {personalDetails.name}</span>
 					</div>
 				)}
 				<Link to="/">

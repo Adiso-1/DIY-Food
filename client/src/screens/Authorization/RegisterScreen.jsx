@@ -5,7 +5,7 @@ import Navbar from '../../components/NavbarMedium/NavbarMedium';
 import './RegisterScreen.css';
 
 const RegisterScreen = ({ history }) => {
-	const [username, setUsername] = useState('');
+	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
@@ -17,7 +17,7 @@ const RegisterScreen = ({ history }) => {
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
-	const registerHandler = (e) => {
+	const registerHandler = async (e) => {
 		e.preventDefault();
 		if (password !== confirmpassword) {
 			setPassword('');
@@ -28,23 +28,23 @@ const RegisterScreen = ({ history }) => {
 			return setError('Passwords do not match');
 		}
 		try {
-			api.post(`${path}/signup`, {
-				username,
+			await api.post(`${path}/signup`, {
+				name,
 				email,
 				phone,
 				address,
 				password,
 			});
-			setSuccess(`${username} registered successfully`);
+			setSuccess(`${name} registered successfully`);
 			buttonRef.current.disabled = true;
 			setTimeout(() => {
 				history.push(`${path}/login`);
 			}, 10000);
 		} catch (error) {
-			setError(error.response.date);
+			setError(error.response.data.error);
 			setTimeout(() => {
 				setError('');
-			}, 5000);
+			}, 3000);
 		}
 	};
 
@@ -60,14 +60,14 @@ const RegisterScreen = ({ history }) => {
 					</span>
 				)}
 				<div className="form-group">
-					<label htmlFor="name">Username:</label>
+					<label htmlFor="name">name:</label>
 					<input
 						type="text"
 						required
 						id="name"
-						placeholder="Enter username"
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
+						placeholder="Enter name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
 					/>
 				</div>
 				<div className="form-group">

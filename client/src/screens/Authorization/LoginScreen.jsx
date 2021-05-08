@@ -28,7 +28,7 @@ const LoginScreen = ({ history }) => {
 			setTimeout(() => {
 				setError('');
 			}, 2000);
-			setError(`Couldn't log in`);
+			setError(error.response.data.error);
 		}
 	};
 	return (

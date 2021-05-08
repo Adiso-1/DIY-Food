@@ -2,18 +2,19 @@ const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 const Restaurant = require('../models/restaurant.model');
 const sharp = require('sharp');
+const ErrorResponse = require('../utils/errorResponse');
 
-const signUp = async (req, res) => {
+const signUp = async (req, res, next) => {
 	const restaurant = new Restaurant(req.body);
 	try {
 		await restaurant.save();
 		res.status(201).json(restaurant);
 	} catch (error) {
-		res.status(400).json('Error:' + error);
+		next(error);
 	}
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
 	try {
 		const restaurant = await Restaurant.findByCredentials(
 			req.body.email,
@@ -22,7 +23,7 @@ const login = async (req, res) => {
 		const token = await restaurant.generateAuthToken();
 		res.send({ restaurant, token });
 	} catch (error) {
-		res.status(400).json('Error:' + error);
+		return next(new ErrorResponse('Invalid credential', 401));
 	}
 };
 

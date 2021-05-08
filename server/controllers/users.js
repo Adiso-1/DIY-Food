@@ -3,18 +3,19 @@ const User = require('../models/user.model');
 const Restaurant = require('../models/restaurant.model');
 const sendEmail = require('../utils/sendEmail');
 const sharp = require('sharp');
+const ErrorResponse = require('../utils/errorResponse');
 
-const signUp = async (req, res) => {
+const signUp = async (req, res, next) => {
 	const user = new User(req.body);
 	try {
 		await user.save();
 		res.status(201).json(user);
 	} catch (error) {
-		res.status(400).json('Error:' + error);
+		next(error);
 	}
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
 	try {
 		const user = await User.findByCredentials(
 			req.body.email,
@@ -23,7 +24,7 @@ const login = async (req, res) => {
 		const token = await user.generateAuthToken();
 		res.json({ user, token });
 	} catch (error) {
-		res.status(400).json('Error:' + error);
+		return next(new ErrorResponse('Invalid credential', 401));
 	}
 };
 
