@@ -58,8 +58,10 @@ const Navbar = () => {
 				} catch (error) {
 					console.log(error);
 				}
+				break;
 			case 'Personal Information':
 				history.push(`${path}/RestaurantProfileDetails`);
+				break;
 		}
 	};
 	return (

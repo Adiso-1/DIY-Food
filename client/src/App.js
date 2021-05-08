@@ -8,8 +8,8 @@ import RegisterScreen from './screens/Authorization/RegisterScreen';
 import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegisterScreen';
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 import Page404 from './screens/Page404/Page404';
-import UserProfileDetails from './components/UserProfileDetails/UserProfileDetails';
-import RestaurantProfileDetails from './components/RestaurantProfileDetails/RestaurantProfileDetails';
+import UserProfileDetails from './screens/Users/UserProfileDetails/UserProfileDetails';
+import RestaurantProfileDetails from './screens/Restaurants/RestaurantProfileDetails/RestaurantProfileDetails';
 
 const App = () => {
 	return (

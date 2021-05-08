@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import api from '../../api/api';
-import Navbar from '../NavbarMedium/NavbarMedium';
-import Button from '../Button/Button';
+import api from '../../../api/api';
+import Navbar from '../../../components/NavbarMedium/NavbarMedium';
+import Button from '../../../components/Button/Button';
 import './UserProfileDetails.css';
 
 const UserProfileDetails = ({ history }) => {

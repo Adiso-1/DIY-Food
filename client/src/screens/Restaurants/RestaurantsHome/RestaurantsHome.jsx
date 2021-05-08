@@ -1,10 +1,12 @@
 import api from '../../../api/api';
 import { useState, useEffect } from 'react';
+import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import './RestaurantsHome.css';
 
 const RestaurantsHome = ({ history }) => {
 	const [restaurantData, setRestaurantData] = useState(null);
+	const [menu, setMenu] = useState([]);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
@@ -30,30 +32,33 @@ const RestaurantsHome = ({ history }) => {
 		fetchUser();
 	}, []);
 
-	const handleSelect = async (e) => {
-		if (e.target.value === 'Logout') {
+	useEffect(() => {
+		const getMenu = async () => {
 			try {
-				await api.post(`${path}/logout`, {}, config);
-				localStorage.removeItem('authToken');
-				history.push(`${path}/login`);
+				const { data } = await api.get('/restaurants/profile/menu', config);
+				setMenu(data);
 			} catch (error) {
 				console.log(error);
 			}
-		}
+		};
+		getMenu();
+	}, []);
 
-		if (e.target.value === 'Logout All Devices') {
-			try {
-				await api.post(`${path}/logoutAll`, {}, config);
-				localStorage.removeItem('authToken');
-				history.push(`${path}/login`);
-			} catch (error) {
-				console.log(error);
-			}
-		}
+	const handleAddDish = () => {
+		history.push(`${path}/menu`);
 	};
 	return (
 		<div>
 			<Navbar />
+			<div className="menu">
+				{menu.length === 0 ? (
+					<div className="menu-empty">
+						<h2>Your restaurant has no dishes in menu</h2>
+						<h3>Click here to add your first dish</h3>
+						<Button onClick={handleAddDish} text="Add Dish" />
+					</div>
+				) : null}
+			</div>
 		</div>
 	);
 };

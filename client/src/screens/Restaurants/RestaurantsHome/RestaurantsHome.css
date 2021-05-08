@@ -1,0 +1,26 @@
+.menu-empty {
+	background: #f4f4f4;
+	border-radius: 10px;
+	max-width: 1000px;
+	margin: 0 auto;
+	text-align: center;
+	line-height: 3;
+	padding: 20px;
+}
+.menu-empty button {
+	width: 150px;
+	color: #fff;
+	background: var(--main-color);
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+}
+@media screen and (max-width: 1000px) {
+	.menu-empty {
+		max-width: 90%;
+	}
+}
