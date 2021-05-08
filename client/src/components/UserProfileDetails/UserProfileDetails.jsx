@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import api from '../../api/api';
 import Navbar from '../NavbarMedium/NavbarMedium';
 import Button from '../Button/Button';
@@ -8,6 +8,8 @@ const UserProfileDetails = ({ history }) => {
 	const [personalDetails, setPersonalDetails] = useState(null);
 	const [avatar, setAvatar] = useState(null);
 	const [success, setSuccess] = useState(false);
+	const [successMessage, setSuccessMessage] = useState('');
+	const fileInput = useRef();
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -38,7 +40,7 @@ const UserProfileDetails = ({ history }) => {
 	}, [personalDetails]);
 
 	const handleImage = (e) => {
-		console.log(e.target.files[0]);
+		setSuccessMessage('You selected 1 file');
 		setAvatar(e.target.files[0]);
 	};
 	const uploadHandler = async (e) => {
@@ -54,7 +56,25 @@ const UserProfileDetails = ({ history }) => {
 			setTimeout(() => {
 				setSuccess(false);
 			}, 2000);
+			setSuccessMessage('');
 			setSuccess(true);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const deleteImageHandler = async () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
+		try {
+			await api.delete('/users/profile/upload', config);
+			setTimeout(() => {
+				setSuccessMessage('');
+			}, 2000);
+			setSuccessMessage('Profile image deleted');
 		} catch (error) {
 			console.log(error);
 		}
@@ -89,12 +109,21 @@ const UserProfileDetails = ({ history }) => {
 								type="file"
 								name="profile-picture"
 								id="profile-picture"
+								ref={fileInput}
 							/>
+							<Button onClick={deleteImageHandler} text="Delete Image" />
+							<Button
+								onClick={() => fileInput.current.click()}
+								text="Select Image"
+							/>
+							<Button onClick={uploadHandler} text="Upload" />
+							<h2>{successMessage}</h2>
 						</div>
-						<Button onClick={uploadHandler} text="Upload" />
 					</div>
 					{success && (
-						<h2 className="image-uload-success">Image uploaded successfully</h2>
+						<h2 className="image-upload-success">
+							Image uploaded successfully
+						</h2>
 					)}
 				</div>
 			)}

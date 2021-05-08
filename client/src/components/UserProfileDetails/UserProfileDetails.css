@@ -14,9 +14,10 @@
 }
 .update-details > .profile-picture-container {
 	flex-wrap: wrap;
+	flex-direction: column;
 }
 .profile-picture-container button {
-	width: 100px;
+	width: 120px;
 	background: var(--main-color);
 	color: #fff;
 	outline: none;
@@ -26,4 +27,8 @@
 	font-weight: bold;
 	cursor: pointer;
 	transition: 0.3s;
+	margin-right: 10px;
+}
+.profile-picture-container input {
+	display: none;
 }
