@@ -105,7 +105,6 @@ userSchema.methods.toJSON = function () {
 	delete userObject.tokens;
 	delete userObject.resetPasswordToken;
 	delete userObject.resetPasswordExpire;
-	// delete userObject.avatar;
 
 	return userObject;
 };

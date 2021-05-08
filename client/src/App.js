@@ -9,12 +9,18 @@ import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegister
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 import Page404 from './screens/Page404/Page404';
 import UserProfileDetails from './components/UserProfileDetails/UserProfileDetails';
+import RestaurantProfileDetails from './components/RestaurantProfileDetails/RestaurantProfileDetails';
 
 const App = () => {
 	return (
 		<Router>
 			<Switch>
 				<Route exact path="/restaurants" component={RestaurantsHome} />
+				<Route
+					exact
+					path="/restaurants/RestaurantProfileDetails"
+					component={RestaurantProfileDetails}
+				/>
 				<Route exact path="/users" component={UsersHome} />
 				<Route
 					exact

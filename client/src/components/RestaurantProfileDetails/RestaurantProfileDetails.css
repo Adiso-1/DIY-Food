@@ -1,0 +1,34 @@
+.update-details {
+	width: 95%;
+	background: #f4f4f4;
+	margin: 0 auto;
+	padding: 20px;
+	border-radius: 10px;
+	line-height: 2;
+}
+.update-details > div {
+	display: flex;
+}
+.update-details > div > span {
+	min-width: 100px;
+}
+.update-details > .profile-picture-container {
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+.profile-picture-container button {
+	width: 120px;
+	background: var(--main-color);
+	color: #fff;
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+	margin-right: 10px;
+}
+.profile-picture-container input {
+	display: none;
+}

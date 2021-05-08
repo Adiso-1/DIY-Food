@@ -1,5 +1,6 @@
 import api from '../../../api/api';
 import { useState, useEffect } from 'react';
+import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import './RestaurantsHome.css';
 
 const RestaurantsHome = ({ history }) => {
@@ -51,31 +52,8 @@ const RestaurantsHome = ({ history }) => {
 		}
 	};
 	return (
-		<div className="restaurant-home">
-			<div>
-				<select
-					onChange={handleSelect}
-					name="profile-select"
-					id="profile-select"
-				>
-					<option>Menu</option>
-					<option onChange={handleSelect}>Logout</option>
-					<option onChange={handleSelect}>Logout All Devices</option>
-				</select>
-			</div>
-			<div className="profile-container">
-				{restaurantData && (
-					<img
-						className="restaurant-avatar"
-						src={
-							restaurantData.avatar
-								? `data:image/png;base64,${restaurantData.avatar}`
-								: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
-						}
-						alt="user-profile-image"
-					/>
-				)}
-			</div>
+		<div>
+			<Navbar />
 		</div>
 	);
 };

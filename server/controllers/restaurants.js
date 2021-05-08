@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 const Restaurant = require('../models/restaurant.model');
+const sharp = require('sharp');
 
 const signUp = async (req, res) => {
 	const restaurant = new Restaurant(req.body);
@@ -128,7 +129,35 @@ const deleteRestaurant = async (req, res) => {
 		res.status(400).send(error);
 	}
 };
+const uploadLogoImage = async (req, res) => {
+	const buffer = await sharp(req.file.buffer)
+		.resize({ width: 250, height: 250 })
+		.png()
+		.toBuffer();
+	req.restaurant.logo = buffer;
+	await req.restaurant.save();
+	res.status(201).send();
+};
 
+const getRestaurantLogo = async (req, res) => {
+	try {
+		const restaurant = await Restaurant.findById(req.params.id);
+
+		if (!restaurant || !restaurant.logo) {
+			throw new Error();
+		}
+		res.set('Content-Type', 'image/png');
+		res.send(restaurant.logo);
+	} catch (error) {
+		res.status(404).send();
+	}
+};
+
+const deleteLogoImage = async (req, res) => {
+	req.restaurant.logo = undefined;
+	await req.restaurant.save();
+	res.send();
+};
 module.exports = {
 	signUp,
 	login,
@@ -139,4 +168,7 @@ module.exports = {
 	deleteRestaurant,
 	forgotPassword,
 	resetPassword,
+	uploadLogoImage,
+	getRestaurantLogo,
+	deleteLogoImage,
 };

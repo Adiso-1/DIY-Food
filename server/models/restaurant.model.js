@@ -51,6 +51,9 @@ const restaurantSchema = new Schema({
 			},
 		},
 	],
+	logo: {
+		type: Buffer,
+	},
 });
 
 restaurantSchema.virtual('orders', {
