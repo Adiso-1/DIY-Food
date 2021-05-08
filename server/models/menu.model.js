@@ -20,6 +20,12 @@ const menuSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	image: {
+		type: Buffer,
+	},
+	tags: {
+		type: Array,
+	},
 	dateAdded: {
 		type: Date,
 		default: new Date(),
