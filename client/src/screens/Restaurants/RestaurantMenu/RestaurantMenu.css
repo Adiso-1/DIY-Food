@@ -1,0 +1,22 @@
+.restaurant-menu-button-container {
+	display: flex;
+	justify-content: center;
+}
+.restaurant-menu-button-container button {
+	width: 150px;
+	color: #fff;
+	background: var(--main-color);
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+.restaurant-menu-container .success-feedback {
+	color: green;
+}
+.restaurant-menu-container .error-feedback {
+	color: red;
+}

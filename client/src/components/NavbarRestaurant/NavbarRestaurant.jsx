@@ -41,11 +41,18 @@ const Navbar = () => {
 	};
 	const handleSelect = async (e) => {
 		switch (e.target.textContent) {
+			case 'Home':
+				history.push(`${path}`);
+				break;
+			case 'Add New Dish':
+				history.push(`${path}/menu`);
+				break;
 			case 'Logout':
 				try {
 					await api.post(`${path}/logout`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`/`);
+					// history.push(`/`);
+					window.location.reload();
 				} catch (error) {
 					console.log(error);
 				}
@@ -54,7 +61,8 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`/`);
+					window.location.reload();
+					// history.push(`/`);
 				} catch (error) {
 					console.log(error);
 				}
@@ -75,7 +83,13 @@ const Navbar = () => {
 				>
 					<div onClick={handleSelect} className="left-side">
 						<div>
+							<div className="inner-text">Home</div>
+						</div>
+						<div>
 							<div className="inner-text">Personal Information</div>
+						</div>
+						<div>
+							<div className="inner-text">Add New Dish</div>
 						</div>
 						<div>
 							<div className="inner-text">Logout</div>
@@ -108,7 +122,7 @@ const Navbar = () => {
 								alt="restaurant-logo"
 							/>
 						</Link>
-						<span>Hello {personalDetails.name}</span>
+						<span>Hello, {personalDetails.name}</span>
 					</div>
 				)}
 				<Link to="/">

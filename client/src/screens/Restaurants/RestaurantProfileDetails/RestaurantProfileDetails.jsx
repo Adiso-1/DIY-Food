@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../../../api/api';
-import Navbar from '../../../components/NavbarMedium/NavbarMedium';
+import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Button from '../../../components/Button/Button';
 import './RestaurantProfileDetails.css';
 
@@ -9,6 +9,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	const [logo, setLogo] = useState(null);
 	const [success, setSuccess] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
+	console.log(logo);
 	const fileInput = useRef();
 	const config = {
 		headers: {
@@ -18,7 +19,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	};
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			return history.push(`restaurants/login`);
+			return history.push(`/restaurants/login`);
 		}
 		const fetchRestaurants = async () => {
 			try {
@@ -29,7 +30,7 @@ const RestaurantProfileDetails = ({ history }) => {
 			}
 		};
 		fetchRestaurants();
-	}, []);
+	}, [logo]);
 	useEffect(() => {
 		if (personalDetails && personalDetails.logo) {
 			const getImage = async () => {
@@ -43,7 +44,11 @@ const RestaurantProfileDetails = ({ history }) => {
 		setSuccessMessage('You selected 1 file');
 		setLogo(e.target.files[0]);
 	};
+
 	const uploadHandler = async (e) => {
+		if (!logo) {
+			return;
+		}
 		const config = {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
@@ -69,14 +74,21 @@ const RestaurantProfileDetails = ({ history }) => {
 				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 			},
 		};
-		try {
-			await api.delete('/restaurants/profile/upload', config);
+		if (!personalDetails.logo) {
 			setTimeout(() => {
 				setSuccessMessage('');
 			}, 2000);
-			setSuccessMessage('Logo image deleted');
-		} catch (error) {
-			console.log(error);
+			setSuccessMessage('No Logo To Delete');
+		} else {
+			try {
+				await api.delete('/restaurants/profile/upload', config);
+				setTimeout(() => {
+					setSuccessMessage('');
+				}, 2000);
+				setSuccessMessage('Logo image deleted');
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	};
 	return (

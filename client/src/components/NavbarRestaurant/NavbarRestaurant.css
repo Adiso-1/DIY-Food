@@ -105,6 +105,10 @@
 	border-radius: 50%;
 	margin-right: 10px;
 }
+.welcome-container span {
+	font-weight: bold;
+	color: #fff;
+}
 @media screen and (max-width: 768px) {
 	.left-side div:active {
 		color: #fff;

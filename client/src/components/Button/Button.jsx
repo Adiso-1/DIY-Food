@@ -2,7 +2,11 @@ import './Button.css';
 
 const Button = (props) => {
 	return (
-		<button className="navbar-button" onClick={props.onClick}>
+		<button
+			type={props.type || ''}
+			className="navbar-button"
+			onClick={props.onClick}
+		>
 			{props.text}
 		</button>
 	);

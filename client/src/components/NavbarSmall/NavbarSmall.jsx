@@ -45,7 +45,8 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logout`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`/`);
+					// history.push(`/`);
+					window.location.reload();
 				} catch (error) {
 					console.log(error);
 				}
@@ -54,7 +55,8 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`http://localhost3000/`);
+					// history.push(`http://localhost3000/`);
+					window.location.reload();
 				} catch (error) {
 					console.log(error);
 				}

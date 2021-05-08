@@ -43,6 +43,7 @@ const UserProfileDetails = ({ history }) => {
 		setSuccessMessage('You selected 1 file');
 		setAvatar(e.target.files[0]);
 	};
+
 	const uploadHandler = async (e) => {
 		const config = {
 			headers: {
