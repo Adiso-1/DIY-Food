@@ -113,9 +113,7 @@ const Navbar = () => {
 							<img
 								src={
 									personalDetails.logo
-										? process.env.NODE_ENV === 'development'
-											? `http://localhost:5000${path}/profile/${personalDetails._id}`
-											: `https://delicious-by-adi.herokuapp.com${path}/profile/${personalDetails._id}`
+										? `/api${path}/profile/${personalDetails._id}`
 										: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
 								}
 								alt="restaurant-logo"

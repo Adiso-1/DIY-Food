@@ -27,10 +27,10 @@ connection.once('open', () => {
 	console.log('MongoDB database connection established successfully');
 });
 
-app.use('/users', require('./routes/users'));
-app.use('/restaurants', require('./routes/restaurants'));
-app.use('/orders', require('./routes/orders'));
-app.use('/menu', require('./routes/menus'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/restaurants', require('./routes/restaurants'));
+app.use('/api/orders', require('./routes/orders'));
+app.use('/api/menu', require('./routes/menus'));
 app.use(errorHandler);
 
 app.listen(port, () => {

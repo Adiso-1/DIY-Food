@@ -166,11 +166,7 @@ const RestaurantsHome = ({ history }) => {
 							{dish.image ? (
 								<>
 									<img
-										src={
-											process.env.NODE_ENV === 'development'
-												? `http://localhost:5000/menu/get-dish-image/${dish._id}`
-												: `https://delicious-by-adi.herokuapp.com/menu/get-dish-image/${dish._id}`
-										}
+										src={`/api/menu/get-dish-image/${dish._id}`}
 										alt="dish-image"
 									/>
 									<div className="dish-button-container">
