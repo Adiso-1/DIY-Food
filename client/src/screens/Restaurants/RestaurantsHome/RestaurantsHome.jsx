@@ -9,6 +9,11 @@ const RestaurantsHome = ({ history }) => {
 	const [isMenuEmpty, setIsMenuEmpty] = useState(false);
 	const [menu, setMenu] = useState([]);
 	const [dishImage, setDishImage] = useState(null);
+	const [isEdit, setIsEdit] = useState(false);
+	const [idToEdit, setIdToEdit] = useState('');
+	const [nameToEdit, setNameToEdit] = useState('');
+	const [descriptionToEdit, setDescriptionToEdit] = useState('');
+	const [priceToEdit, setPriceToEdit] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 
@@ -105,10 +110,57 @@ const RestaurantsHome = ({ history }) => {
 		}
 	};
 
+	const editDishHandler = (e, dish) => {
+		setIsEdit(true);
+		setIdToEdit(dish._id);
+		setNameToEdit(dish.dish);
+		setDescriptionToEdit(dish.description);
+		setPriceToEdit(dish.price);
+	};
+
+	const onEditSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			await api.patch(
+				`/menu/edit-dish/${idToEdit}`,
+				{
+					dish: nameToEdit,
+					description: descriptionToEdit,
+					price: priceToEdit,
+				},
+				config
+			);
+			setIsEdit(false);
+			renderMenu();
+		} catch (error) {
+			setTimeout(() => {
+				setErrorMsg('');
+			}, 2000);
+			setErrorMsg(error.response.data.error);
+		}
+	};
+
+	const deleteDish = async (e, dish) => {
+		try {
+			await api.delete(`/menu/delete-dish/${dish._id}`, config);
+			renderMenu();
+		} catch (error) {
+			setTimeout(() => {
+				setErrorMsg('');
+			}, 2000);
+			setErrorMsg(error.response.data.error);
+		}
+	};
 	const getMenu = () => {
 		return menu.map((dish) => {
 			return (
 				<div className="dish-details" key={dish._id}>
+					<div
+						className="delete-dish-button"
+						onClick={(e) => deleteDish(e, dish)}
+					>
+						<i className="far fa-trash-alt"></i>
+					</div>
 					<div className="dish-image-description">
 						<div className="dish-image">
 							{dish.image ? (
@@ -121,10 +173,16 @@ const RestaurantsHome = ({ history }) => {
 										}
 										alt="dish-image"
 									/>
-									<Button
-										onClick={(e) => deleteImageHandler(e, dish._id)}
-										text="Delete Image"
-									/>
+									<div className="dish-button-container">
+										<Button
+											onClick={(e) => editDishHandler(e, dish)}
+											text="Edit Dish"
+										/>
+										<Button
+											onClick={(e) => deleteImageHandler(e, dish._id)}
+											text="Delete Image"
+										/>
+									</div>
 								</>
 							) : (
 								<div className="add-dish-image-container">
@@ -173,7 +231,73 @@ const RestaurantsHome = ({ history }) => {
 					</div>
 				) : (
 					<div className="dishes-container">
+						{restaurantData && (
+							<h1 className="menu-title">{restaurantData.name}'s Menu</h1>
+						)}
 						{getMenu()}
+						{isEdit && (
+							<div onSubmit={onEditSubmit} className="edit-dish-container">
+								<form className="login-screen__form">
+									<span
+										className="close-edit"
+										onClick={(e) => setIsEdit(false)}
+									>
+										<i className="fas fa-times"></i>
+									</span>
+									<div className="form-group">
+										<label htmlFor="dish">Dish Name:</label>
+										<input
+											type="text"
+											required
+											id="dish"
+											placeholder="Dish Name"
+											onChange={(e) => setNameToEdit(e.target.value)}
+											value={nameToEdit}
+											tabIndex={1}
+										/>
+									</div>
+
+									<div className="form-group">
+										<label htmlFor="description">Description:</label>
+										<input
+											type="text"
+											required
+											id="description"
+											placeholder="Write description"
+											onChange={(e) => setDescriptionToEdit(e.target.value)}
+											value={descriptionToEdit}
+											tabIndex={2}
+										/>
+									</div>
+
+									<div className="form-group">
+										<label htmlFor="price">Price:</label>
+										<input
+											type="number"
+											required
+											id="price"
+											placeholder="Enter price"
+											onChange={(e) => setPriceToEdit(e.target.value)}
+											value={priceToEdit}
+											tabIndex={3}
+										/>
+									</div>
+									{successMsg && (
+										<div className="success-feedback">
+											<h3>{successMsg}</h3>
+										</div>
+									)}
+									{errorMsg && (
+										<div className="error-feedback">
+											<h3>{errorMsg}</h3>
+										</div>
+									)}
+									<div className="restaurant-menu-button-container">
+										<Button type="submit" text="Submit" />
+									</div>
+								</form>
+							</div>
+						)}
 						<h2>{successMsg}</h2>
 						<h2>{errorMsg}</h2>
 					</div>

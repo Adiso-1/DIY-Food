@@ -16,11 +16,12 @@ const addDish = async (req, res) => {
 };
 
 const editDish = async (req, res) => {
-	let preDish = await Menu.findOne({ dish: req.body.dish });
+	let preDish = await Menu.findById(req.params.id);
 	try {
-		const dish = await Menu.findOneAndUpdate(
-			{ dish: req.body.dish },
+		const dish = await Menu.findByIdAndUpdate(
+			req.params.id,
 			{
+				dish: req.body.dish || preDish.dish,
 				price: req.body.price || preDish.price,
 				description: req.body.description || preDish.description,
 			},
@@ -31,16 +32,16 @@ const editDish = async (req, res) => {
 		);
 		res.send(dish);
 	} catch (error) {
-		res.status(400).send(error);
+		return next(new ErrorResponse('Error', 404));
 	}
 };
 
 const deleteDish = async (req, res) => {
 	try {
-		const dish = await Menu.findOneAndDelete({ dish: req.body.dish });
+		const dish = await Menu.findByIdAndDelete(req.params.id);
 		res.send(dish);
 	} catch (error) {
-		res.status(400).send(error);
+		return next(new ErrorResponse('Error', 404));
 	}
 };
 

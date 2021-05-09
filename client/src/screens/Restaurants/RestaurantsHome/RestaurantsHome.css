@@ -19,48 +19,8 @@
 	cursor: pointer;
 	transition: 0.3s;
 }
-.dish-details .dish-image .add-dish-image-container input {
-	display: none;
-}
-.dish-details .dish-image .add-dish-image-container button {
-	width: fit-content;
-	color: #fff;
-	background: var(--main-color);
-	outline: none;
-	border: none;
-	border-radius: 20px;
-	padding: 12px;
-	font-weight: bold;
-	cursor: pointer;
-}
-.dish-details .dish-image {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-right: 5px;
-}
-.dish-details .dish-image img {
-	width: 100px;
-	height: 100px;
-	margin-bottom: 5px;
-	border-radius: 15px;
-}
-.dish-details .dish-image button {
-	width: fit-content;
-	color: #fff;
-	background: var(--main-color);
-	outline: none;
-	border: none;
-	border-radius: 20px;
-	padding: 5px;
-	font-weight: bold;
-	cursor: pointer;
-	font-size: 12px;
-}
-.dish-details .dish-image button:hover {
-	transform: scale(1.02);
-}
 .dish-details {
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -70,6 +30,45 @@
 	margin: 5px auto;
 	padding: 10px;
 }
+.dish-details .dish-image .add-dish-image-container input {
+	display: none;
+}
+.dish-details .dish-image .add-dish-image-container button,
+.dish-details .dish-image button {
+	width: fit-content;
+	color: #fff;
+	background: var(--main-color);
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 4px 8px;
+	font-weight: bold;
+	cursor: pointer;
+	margin-right: 5px;
+}
+.dish-details .dish-image .add-dish-image-container button:hover,
+.dish-details .dish-image button:hover {
+	transform: scale(1);
+	background: var(--dark-main-color);
+}
+.dish-details .dish-image {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-right: 5px;
+	min-width: fit-content;
+}
+.dish-details .dish-image img {
+	width: 100px;
+	height: 100px;
+	margin-bottom: 5px;
+	border-radius: 15px;
+}
+
+.dish-button-container {
+	display: flex;
+}
+
 .dish-image-description {
 	display: flex;
 	align-items: center;
@@ -78,6 +77,49 @@
 
 .dish-price {
 	font-weight: bold;
+}
+.menu-title {
+	padding: 10px;
+}
+.edit-dish-container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+.edit-dish-container .login-screen__form {
+	width: 340px;
+}
+.close-edit {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	background: inherit;
+	color: var(--main-color);
+	border: none;
+	outline: none;
+}
+.edit-dish-container .login-screen__form button:hover {
+	background: var(--dark-main-color);
+	transform: scale(1);
+}
+.login-screen__form .close-edit {
+	font-size: 24px;
+}
+.close-edit :hover {
+	color: var(--dark-main-color);
+}
+.dish-details .delete-dish-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	color: var(--main-color);
+	transition: all 0.2s;
+}
+.dish-details .delete-dish-button:hover {
+	transform: scale(1.05);
 }
 @media screen and (max-width: 1000px) {
 	.menu-empty {

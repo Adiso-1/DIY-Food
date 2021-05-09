@@ -23,8 +23,8 @@ const upload = multer({
 });
 
 router.post('/add-dish', restaurantAuth, addDish);
-router.patch('/edit-dish', restaurantAuth, editDish);
-router.patch('/delete-dish', restaurantAuth, deleteDish);
+router.patch('/edit-dish/:id', restaurantAuth, editDish);
+router.delete('/delete-dish/:id', restaurantAuth, deleteDish);
 router.post(
 	'/add-dish-image/:id',
 	restaurantAuth,

@@ -16,32 +16,21 @@ const App = () => {
 	return (
 		<Router>
 			<Switch>
+				//! Restaurant Routes
 				<Route exact path="/restaurants" component={RestaurantsHome} />
 				<Route exact path="/restaurants/menu" component={RestaurantMenu} />
-				<Route
-					exact
-					path="/restaurants/RestaurantProfileDetails"
-					component={RestaurantProfileDetails}
-				/>
-				<Route exact path="/users" component={UsersHome} />
-				<Route
-					exact
-					path="/users/UserProfileDetails"
-					component={UserProfileDetails}
-				/>
-				<Route exact path="/users/login" component={LoginScreen} />
+				//* Restaurant Authorization
 				<Route exact path="/restaurants/login" component={LoginScreen} />
-				<Route
-					exact
-					path="/users/forgotpassword"
-					component={ForgotPasswordScreen}
-				/>
 				<Route
 					exact
 					path="/restaurants/forgotpassword"
 					component={ForgotPasswordScreen}
 				/>
-				<Route exact path="/users/register" component={RegisterScreen} />
+				<Route
+					exact
+					path="/restaurants/RestaurantProfileDetails"
+					component={RestaurantProfileDetails}
+				/>
 				<Route
 					exact
 					path="/restaurants/register"
@@ -49,14 +38,30 @@ const App = () => {
 				/>
 				<Route
 					exact
-					path="/users/resetpassword/:resetToken"
-					component={ResetPasswordScreen}
-				/>
-				<Route
-					exact
 					path="/restaurants/resetpassword/:resetToken"
 					component={ResetPasswordScreen}
 				/>
+				//! Users Routes
+				<Route exact path="/users" component={UsersHome} />
+				<Route
+					exact
+					path="/users/UserProfileDetails"
+					component={UserProfileDetails}
+				/>
+				//* Users Authorization
+				<Route exact path="/users/login" component={LoginScreen} />
+				<Route
+					exact
+					path="/users/forgotpassword"
+					component={ForgotPasswordScreen}
+				/>
+				<Route exact path="/users/register" component={RegisterScreen} />
+				<Route
+					exact
+					path="/users/resetpassword/:resetToken"
+					component={ResetPasswordScreen}
+				/>
+				//! General
 				<Route exact path="/" component={Home} />
 				<Route path="*" component={Page404} />
 			</Switch>
