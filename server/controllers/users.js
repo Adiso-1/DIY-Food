@@ -39,13 +39,12 @@ const forgotPassword = async (req, res) => {
 		const resetToken = await user.getResetPasswordToken();
 		await user.save();
 
-		const resetUrlProd = `https://delicious-by-adi.herokuapp.com/users/resetpassword/${resetToken}`;
-		const resetUrlDev = `http://localhost:3000/users/resetpassword/${resetToken}`;
+		const RESET_URL = `${process.env.RESET_URL}${resetToken}`;
 
 		const message = `
 			<h1>Yow have requested a password reset</h1>
 			<p>Please go to this link to reset your password</p>
-			<a href=${resetUrlDev} clicktracking=off>${resetUrlDev}</a>
+			<a href=${RESET_URL} clicktracking=off>${RESET_URL}</a>
 		`;
 		try {
 			await sendEmail({
