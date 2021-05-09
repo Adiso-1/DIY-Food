@@ -16,10 +16,10 @@ const App = () => {
 	return (
 		<Router>
 			<Switch>
-				//! Restaurant Routes
+				(//! Restaurant Routes)
 				<Route exact path="/restaurants" component={RestaurantsHome} />
 				<Route exact path="/restaurants/menu" component={RestaurantMenu} />
-				//* Restaurant Authorization
+				(//* Restaurant Authorization)
 				<Route exact path="/restaurants/login" component={LoginScreen} />
 				<Route
 					exact
@@ -41,14 +41,14 @@ const App = () => {
 					path="/restaurants/resetpassword/:resetToken"
 					component={ResetPasswordScreen}
 				/>
-				//! Users Routes
+				(//! Users Routes)
 				<Route exact path="/users" component={UsersHome} />
 				<Route
 					exact
 					path="/users/UserProfileDetails"
 					component={UserProfileDetails}
 				/>
-				//* Users Authorization
+				(//* Users Authorization)
 				<Route exact path="/users/login" component={LoginScreen} />
 				<Route
 					exact
@@ -61,7 +61,7 @@ const App = () => {
 					path="/users/resetpassword/:resetToken"
 					component={ResetPasswordScreen}
 				/>
-				//! General
+				(//! General)
 				<Route exact path="/" component={Home} />
 				<Route path="*" component={Page404} />
 			</Switch>

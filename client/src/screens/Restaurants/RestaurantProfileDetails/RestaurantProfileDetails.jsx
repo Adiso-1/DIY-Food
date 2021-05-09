@@ -9,7 +9,6 @@ const RestaurantProfileDetails = ({ history }) => {
 	const [logo, setLogo] = useState(null);
 	const [success, setSuccess] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
-	console.log(logo);
 	const fileInput = useRef();
 	const config = {
 		headers: {
@@ -17,28 +16,20 @@ const RestaurantProfileDetails = ({ history }) => {
 			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 		},
 	};
+	const renderRestaurant = async () => {
+		try {
+			const { data } = await api.get(`/restaurants/profile`, config);
+			setPersonalDetails(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`/restaurants/login`);
 		}
-		const fetchRestaurants = async () => {
-			try {
-				const { data } = await api.get(`restaurants/profile`, config);
-				setPersonalDetails(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-		fetchRestaurants();
-	}, [logo]);
-	useEffect(() => {
-		if (personalDetails && personalDetails.logo) {
-			const getImage = async () => {
-				await api.get(`restaurants/profile/${personalDetails._id}`);
-			};
-			getImage();
-		}
-	}, [personalDetails]);
+		renderRestaurant();
+	}, []);
 
 	const handleImage = (e) => {
 		setSuccessMessage('You selected 1 file');
@@ -63,6 +54,7 @@ const RestaurantProfileDetails = ({ history }) => {
 			}, 2000);
 			setSuccessMessage('');
 			setSuccess(true);
+			renderRestaurant();
 		} catch (error) {
 			console.log(error);
 		}
@@ -86,6 +78,7 @@ const RestaurantProfileDetails = ({ history }) => {
 					setSuccessMessage('');
 				}, 2000);
 				setSuccessMessage('Logo image deleted');
+				renderRestaurant();
 			} catch (error) {
 				console.log(error);
 			}

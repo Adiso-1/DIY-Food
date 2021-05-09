@@ -9,22 +9,23 @@ const Navbar = () => {
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
+	const renderRestaurant = async () => {
+		try {
+			const { data } = await api.get(`restaurants/profile`, config);
+			setPersonalDetails(data);
+		} catch (error) {
+			console.log(error);
+			localStorage.removeItem('authToken');
+			history.push('/restaurants/login');
+		}
+	};
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`restaurants/login`);
 		}
-		const fetchUser = async () => {
-			try {
-				const { data } = await api.get(`restaurants/profile`, config);
-				setPersonalDetails(data);
-			} catch (error) {
-				console.log(error);
-				localStorage.removeItem('authToken');
-				history.push('/restaurants/login');
-			}
-		};
-		fetchUser();
+		renderRestaurant();
 	}, []);
+
 	useEffect(() => {
 		if (personalDetails && personalDetails.logo) {
 			const getImage = async () => {
@@ -51,7 +52,6 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logout`, {}, config);
 					localStorage.removeItem('authToken');
-					// history.push(`/`);
 					window.location.reload();
 				} catch (error) {
 					console.log(error);
@@ -62,7 +62,6 @@ const Navbar = () => {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
 					window.location.reload();
-					// history.push(`/`);
 				} catch (error) {
 					console.log(error);
 				}
