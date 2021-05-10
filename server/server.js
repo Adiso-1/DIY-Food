@@ -15,8 +15,8 @@ app.use(express.static(publicDirectory));
 app.use(cors());
 app.use(cookieParser());
 
-console.log(__dirname);
-app.get('', function (req, res) {
+const sign = process.env.NODE_ENV === 'production' ? '*' : '/';
+app.get(sign, function (req, res) {
 	res.sendFile('index.html', {
 		root: path.join(__dirname, '../client/build'),
 	});
