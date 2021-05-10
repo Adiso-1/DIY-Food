@@ -15,7 +15,7 @@ const Navbar = () => {
 		}
 		const fetchUser = async () => {
 			try {
-				const { data } = await api.get(`users/profile`, config);
+				const { data } = await api.get(`/users/profile`, config);
 				setPersonalDetails(data);
 			} catch (error) {
 				console.log(error);
@@ -41,12 +41,14 @@ const Navbar = () => {
 	};
 	const handleSelect = async (e) => {
 		switch (e.target.textContent) {
+			case 'Home':
+				history.push(`${path}`);
+				break;
 			case 'Logout':
 				try {
 					await api.post(`${path}/logout`, {}, config);
 					localStorage.removeItem('authToken');
-					// history.push(`/`);
-					window.location.reload();
+					history.push(`${path}/login`);
 				} catch (error) {
 					console.log(error);
 				}
@@ -55,13 +57,14 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
-					// history.push(`http://localhost3000/`);
-					window.location.reload();
+					history.push(`${path}/login`);
 				} catch (error) {
 					console.log(error);
 				}
+				break;
 			case 'Personal Information':
 				history.push(`${path}/UserProfileDetails`);
+				break;
 		}
 	};
 	return (
@@ -74,6 +77,9 @@ const Navbar = () => {
 					className="menu-open"
 				>
 					<div onClick={handleSelect} className="left-side">
+						<div>
+							<div className="inner-text">Home</div>
+						</div>
 						<div>
 							<div className="inner-text">Personal Information</div>
 						</div>
@@ -100,9 +106,7 @@ const Navbar = () => {
 							<img
 								src={
 									personalDetails.avatar
-										? process.env.NODE_ENV === 'development'
-											? `http://localhost:5000${path}/profile/${personalDetails._id}`
-											: `https://delicious-by-adi.herokuapp.com${path}/profile/${personalDetails._id}`
+										? `/api${path}/profile/${personalDetails._id}`
 										: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
 								}
 								alt="user-avatar"

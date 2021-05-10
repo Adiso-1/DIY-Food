@@ -115,7 +115,7 @@ const getProfile = (req, res) => {
 
 const getProfileMenu = async (req, res) => {
 	try {
-		const restaurant = await Restaurant.findById(req.restaurant._id);
+		const restaurant = await Restaurant.findById(req.params.id);
 		await restaurant.populate('menu').execPopulate();
 		res.send(restaurant.menu);
 	} catch (error) {

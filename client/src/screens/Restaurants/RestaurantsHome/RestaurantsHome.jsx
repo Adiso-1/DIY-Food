@@ -1,4 +1,5 @@
 import api from '../../../api/api';
+import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
@@ -18,7 +19,6 @@ const RestaurantsHome = ({ history }) => {
 	const [errorMsg, setErrorMsg] = useState('');
 
 	const fileInput = useRef();
-
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 	const config = {
 		headers: {
@@ -27,8 +27,13 @@ const RestaurantsHome = ({ history }) => {
 		},
 	};
 	const renderMenu = async () => {
+		if (!restaurantData) {
+			return;
+		}
 		try {
-			const { data } = await api.get('/restaurants/profile/menu', config);
+			const { data } = await api.get(
+				`/restaurants/profile/menu/${restaurantData._id}`
+			);
 			if (data.length === 0) {
 				return setIsMenuEmpty(true);
 			}
@@ -55,7 +60,7 @@ const RestaurantsHome = ({ history }) => {
 
 	useEffect(() => {
 		renderMenu();
-	}, []);
+	}, [restaurantData]);
 
 	const handleAddDish = () => {
 		history.push(`${path}/menu`);
@@ -85,6 +90,7 @@ const RestaurantsHome = ({ history }) => {
 			setTimeout(() => {
 				setErrorMsg('');
 			}, 2000);
+			console.log(error.response);
 			setErrorMsg(error.response.data.error);
 		}
 	};
@@ -209,7 +215,7 @@ const RestaurantsHome = ({ history }) => {
 						</div>
 					</div>
 					<div className="dish-price">
-						<p>{dish.price}</p>
+						<p>{dish.price}&#8362;</p>
 					</div>
 				</div>
 			);
@@ -296,6 +302,11 @@ const RestaurantsHome = ({ history }) => {
 						)}
 						<h2>{successMsg}</h2>
 						<h2>{errorMsg}</h2>
+						<div className="add-dish-button">
+							<Link to="/restaurants/menu">
+								<Button text="Add a New Dish" />
+							</Link>
+						</div>
 					</div>
 				)}
 			</div>

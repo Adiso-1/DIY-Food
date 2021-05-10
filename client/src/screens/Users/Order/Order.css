@@ -1,0 +1,194 @@
+.dish-container {
+	max-width: 500px;
+	margin: 10px;
+	display: flex;
+	align-items: center;
+	background: #f8f5f2;
+	cursor: pointer;
+	transition: all 0.25s;
+}
+.dish-container:hover {
+	box-shadow: 0px 0px 10px 0px #555;
+}
+.dish-container div {
+	margin-right: 10px;
+}
+.dish-details-text {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.dish-container img {
+	width: 100px;
+	height: 100px;
+}
+.zoomed-image,
+.zoomed-dish {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	box-shadow: 0px 0px 10px 0px #555;
+}
+.zoomed-dish {
+	background: #f0f0f0;
+	z-index: 8;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 50%;
+}
+.zoomed-dish i {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	color: red;
+	font-size: 20px;
+}
+.restaurant-display {
+	max-width: 1400px;
+	margin: 0px auto;
+	display: flex;
+	justify-content: space-between;
+}
+.restaurant-details {
+	display: flex;
+	flex-direction: column;
+	align-self: flex-end;
+}
+.add-to-cart {
+	cursor: pointer;
+}
+.add-to-cart .fa-plus {
+	font-size: 18px;
+	transition: all 0.2s;
+}
+.add-to-cart .fa-plus:hover {
+	color: rgb(21, 116, 245);
+	/* transform: scale(1.2); */
+}
+.main-container {
+	display: flex;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+.dish-name {
+	font-weight: bold;
+}
+.cart {
+	box-shadow: 0px 0px 10px 0px #555;
+	width: 500px;
+	margin: 0 auto;
+	justify-self: center;
+	text-align: center;
+	height: fit-content;
+	padding: 20px;
+}
+.cart .cart-button {
+	width: 100%;
+	background: rgb(21, 116, 245);
+	color: #fff;
+	padding: 15px;
+	border: none;
+	outline: none;
+	font-size: 24px;
+	cursor: pointer;
+}
+.cart .cart-button:hover {
+	background: rgb(9, 83, 189);
+}
+.cart-empty-message {
+	margin-top: 10px;
+}
+.zoomed-dish-cart {
+	align-self: flex-end;
+	margin: 10px 0;
+}
+.zoomed-dish-cart button {
+	padding: 10px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background: rgb(21, 116, 245);
+	color: #fff;
+	font-weight: bold;
+}
+.zoomed-dish-cart button:hover {
+	background: rgb(9, 83, 189);
+}
+.zoomed-dish-description {
+	border-bottom: 1px dotted #333;
+	padding: 10px 0;
+}
+.order-summary {
+	border-top: 1px dotted #333;
+	border-bottom: 1px dotted #333;
+	margin: 5px 0;
+}
+.dishes-in-cart {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 10px 0;
+}
+.dish-price {
+	display: flex;
+	flex-direction: column;
+}
+.remove {
+	color: red;
+	cursor: pointer;
+}
+.total-sum {
+	display: flex;
+	justify-content: space-between;
+	font-weight: bold;
+}
+.error-message {
+	position: absolute;
+	top: 10%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #f4f4f4;
+	color: red;
+	padding: 20px;
+	font-weight: bold;
+	font-size: 24px;
+	width: fit-content;
+	transition: all 0.3s;
+}
+.fa-plus,
+.fa-minus {
+	cursor: pointer;
+}
+.minus-button {
+	background: transparent;
+	border: none;
+	outline: none;
+}
+.amount-counter * {
+	margin-right: 5px;
+}
+.dish-description {
+	display: block;
+	max-width: 350px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+@media screen and (max-width: 1150px) {
+	.main-container {
+		flex-direction: column;
+	}
+	.cart {
+		width: 95%;
+		margin: 30px auto;
+	}
+}

@@ -21,7 +21,7 @@ const upload = multer({
 		fieldSize: 5000000,
 	},
 	fileFilter(req, file, cb) {
-		if (!file.originalname.match(/\.(jpg|jpeg|png)$/gi)) {
+		if (!file.originalname.match(/\.(jpg|jpeg|png|jfif)$/gi)) {
 			return cb(new Error('Please upload an image'));
 		}
 		cb(undefined, true);
@@ -30,12 +30,12 @@ const upload = multer({
 
 router.post('/signup', signUp);
 router.post('/login', login);
+router.get('/profile/menu/:id', getProfileMenu);
 router.post('/forgotpassword', forgotPassword);
 router.put('/resetpassword/:resetToken', resetPassword);
 router.post('/logout', auth, logout);
 router.post('/logoutAll', auth, logoutAll);
 router.get('/profile', auth, getProfile);
-router.get('/profile/menu', auth, getProfileMenu);
 router.delete('/delete', auth, deleteRestaurant);
 router.post(
 	'/profile/upload',

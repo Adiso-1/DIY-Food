@@ -11,6 +11,7 @@ import Page404 from './screens/Page404/Page404';
 import UserProfileDetails from './screens/Users/UserProfileDetails/UserProfileDetails';
 import RestaurantProfileDetails from './screens/Restaurants/RestaurantProfileDetails/RestaurantProfileDetails';
 import RestaurantMenu from './screens/Restaurants/RestaurantMenu/RestaurantMenu';
+import Order from './screens/Users/Order/Order';
 
 const App = () => {
 	return (
@@ -43,6 +44,7 @@ const App = () => {
 				/>
 				(//! Users Routes)
 				<Route exact path="/users" component={UsersHome} />
+				<Route exact path="/users/order/:id" component={Order} />
 				<Route
 					exact
 					path="/users/UserProfileDetails"

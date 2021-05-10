@@ -3,6 +3,7 @@ import api from '../../../api/api';
 import { useState, useEffect, Fragment } from 'react';
 import './UsersHome.css';
 import Navbar from '../../../components/NavbarSmall/NavbarSmall';
+import Button from '../../../components/Button/Button';
 
 const UsersHome = ({ history }) => {
 	const [userData, setUserData] = useState(null);
@@ -25,7 +26,6 @@ const UsersHome = ({ history }) => {
 			try {
 				const { data } = await api.get(`${path}/getAllRestaurants`);
 				setRestaurantsData(data);
-				console.log(data);
 			} catch (error) {
 				console.log(error);
 			}
@@ -37,15 +37,24 @@ const UsersHome = ({ history }) => {
 		return restaurantsData.map((el) => {
 			return (
 				// TODO - Find a path name to make an order
-				<Fragment key={el._id}>
-					<Link to={`/${el._id}`}>
-						<div className="restaurant-profile">
-							<p>Name: {el.name}</p>
-							<p>Email: {el.email}</p>
-							<p>Phone: {el.phone}</p>
-						</div>
+				<div key={el._id} className="restaurant-profile">
+					<div className="logo-container">
+						<img
+							src={`/api/restaurants/profile/${el._id}`}
+							alt="Restaurant-Logo"
+						/>
+					</div>
+					<div className="restaurant-details">
+						<p className="restaurant-name">{el.name}</p>
+						<p className="restaurant-category">{el.category}</p>
+						<p className="restaurant-email">Email: {el.email}</p>
+						<p className="restaurant-phone">{el.phone}</p>
+						<p className="restaurant-address">Address: {el.address}</p>
+					</div>
+					<Link to={`users/order/${el._id}`}>
+						<Button text="Order Now" />
 					</Link>
-				</Fragment>
+				</div>
 			);
 		});
 	};

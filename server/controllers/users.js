@@ -151,6 +151,16 @@ const getAllRestaurants = async (req, res) => {
 		res.status(400).send();
 	}
 };
+
+const getRestaurant = async (req, res) => {
+	try {
+		const restaurant = await Restaurant.findById(req.params.id);
+		res.status(200).json(restaurant);
+	} catch (error) {
+		res.status(400).send();
+	}
+};
+
 module.exports = {
 	signUp,
 	login,
@@ -163,4 +173,5 @@ module.exports = {
 	deleteProfileImage,
 	getUserImage,
 	getAllRestaurants,
+	getRestaurant,
 };

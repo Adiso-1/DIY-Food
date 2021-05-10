@@ -13,6 +13,7 @@ const {
 	deleteProfileImage,
 	getUserImage,
 	getAllRestaurants,
+	getRestaurant,
 } = require('../controllers/users.js');
 
 const upload = multer({
@@ -26,8 +27,8 @@ const upload = multer({
 		cb(undefined, true);
 	},
 });
-
 router.get('/getAllRestaurants', getAllRestaurants);
+router.get('/getRestaurants/:id', getRestaurant);
 router.get('/profile', auth, getProfile);
 router.post('/signup', signUp);
 router.post('/login', login);

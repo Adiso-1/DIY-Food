@@ -121,6 +121,28 @@
 .dish-details .delete-dish-button:hover {
 	transform: scale(1.05);
 }
+.add-dish-button {
+	display: flex;
+	justify-content: center;
+	width: 90%;
+	margin: 0 auto;
+}
+.add-dish-button button {
+	width: 200px;
+	color: #fff;
+	background: var(--main-color);
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	margin-top: 10px;
+}
+.add-dish-button button:hover {
+	transform: scale(1);
+	background: var(--dark-main-color);
+}
 @media screen and (max-width: 1000px) {
 	.menu-empty {
 		max-width: 90%;
