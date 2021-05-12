@@ -6,6 +6,7 @@ import './NavbarSmall.css';
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [personalDetails, setPersonalDetails] = useState(null);
+	const [userOrders, setUserOrders] = useState([]);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
@@ -33,6 +34,13 @@ const Navbar = () => {
 			getImage();
 		}
 	}, [personalDetails]);
+	useEffect(() => {
+		const getOrders = async () => {
+			const { data } = await api.get('/orders/userInfo', config);
+			setUserOrders(data);
+		};
+		getOrders();
+	}, []);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -65,7 +73,18 @@ const Navbar = () => {
 			case 'Personal Information':
 				history.push(`${path}/UserProfileDetails`);
 				break;
+			case /My Orders/.test(e.target.textContent) && e.target.textContent:
+				history.push(`${path}/MyOrders`);
+				break;
 		}
+	};
+
+	const checkForUncompleted = () => {
+		let counter = 0;
+		userOrders.forEach((el) =>
+			el.isCompleted === 'false' ? (counter += 1) : null
+		);
+		return counter;
 	};
 	return (
 		<div>
@@ -82,6 +101,16 @@ const Navbar = () => {
 						</div>
 						<div>
 							<div className="inner-text">Personal Information</div>
+						</div>
+						<div>
+							<div className="inner-text">
+								My Orders
+								{checkForUncompleted() > 0 && (
+									<span className="incomplete-orders">
+										{checkForUncompleted()}
+									</span>
+								)}
+							</div>
 						</div>
 						<div>
 							<div className="inner-text">Logout</div>

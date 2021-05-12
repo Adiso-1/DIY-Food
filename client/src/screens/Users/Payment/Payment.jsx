@@ -46,6 +46,7 @@ const Payment = (props) => {
 			SetIsSuccessMsg(false);
 			props.clearCart();
 			props.closePayment(false);
+			props.renderUser();
 		}, 2000);
 		SetIsSuccessMsg(true);
 	};

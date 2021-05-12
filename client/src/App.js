@@ -9,6 +9,7 @@ import RestaurantRegisterScreen from './screens/Authorization/RestaurantRegister
 import ResetPasswordScreen from './screens/Authorization/ResetPasswordScreen';
 import Page404 from './screens/Page404/Page404';
 import UserProfileDetails from './screens/Users/UserProfileDetails/UserProfileDetails';
+import RecentOrders from './screens/Users/RecentOrders/RecentOrders';
 import RestaurantProfileDetails from './screens/Restaurants/RestaurantProfileDetails/RestaurantProfileDetails';
 import RestaurantMenu from './screens/Restaurants/RestaurantMenu/RestaurantMenu';
 import Order from './screens/Users/Order/Order';
@@ -50,6 +51,7 @@ const App = () => {
 					path="/users/UserProfileDetails"
 					component={UserProfileDetails}
 				/>
+				<Route exact path="/users/MyOrders" component={RecentOrders} />
 				(//* Users Authorization)
 				<Route exact path="/users/login" component={LoginScreen} />
 				<Route

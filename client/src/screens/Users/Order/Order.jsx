@@ -5,6 +5,7 @@ import Payment from '../Payment/Payment';
 import './Order.css';
 
 const Order = ({ history }) => {
+	const [user, setUser] = useState(null);
 	const [menu, setMenu] = useState([]);
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [isZoom, setIsZoom] = useState(false);
@@ -16,6 +17,17 @@ const Order = ({ history }) => {
 	const [isOpenPayment, setIsOpenPayment] = useState(false);
 	const id = history.location.pathname.split('/')[3];
 
+	const renderUser = async () => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
+		const { data } = await api.get('/users/profile', config);
+		console.log(data);
+		setUser(data);
+	};
 	useEffect(async () => {
 		const { data } = await api.get(`/restaurants/profile/menu/${id}`);
 		const restaurantDetails = await api.get(`/users/getRestaurants/${id}`);
@@ -205,6 +217,7 @@ const Order = ({ history }) => {
 					closePayment={setIsOpenPayment}
 					cart={cart}
 					clearCart={clearCart}
+					renderUser={renderUser}
 				/>
 			)}
 		</div>

@@ -60,6 +60,3 @@ const main = async () => {
 	// console.log(restaurant.menus);
 };
 main();
-
-const test = () => {};
-test();

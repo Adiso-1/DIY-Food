@@ -14,20 +14,18 @@ const addOrder = async (req, res, next) => {
 	}
 };
 
-const getUserOrders = async (req, res) => {
+const getUserOrders = async (req, res, next) => {
 	try {
 		await req.user.populate('orders').execPopulate();
-		console.log(req.user);
 		res.send(req.user.orders);
 	} catch (error) {
-		res.status(404).send();
+		next(error);
 	}
 };
 
 const getRestaurantsOrders = async (req, res) => {
 	try {
 		await req.restaurant.populate('orders').execPopulate();
-		console.log(req.restaurant);
 		res.send(req.restaurant.orders);
 	} catch (error) {
 		res.status(404).send();
