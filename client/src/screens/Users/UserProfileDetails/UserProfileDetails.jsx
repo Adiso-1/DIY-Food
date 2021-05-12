@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../../../api/api';
-import Navbar from '../../../components/NavbarSmall/NavbarSmall';
+import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 import './UserProfileDetails.css';
 

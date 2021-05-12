@@ -1,6 +1,6 @@
 import api from '../../../api/api';
 import { useEffect, useState } from 'react';
-import Navbar from '../../../components/NavbarSmall/NavbarSmall';
+import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Payment from '../Payment/Payment';
 import './Order.css';
 

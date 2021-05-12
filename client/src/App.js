@@ -12,6 +12,7 @@ import UserProfileDetails from './screens/Users/UserProfileDetails/UserProfileDe
 import RecentOrders from './screens/Users/RecentOrders/RecentOrders';
 import RestaurantProfileDetails from './screens/Restaurants/RestaurantProfileDetails/RestaurantProfileDetails';
 import RestaurantMenu from './screens/Restaurants/RestaurantMenu/RestaurantMenu';
+import RestaurantOrders from './screens/Restaurants/RestaurantOrders/RestaurantOrders';
 import Order from './screens/Users/Order/Order';
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
 				(//! Restaurant Routes)
 				<Route exact path="/restaurants" component={RestaurantsHome} />
 				<Route exact path="/restaurants/menu" component={RestaurantMenu} />
+				<Route exact path="/restaurants/orders" component={RestaurantOrders} />
 				(//* Restaurant Authorization)
 				<Route exact path="/restaurants/login" component={LoginScreen} />
 				<Route

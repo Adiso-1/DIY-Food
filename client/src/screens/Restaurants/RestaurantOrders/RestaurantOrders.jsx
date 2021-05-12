@@ -1,44 +1,56 @@
-import Navbar from '../../../components/NavbarUser/NavbarUser';
+import { useEffect, useState } from 'react';
 import api from '../../../api/api';
-import './RecentOrders.css';
-import { useState, useEffect } from 'react';
+import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import dateFormat from 'dateformat';
+import './RestaurantOrders.css';
 
-const RecentOrders = () => {
+const RestaurantOrders = () => {
 	const [orders, setOrders] = useState([]);
-
-	const getUserInfo = async () => {
+	console.log(orders);
+	const getOrders = async () => {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 			},
 		};
-		const { data } = await api.get('/orders/userInfo', config);
+		const { data } = await api.get(`/orders/restaurantInfo`, config);
 		setOrders(data);
+		console.log(data);
 	};
-	useEffect(async () => {
-		getUserInfo();
+	useEffect(() => {
+		getOrders();
 	}, []);
+
+	const markAsCompleted = (e, el) => {};
 	return (
-		<div className="recent-orders-container">
+		<div>
 			<Navbar />
 			<div className="uncompleted-orders">
 				<h2>Uncompleted Orders</h2>
 				<table className="uncompleted-table">
 					<tr>
-						<th>Restaurant</th>
-						<th>Delivered To</th>
+						<th>Name</th>
+						<th>Phone</th>
 						<th>Date</th>
+						<th>Delivered To</th>
 						<th>Price</th>
+						<th>Mark As Completed</th>
 					</tr>
 					{orders.map((el) =>
 						el.isCompleted === 'false' ? (
-							<tr>
-								<td>{el.restaurant}</td>
+							<tr key={el._id}>
+								<td>{el.owner}</td>
+								<td>{el.userPhone}</td>
 								<td>{el.deliveryAddress}</td>
-								<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+								<td>{dateFormat(el.dateAdded, 'dd/mm/yy hh:MM:ss')}</td>
 								<td>{el.price}&#8362;</td>
+								<td>
+									<i
+										onClick={(e) => markAsCompleted(e, el)}
+										className="fas fa-check"
+									></i>
+								</td>
 							</tr>
 						) : null
 					)}
@@ -49,15 +61,15 @@ const RecentOrders = () => {
 				<h2>Completed Orders</h2>
 				<table className="uncompleted-table">
 					<tr>
-						<th>Restaurant</th>
-						<th>Date</th>
+						<th>Name</th>
 						<th>Delivered To</th>
+						<th>Date</th>
 						<th>Price</th>
 					</tr>
 					{orders.map((el) =>
 						el.isCompleted === 'true' ? (
-							<tr>
-								<td>{el.restaurant}</td>
+							<tr key={el._id}>
+								<td>{el.owner}</td>
 								<td>{el.deliveryAddress}</td>
 								<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
 								<td>{el.price}&#8362;</td>
@@ -69,4 +81,4 @@ const RecentOrders = () => {
 		</div>
 	);
 };
-export default RecentOrders;
+export default RestaurantOrders;

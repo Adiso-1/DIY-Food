@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import api from '../../../api/api';
 import { useState, useEffect, Fragment } from 'react';
 import './UsersHome.css';
-import Navbar from '../../../components/NavbarSmall/NavbarSmall';
+import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 
 const UsersHome = ({ history }) => {

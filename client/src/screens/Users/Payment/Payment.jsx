@@ -24,6 +24,7 @@ const Payment = (props) => {
 			const obj = {
 				dish_id: el._id,
 				amount: el.amount,
+				dishName: el.dish,
 			};
 			cart.push(obj);
 		});

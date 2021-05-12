@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import dateFormat from 'dateformat';
 import api from '../../api/api';
 import './NavbarRestaurant.css';
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [personalDetails, setPersonalDetails] = useState(null);
+	const [restauramtOrders, setRestauramtOrders] = useState([]);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	const renderRestaurant = async () => {
 		try {
 			const { data } = await api.get(`restaurants/profile`, config);
+			const response = await api.get(`/orders/restaurantInfo`, config);
+			setRestauramtOrders(response.data);
 			setPersonalDetails(data);
 		} catch (error) {
 			console.log(error);
@@ -69,7 +73,20 @@ const Navbar = () => {
 			case 'Personal Information':
 				history.push(`${path}/RestaurantProfileDetails`);
 				break;
+			case /Orders/.test(e.target.textContent) && e.target.textContent:
+				history.push(`${path}/Orders`);
+				break;
+			default:
+				console.log(e.target.textContent);
 		}
+	};
+
+	const checkForUncompleted = () => {
+		let counter = 0;
+		restauramtOrders.forEach((el) =>
+			el.isCompleted === 'false' ? (counter += 1) : null
+		);
+		return counter;
 	};
 	return (
 		<div>
@@ -86,6 +103,16 @@ const Navbar = () => {
 						</div>
 						<div>
 							<div className="inner-text">Personal Information</div>
+						</div>
+						<div>
+							<div className="inner-text">
+								Orders{' '}
+								{checkForUncompleted() > 0 && (
+									<span className="incomplete-orders">
+										{checkForUncompleted()}
+									</span>
+								)}
+							</div>
 						</div>
 						<div>
 							<div className="inner-text">Add New Dish</div>

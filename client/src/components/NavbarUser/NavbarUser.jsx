@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../../api/api';
-import './NavbarSmall.css';
+import './NavbarUser.css';
 
 const Navbar = () => {
 	const [isOpen, setIsOpen] = useState(false);
