@@ -8,7 +8,7 @@
 	transition: all 0.25s;
 }
 .dish-container:hover {
-	box-shadow: 0px 0px 10px 0px #555;
+	box-shadow: 0px 0px 10px 0px #333;
 }
 .dish-container div {
 	margin-right: 10px;
@@ -17,6 +17,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	flex: 2;
 }
 .dish-container img {
 	width: 100px;
@@ -32,7 +33,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
-	box-shadow: 0px 0px 10px 0px #555;
+	box-shadow: 0px 0px 10px 0px #333;
 }
 .zoomed-dish {
 	background: #f0f0f0;

@@ -1,16 +1,16 @@
 const Order = require('../models/order.model');
 
-const addOrder = async (req, res) => {
+const addOrder = async (req, res, next) => {
 	const order = new Order({
 		...req.body,
-		price: req.price,
+		// price: req.price,
 		owner: req.user._id,
 	});
 	try {
 		await order.save();
 		res.status(201).send(order);
 	} catch (error) {
-		res.status(400).send(error);
+		next(error);
 	}
 };
 

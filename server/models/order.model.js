@@ -13,15 +13,30 @@ const orederSchema = new Schema({
 		required: true,
 		ref: 'Restaurant',
 	},
-	orderDetails: [
+	cart: [
 		{
-			type: mongoose.Schema.Types.ObjectId,
-			required: true,
-			ref: 'Menu',
+			dish_id: {
+				type: mongoose.Schema.Types.ObjectId,
+				required: true,
+				ref: 'Menu',
+			},
+			amount: {
+				type: Number,
+				required: true,
+			},
 		},
 	],
+	payment: {
+		cardOwner: { type: String, required: true },
+		cardNumber: { type: String, required: true },
+		CVV: { type: String, required: true },
+	},
 	price: {
 		type: Number,
+		required: true,
+	},
+	deliveryAddress: {
+		type: String,
 		required: true,
 	},
 	isCompleted: {
@@ -32,6 +47,12 @@ const orederSchema = new Schema({
 		type: Date,
 		default: new Date(),
 	},
+});
+
+orederSchema.pre('save', async function (next) {
+	const order = this;
+	console.log(order);
+	next();
 });
 
 const Order = mongoose.model('Order', orederSchema);

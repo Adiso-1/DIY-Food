@@ -45,7 +45,7 @@ const RestaurantsHome = ({ history }) => {
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			history.push(`${path}/login`);
+			return history.push(`${path}/login`);
 		}
 		const fetchUser = async () => {
 			try {

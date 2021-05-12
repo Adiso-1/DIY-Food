@@ -1,6 +1,7 @@
 import api from '../../../api/api';
 import { useEffect, useState } from 'react';
 import Navbar from '../../../components/NavbarSmall/NavbarSmall';
+import Payment from '../Payment/Payment';
 import './Order.css';
 
 const Order = ({ history }) => {
@@ -12,6 +13,7 @@ const Order = ({ history }) => {
 	const [cart, setCart] = useState([]);
 	const [dishToDisplay, setDishToDisplay] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
+	const [isOpenPayment, setIsOpenPayment] = useState(false);
 	const id = history.location.pathname.split('/')[3];
 
 	useEffect(async () => {
@@ -86,10 +88,12 @@ const Order = ({ history }) => {
 		cart.forEach((dish) => (sum += dish.price * dish.amount));
 		return sum;
 	};
+
 	const showAllDish = async (e, dish) => {
 		setIsDish(true);
 		setDishToDisplay(dish);
 	};
+
 	const renderMenu = () => {
 		return menu.map((dish) => {
 			return (
@@ -118,6 +122,10 @@ const Order = ({ history }) => {
 			);
 		});
 	};
+
+	const clearCart = () => {
+		setCart([]);
+	};
 	return (
 		<div className="menu-container">
 			<Navbar />
@@ -139,6 +147,7 @@ const Order = ({ history }) => {
 				<div className="cart">
 					<div className="cart-button-container">
 						<button
+							onClick={() => setIsOpenPayment(true)}
 							className="cart-button"
 							disabled={cart.length === 0 ? true : false}
 							style={{
@@ -188,6 +197,15 @@ const Order = ({ history }) => {
 				<div className="error-message">
 					<span>{errorMsg}</span>
 				</div>
+			)}
+			{isOpenPayment && (
+				<Payment
+					restaurant={restaurantDetails._id}
+					price={getTotalPrice()}
+					closePayment={setIsOpenPayment}
+					cart={cart}
+					clearCart={clearCart}
+				/>
 			)}
 		</div>
 	);
