@@ -67,7 +67,7 @@ const Payment = (props) => {
 				<form className="form-container">
 					<h2>Complete Your Order</h2>
 					<div className="card-holder-name">
-						<label htmlFor="name">Card Name:</label>
+						<label htmlFor="name">Card Owner:</label>
 						<input
 							ref={inputRef}
 							value={cardOwner}

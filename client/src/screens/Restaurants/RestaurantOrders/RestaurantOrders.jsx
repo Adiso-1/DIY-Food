@@ -6,23 +6,24 @@ import './RestaurantOrders.css';
 
 const RestaurantOrders = () => {
 	const [orders, setOrders] = useState([]);
-	console.log(orders);
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+		},
+	};
 	const getOrders = async () => {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-			},
-		};
 		const { data } = await api.get(`/orders/restaurantInfo`, config);
 		setOrders(data);
-		console.log(data);
 	};
 	useEffect(() => {
 		getOrders();
 	}, []);
 
-	const markAsCompleted = (e, el) => {};
+	const markAsCompleted = (e, el) => {
+		api.patch(`/orders/markAsCompleted/${el._id}`, {}, config);
+		getOrders();
+	};
 	return (
 		<div>
 			<Navbar />
@@ -43,9 +44,9 @@ const RestaurantOrders = () => {
 								<td>{el.owner}</td>
 								<td>{el.userPhone}</td>
 								<td>{el.deliveryAddress}</td>
-								<td>{dateFormat(el.dateAdded, 'dd/mm/yy hh:MM:ss')}</td>
+								<td>{dateFormat(el.dateAdded, 'dd/mm/yy HH:MM:ss')}</td>
 								<td>{el.price}&#8362;</td>
-								<td>
+								<td className="mark-as-completed">
 									<i
 										onClick={(e) => markAsCompleted(e, el)}
 										className="fas fa-check"

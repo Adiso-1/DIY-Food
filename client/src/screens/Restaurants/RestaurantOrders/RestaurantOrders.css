@@ -1,0 +1,8 @@
+.mark-as-completed {
+	display: flex;
+	justify-content: center;
+}
+.fa-check {
+	color: #ffc905;
+	cursor: pointer;
+}
