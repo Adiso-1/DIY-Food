@@ -29,6 +29,37 @@
 	transition: 0.3s;
 	margin-right: 10px;
 }
-.profile-picture-container input {
+.profile-picture-container input,
+.cover-picture-container input {
 	display: none;
+}
+.profile-buttons-container,
+.cover-buttons-container {
+	display: flex;
+	justify-content: space-between;
+	max-width: 500px;
+}
+.profile-buttons-container button,
+.cover-buttons-container button {
+	width: fit-content;
+	background: var(--main-color);
+	color: #fff;
+	outline: none;
+	border: none;
+	border-radius: 20px;
+	padding: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.3s;
+	margin-right: 0px;
+	font-size: 10px;
+	font-size: 12px;
+}
+.profile-buttons-container button:hover,
+.cover-buttons-container button:hover {
+	transform: scale(1);
+	background: var(--dark-main-color);
+}
+.images-section .success-message-images {
+	color: rgb(29, 160, 29);
 }

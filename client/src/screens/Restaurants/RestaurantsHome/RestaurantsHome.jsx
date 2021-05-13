@@ -18,6 +18,8 @@ const RestaurantsHome = ({ history }) => {
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 
+	console.log(restaurantData);
+
 	const fileInput = useRef();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 	const config = {
@@ -237,9 +239,20 @@ const RestaurantsHome = ({ history }) => {
 					</div>
 				) : (
 					<div className="dishes-container">
-						{restaurantData && (
-							<h1 className="menu-title">{restaurantData.name}'s Menu</h1>
-						)}
+						{restaurantData &&
+							(restaurantData.coverPhoto ? (
+								<img className="cover-image" src="" alt="" />
+							) : (
+								<div className="cover-image-container">
+									<h3>We highly recommand to add a cover image</h3>
+									<Button
+										onClick={() =>
+											history.push('/restaurants/RestaurantProfileDetails')
+										}
+										text="Click here to upload"
+									/>
+								</div>
+							))}
 						{getMenu()}
 						{isEdit && (
 							<div onSubmit={onEditSubmit} className="edit-dish-container">

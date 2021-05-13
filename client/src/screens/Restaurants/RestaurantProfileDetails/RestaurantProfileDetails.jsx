@@ -7,9 +7,11 @@ import './RestaurantProfileDetails.css';
 const RestaurantProfileDetails = ({ history }) => {
 	const [personalDetails, setPersonalDetails] = useState(null);
 	const [logo, setLogo] = useState(null);
+	const [cover, setCover] = useState(null);
 	const [success, setSuccess] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
-	const fileInput = useRef();
+	const profileInput = useRef();
+	const coverInput = useRef();
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -36,6 +38,11 @@ const RestaurantProfileDetails = ({ history }) => {
 		setLogo(e.target.files[0]);
 	};
 
+	const handleCoverImage = (e) => {
+		setSuccessMessage('You selected 1 file');
+		setCover(e.target.files[0]);
+	};
+
 	const uploadHandler = async (e) => {
 		if (!logo) {
 			return;
@@ -60,6 +67,30 @@ const RestaurantProfileDetails = ({ history }) => {
 		}
 	};
 
+	const uploadCoverHandler = async (e) => {
+		if (!cover) {
+			return;
+		}
+		const config = {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
+		const fd = new FormData();
+		fd.append('coverPhoto', cover, cover.name);
+		try {
+			await api.post('/restaurants/profile/uploadCoverPhoto', fd, config);
+			setTimeout(() => {
+				setSuccess(false);
+			}, 2000);
+			setSuccessMessage('');
+			setSuccess(true);
+			renderRestaurant();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const deleteImageHandler = async () => {
 		const config = {
 			headers: {
@@ -70,7 +101,7 @@ const RestaurantProfileDetails = ({ history }) => {
 			setTimeout(() => {
 				setSuccessMessage('');
 			}, 2000);
-			setSuccessMessage('No Logo To Delete');
+			setSuccessMessage('No logo to delete');
 		} else {
 			try {
 				await api.delete('/restaurants/profile/upload', config);
@@ -84,6 +115,32 @@ const RestaurantProfileDetails = ({ history }) => {
 			}
 		}
 	};
+
+	const deleteCoverHandler = async () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
+		if (!personalDetails.coverPhoto) {
+			setTimeout(() => {
+				setSuccessMessage('');
+			}, 2000);
+			setSuccessMessage('No cover to delete');
+		} else {
+			try {
+				await api.delete('/restaurants/profile/deleteCoverPhoto', config);
+				setTimeout(() => {
+					setSuccessMessage('');
+				}, 2000);
+				setSuccessMessage('cover photo deleted');
+				renderRestaurant();
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+
 	return (
 		<div className="user-details">
 			<Navbar />
@@ -106,25 +163,59 @@ const RestaurantProfileDetails = ({ history }) => {
 						<span>Address: </span>
 						{personalDetails.address}
 					</div>
-					<div className="profile-picture-container">
-						<div>Upload a Logo Image </div>
-						<div>
-							<input
-								onChange={handleImage}
-								type="file"
-								name="logo-image"
-								id="logo-image"
-								ref={fileInput}
-							/>
-							<Button onClick={deleteImageHandler} text="Delete Image" />
-							<Button
-								onClick={() => fileInput.current.click()}
-								text="Select Image"
-							/>
-							<Button onClick={uploadHandler} text="Upload" />
-							<h2>{successMessage}</h2>
+					<section className="images-section">
+						<div className="profile-picture-container">
+							<h3>Upload a logo image </h3>
+							<div className="profile-buttons-container">
+								<input
+									onChange={handleImage}
+									type="file"
+									name="logo-image"
+									id="logo-image"
+									ref={profileInput}
+								/>
+								{personalDetails.logo && (
+									<Button
+										onClick={deleteImageHandler}
+										text="Delete profile image"
+									/>
+								)}
+								<Button
+									onClick={() => profileInput.current.click()}
+									text="Select profile image"
+								/>
+								<Button onClick={uploadHandler} text="Upload profile image" />
+							</div>
 						</div>
-					</div>
+						<div className="cover-picture-container">
+							<h3>Upload a cover photo </h3>
+							<div className="cover-buttons-container">
+								<input
+									onChange={handleCoverImage}
+									type="file"
+									name="cover-image"
+									id="cover-image"
+									ref={coverInput}
+								/>
+								{personalDetails.coverPhoto && (
+									<Button
+										onClick={deleteCoverHandler}
+										text="Delete cover photo"
+									/>
+								)}
+
+								<Button
+									onClick={() => coverInput.current.click()}
+									text="Select cover photo"
+								/>
+								<Button
+									onClick={uploadCoverHandler}
+									text="Upload cover photo"
+								/>
+							</div>
+							<h2 className="success-message-images">{successMessage}</h2>
+						</div>
+					</section>
 					{success && (
 						<h2 className="image-upload-success">
 							Image uploaded successfully
