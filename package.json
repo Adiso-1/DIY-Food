@@ -4,7 +4,7 @@
 	"description": "Delicious is a platform for small businesses to sell their homemade food",
 	"main": "index.js",
 	"scripts": {
-		"start": "npm start --prefix server",
+		"start": "node server/server.js",
 		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client && npm install --prefix server"
 	},
 	"repository": {
