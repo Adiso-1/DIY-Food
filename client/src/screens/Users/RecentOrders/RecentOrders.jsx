@@ -17,7 +17,7 @@ const RecentOrders = () => {
 		const { data } = await api.get('/orders/userInfo', config);
 		setOrders(data);
 	};
-	useEffect(async () => {
+	useEffect(() => {
 		getUserInfo();
 	}, []);
 	return (
@@ -26,20 +26,24 @@ const RecentOrders = () => {
 			<div className="uncompleted-orders">
 				<h2>Uncompleted Orders</h2>
 				<table className="uncompleted-table">
-					<tr>
-						<th>Restaurant</th>
-						<th>Delivered To</th>
-						<th>Date</th>
-						<th>Price</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Restaurant</th>
+							<th>Date</th>
+							<th>Delivered To</th>
+							<th>Price</th>
+						</tr>
+					</thead>
 					{orders.map((el) =>
 						el.isCompleted === 'false' ? (
-							<tr>
-								<td>{el.restaurant}</td>
-								<td>{el.deliveryAddress}</td>
-								<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
-								<td>{el.price}&#8362;</td>
-							</tr>
+							<tbody key={el._id}>
+								<tr>
+									<td>{el.restaurant}</td>
+									<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+									<td>{el.deliveryAddress}</td>
+									<td>{el.price}&#8362;</td>
+								</tr>
+							</tbody>
 						) : null
 					)}
 				</table>
@@ -48,20 +52,24 @@ const RecentOrders = () => {
 			<div className="completed-orders">
 				<h2>Completed Orders</h2>
 				<table className="uncompleted-table">
-					<tr>
-						<th>Restaurant</th>
-						<th>Date</th>
-						<th>Delivered To</th>
-						<th>Price</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Restaurant</th>
+							<th>Date</th>
+							<th>Delivered To</th>
+							<th>Price</th>
+						</tr>
+					</thead>
 					{orders.map((el) =>
 						el.isCompleted === 'true' ? (
-							<tr>
-								<td>{el.restaurant}</td>
-								<td>{el.deliveryAddress}</td>
-								<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
-								<td>{el.price}&#8362;</td>
-							</tr>
+							<tbody key={el._id}>
+								<tr>
+									<td>{el.restaurant}</td>
+									<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+									<td>{el.deliveryAddress}</td>
+									<td>{el.price}&#8362;</td>
+								</tr>
+							</tbody>
 						) : null
 					)}
 				</table>

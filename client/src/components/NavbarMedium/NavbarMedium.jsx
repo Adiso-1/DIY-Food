@@ -1,11 +1,11 @@
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './NavbarMedium.css';
 
 const Navbar = () => {
-	const history = useHistory();
-	const onClick = () => {
-		history.push('/restaurants/login');
-	};
+	// const history = useHistory();
+	// const onClick = () => {
+	// 	history.push('/restaurants/login');
+	// };
 	return (
 		<div className="navbar-container">
 			<Link to="/">

@@ -28,11 +28,19 @@ const Order = ({ history }) => {
 		console.log(data);
 		setUser(data);
 	};
-	useEffect(async () => {
-		const { data } = await api.get(`/restaurants/profile/menu/${id}`);
-		const restaurantDetails = await api.get(`/users/getRestaurants/${id}`);
-		setRestaurantDetails(restaurantDetails.data);
-		setMenu(data);
+
+	useEffect(() => {
+		const getRestaurantDetails = async () => {
+			try {
+				const { data } = await api.get(`/restaurants/profile/menu/${id}`);
+				const restaurantDetails = await api.get(`/users/getRestaurants/${id}`);
+				setRestaurantDetails(restaurantDetails.data);
+				setMenu(data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getRestaurantDetails();
 	}, []);
 
 	const zoomInImage = (e, id) => {

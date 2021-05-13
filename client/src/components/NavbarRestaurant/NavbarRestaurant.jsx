@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import dateFormat from 'dateformat';
 import api from '../../api/api';
 import './NavbarRestaurant.css';
 
@@ -73,11 +72,6 @@ const Navbar = () => {
 			case 'Personal Information':
 				history.push(`${path}/RestaurantProfileDetails`);
 				break;
-			case /Orders/.test(e.target.textContent) && e.target.textContent:
-				history.push(`${path}/Orders`);
-				break;
-			default:
-				console.log(e.target.textContent);
 		}
 	};
 
@@ -105,7 +99,10 @@ const Navbar = () => {
 							<div className="inner-text">Personal Information</div>
 						</div>
 						<div>
-							<div className="inner-text">
+							<div
+								onClick={() => history.push(`${path}/Orders`)}
+								className="inner-text"
+							>
 								Orders{' '}
 								{checkForUncompleted() > 0 && (
 									<span className="incomplete-orders">
