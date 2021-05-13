@@ -85,8 +85,8 @@ const RestaurantOrders = () => {
 					</thead>
 					{orders.map((el) =>
 						el.isCompleted === 'true' ? (
-							<tbody>
-								<tr key={el._id}>
+							<tbody key={el._id}>
+								<tr>
 									<td>{el.owner}</td>
 									<td>{el.deliveryAddress}</td>
 									<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>

@@ -6,7 +6,6 @@ const path = require('path');
 const errorHandler = require('./middleware/error');
 
 const publicDirectory = path.join(__dirname, '../client/build');
-console.log(publicDirectory);
 
 const app = express();
 app.use(cors());

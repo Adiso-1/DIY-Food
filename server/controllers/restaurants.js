@@ -159,6 +159,45 @@ const deleteLogoImage = async (req, res) => {
 	await req.restaurant.save();
 	res.send();
 };
+
+const uploadCoverPhoto = async (req, res, next) => {
+	try {
+		const buffer = await sharp(req.file.buffer)
+			.resize({ width: 500, height: 250 })
+			.png()
+			.toBuffer();
+		req.restaurant.coverPhoto = buffer;
+		await req.restaurant.save();
+		res.status(201).send();
+	} catch (error) {
+		next(error);
+	}
+};
+
+const getCoverPhoto = async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.findById(req.params.id);
+
+		if (!restaurant || !restaurant.coverPhoto) {
+			throw new Error();
+		}
+		res.set('Content-Type', 'image/png');
+		res.send(restaurant.coverPhoto);
+	} catch (error) {
+		next(error);
+	}
+};
+
+const deleteCoverPhoto = async (req, res) => {
+	try {
+		req.restaurant.coverPhoto = undefined;
+		await req.restaurant.save();
+		res.send();
+	} catch (error) {
+		next(error);
+	}
+};
+
 module.exports = {
 	signUp,
 	login,
@@ -172,4 +211,7 @@ module.exports = {
 	uploadLogoImage,
 	getRestaurantLogo,
 	deleteLogoImage,
+	uploadCoverPhoto,
+	getCoverPhoto,
+	deleteCoverPhoto,
 };
