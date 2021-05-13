@@ -34,6 +34,9 @@ const UsersHome = ({ history }) => {
 	}, []);
 
 	const renderRestaurants = () => {
+		if (restaurantsData.length === 0) {
+			return;
+		}
 		return restaurantsData.map((el) => {
 			return (
 				// TODO - Find a path name to make an order

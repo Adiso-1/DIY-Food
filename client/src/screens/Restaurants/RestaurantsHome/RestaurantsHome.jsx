@@ -158,6 +158,10 @@ const RestaurantsHome = ({ history }) => {
 		}
 	};
 	const getMenu = () => {
+		if (menu.length === 0) {
+			return;
+		}
+		console.log(menu);
 		return menu.map((dish) => {
 			return (
 				<div className="dish-details" key={dish._id}>
@@ -246,6 +250,7 @@ const RestaurantsHome = ({ history }) => {
 									>
 										<i className="fas fa-times"></i>
 									</span>
+
 									<div className="form-group">
 										<label htmlFor="dish">Dish Name:</label>
 										<input
