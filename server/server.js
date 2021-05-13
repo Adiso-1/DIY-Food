@@ -6,6 +6,7 @@ const path = require('path');
 const errorHandler = require('./middleware/error');
 
 const publicDirectory = path.join(__dirname, '../client/build');
+console.log(publicDirectory);
 
 require('dotenv').config();
 
@@ -46,17 +47,17 @@ app.listen(port, () => {
 });
 
 //! Check populates
-const Menu = require('./models/menu.model');
-const Restaurant = require('./models/restaurant.model');
+// const Menu = require('./models/menu.model');
+// const Restaurant = require('./models/restaurant.model');
 
-const main = async () => {
-	//* This block will give us the restaurant who created this dish
-	// const menu = await Menu.findById('608fe4421d19ea32c0e64f3e');
-	// await menu.populate('restaurant').execPopulate();
-	// console.log(menu.restaurant);
-	//* This block will the the restaurant and find their menu};
-	// const restaurant = await Restaurant.findById('608fdffddd19823ebcdc045a');
-	// await restaurant.populate('menus').execPopulate();
-	// console.log(restaurant.menus);
-};
-main();
+// const main = async () => {
+//* This block will give us the restaurant who created this dish
+// const menu = await Menu.findById('608fe4421d19ea32c0e64f3e');
+// await menu.populate('restaurant').execPopulate();
+// console.log(menu.restaurant);
+//* This block will the the restaurant and find their menu};
+// const restaurant = await Restaurant.findById('608fdffddd19823ebcdc045a');
+// await restaurant.populate('menus').execPopulate();
+// console.log(restaurant.menus);
+// };
+// main();
