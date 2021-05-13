@@ -12,6 +12,9 @@ const RegisterScreen = ({ history }) => {
 	const [category, setCategory] = useState('');
 	const [address, setAddress] = useState('');
 	const [confirmpassword, setConfirmPassword] = useState('');
+	const [tagInput, setTagInput] = useState('');
+	const [tags, setTags] = useState([]);
+	const [isQuestion, setIsQuestion] = useState(true);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 	const buttonRef = useRef(null);
@@ -35,6 +38,7 @@ const RegisterScreen = ({ history }) => {
 				category,
 				address,
 				password,
+				tags,
 			});
 			setSuccess(`${name} registered successfully`);
 			buttonRef.current.disabled = true;
@@ -105,6 +109,63 @@ const RegisterScreen = ({ history }) => {
 						value={address}
 						onChange={(e) => setAddress(e.target.value)}
 					/>
+				</div>
+
+				<div className="form-group tags-input">
+					<label htmlFor="tags">
+						Tags:{' '}
+						<i
+							onMouseEnter={() => setIsQuestion(true)}
+							onMouseLeave={() => setIsQuestion(false)}
+							className="far fa-question-circle"
+						></i>
+						{isQuestion && (
+							<div className="tags-description">
+								<h4>Here you can add some tags like</h4>
+								<ul>
+									<li>Kosher</li>
+									<li>Free Delivery</li>
+									<li>Vegeterian</li>
+									<li>etc...</li>
+								</ul>
+							</div>
+						)}
+					</label>
+
+					<div className="restaurant-tags-container">
+						<input
+							type="tags"
+							id="tags"
+							placeholder={
+								tags.length === 3 ? 'Max limit' : 'Enter up to 3 tags'
+							}
+							value={tagInput}
+							disabled={tags.length === 3 ? true : false}
+							onChange={(e) => setTagInput(e.target.value)}
+						/>
+						{tagInput.length > 0 && (
+							<i
+								onClick={() => {
+									tags.push(tagInput);
+									setTagInput('');
+								}}
+								className="fas fa-plus"
+							></i>
+						)}
+						<div className="tags-chosen">
+							{tags.map((tag) => {
+								return (
+									<span className="tag">
+										{tag}
+										<i
+											onClick={() => setTags(tags.filter((el) => tag !== el))}
+											className="fas fa-times"
+										></i>
+									</span>
+								);
+							})}
+						</div>
+					</div>
 				</div>
 
 				<div className="form-group">

@@ -30,14 +30,15 @@ const UserProfileDetails = ({ history }) => {
 		};
 		fetchUser();
 	}, []);
-	useEffect(() => {
-		if (personalDetails && personalDetails.avatar) {
-			const getImage = async () => {
-				await api.get(`users/profile/${personalDetails._id}`);
-			};
-			getImage();
-		}
-	}, [personalDetails]);
+
+	// useEffect(() => {
+	// 	if (personalDetails && personalDetails.avatar) {
+	// 		const getImage = async () => {
+	// 			await api.get(`users/profile/${personalDetails._id}`);
+	// 		};
+	// 		getImage();
+	// 	}
+	// }, [personalDetails]);
 
 	const handleImage = (e) => {
 		setSuccessMessage('You selected 1 file');

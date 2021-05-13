@@ -54,6 +54,12 @@ const restaurantSchema = new Schema({
 			},
 		},
 	],
+	tags: {
+		type: Array,
+	},
+	comments: {
+		type: Array,
+	},
 	logo: {
 		type: Buffer,
 	},

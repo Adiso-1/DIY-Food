@@ -50,8 +50,13 @@ const UsersHome = ({ history }) => {
 					<div className="restaurant-details">
 						<p className="restaurant-name">{el.name}</p>
 						<p className="restaurant-category">{el.category}</p>
-						<p className="restaurant-email">Email: {el.email}</p>
-						<p className="restaurant-phone">{el.phone}</p>
+						<p className="restaurant-email">
+							Email: <a href={`mailto:${el.email}`}>{el.email}</a>
+						</p>
+						<p className="restaurant-phone">
+							{' '}
+							<a href={`tel:+${el.phone}`}>{el.phone}</a>
+						</p>
 						<p className="restaurant-address">Address: {el.address}</p>
 					</div>
 					<Link to={`users/order/${el._id}`}>

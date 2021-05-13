@@ -55,6 +55,7 @@ const Payment = (props) => {
 	useEffect(() => {
 		inputRef.current.focus();
 	}, []);
+
 	return (
 		<div className="payment-container">
 			<div className="exit-button">

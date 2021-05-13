@@ -151,14 +151,16 @@ const Order = ({ history }) => {
 			<Navbar />
 			{Object.keys(restaurantDetails).length === 0 ? null : (
 				<div className="restaurant-display">
-					<div className="restaurant-details">
-						<span className="restaurant-details">{restaurantDetails.name}</span>
-						<span className="restaurant-category">
-							{restaurantDetails.category}
-						</span>
-					</div>
-					<div className="image-logo">
-						<img src={`/api/restaurants/profile/${id}`} alt="logo" />
+					<div className="restaurant-details"></div>
+					<div
+						className="cover-container"
+						style={{
+							background: `url(/api/restaurants/profile/coverPhoto/${id}) no-repeat top center/cover`,
+						}}
+					>
+						<div className="image-logo">
+							<img src={`/api/restaurants/profile/${id}`} alt="logo" />
+						</div>
 					</div>
 				</div>
 			)}

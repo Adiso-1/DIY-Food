@@ -24,7 +24,7 @@ const RecentOrders = () => {
 		<div className="recent-orders-container">
 			<Navbar />
 			<div className="uncompleted-orders">
-				<h2>Uncompleted Orders</h2>
+				<h2>Orders On Delivery</h2>
 				<table className="uncompleted-table">
 					<thead>
 						<tr>
@@ -39,7 +39,7 @@ const RecentOrders = () => {
 							<tbody key={el._id}>
 								<tr>
 									<td>{el.restaurant}</td>
-									<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+									<td>{dateFormat(el.dateAdded, 'dd/mm/yy HH:mm:ss')}</td>
 									<td>{el.deliveryAddress}</td>
 									<td>{el.price}&#8362;</td>
 								</tr>
@@ -50,7 +50,7 @@ const RecentOrders = () => {
 			</div>
 
 			<div className="completed-orders">
-				<h2>Completed Orders</h2>
+				<h2>Recent Orders</h2>
 				<table className="uncompleted-table">
 					<thead>
 						<tr>
@@ -65,7 +65,7 @@ const RecentOrders = () => {
 							<tbody key={el._id}>
 								<tr>
 									<td>{el.restaurant}</td>
-									<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+									<td>{dateFormat(el.dateAdded, 'dd/mm/yy HH:mm:ss')}</td>
 									<td>{el.deliveryAddress}</td>
 									<td>{el.price}&#8362;</td>
 								</tr>

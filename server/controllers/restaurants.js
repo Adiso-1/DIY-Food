@@ -163,7 +163,7 @@ const deleteLogoImage = async (req, res) => {
 const uploadCoverPhoto = async (req, res, next) => {
 	try {
 		const buffer = await sharp(req.file.buffer)
-			.resize({ width: 500, height: 250 })
+			.resize({ width: 1000, height: 250 })
 			.png()
 			.toBuffer();
 		req.restaurant.coverPhoto = buffer;

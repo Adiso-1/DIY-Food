@@ -241,7 +241,13 @@ const RestaurantsHome = ({ history }) => {
 					<div className="dishes-container">
 						{restaurantData &&
 							(restaurantData.coverPhoto ? (
-								<img className="cover-image" src="" alt="" />
+								<div className="cover-container">
+									<img
+										className="cover-image"
+										src={`/api/restaurants/profile/coverPhoto/${restaurantData._id}`}
+										alt="cover-photo"
+									/>
+								</div>
 							) : (
 								<div className="cover-image-container">
 									<h3>We highly recommand to add a cover image</h3>
