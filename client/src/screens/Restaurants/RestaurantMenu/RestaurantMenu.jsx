@@ -80,6 +80,7 @@ const RestaurantMenu = () => {
 							tabIndex={3}
 						/>
 					</div>
+
 					{successMsg && (
 						<div className="success-feedback">
 							<h3>{successMsg}</h3>

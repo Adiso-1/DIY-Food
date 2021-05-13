@@ -14,7 +14,7 @@ const LoginScreen = ({ history }) => {
 	useEffect(() => {
 		const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 		if (localStorage.getItem('authToken')) {
-			history.push(path);
+			return history.push(path);
 		}
 	}, [history]);
 

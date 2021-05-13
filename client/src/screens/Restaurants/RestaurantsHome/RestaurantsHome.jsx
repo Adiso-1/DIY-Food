@@ -289,6 +289,7 @@ const RestaurantsHome = ({ history }) => {
 											tabIndex={3}
 										/>
 									</div>
+
 									{successMsg && (
 										<div className="success-feedback">
 											<h3>{successMsg}</h3>
@@ -300,7 +301,7 @@ const RestaurantsHome = ({ history }) => {
 										</div>
 									)}
 									<div className="restaurant-menu-button-container">
-										<Button type="submit" text="Submit" />
+										<Button type="submit" text="Save" />
 									</div>
 								</form>
 							</div>
