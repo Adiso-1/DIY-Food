@@ -82,3 +82,17 @@
 .more-details-container div {
 	width: 48%;
 }
+.address-container {
+	display: flex;
+	justify-content: space-between;
+}
+.address-container > div {
+	width: 40%;
+}
+.address-container > div > input {
+	font-size: 14px;
+	padding: 10px;
+}
+.address-container > div:nth-child(3) {
+	width: 15%;
+}

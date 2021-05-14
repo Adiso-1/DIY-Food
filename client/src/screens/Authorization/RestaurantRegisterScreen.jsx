@@ -10,7 +10,9 @@ const RegisterScreen = ({ history }) => {
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
 	const [category, setCategory] = useState('');
-	const [address, setAddress] = useState('');
+	const [city, setCity] = useState('');
+	const [street, setStreet] = useState('');
+	const [number, setNumber] = useState('');
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [tagInput, setTagInput] = useState('');
 	const [deliveryTime, setDeliveryTime] = useState('');
@@ -38,7 +40,11 @@ const RegisterScreen = ({ history }) => {
 				email,
 				phone,
 				category,
-				address,
+				address: {
+					city,
+					street,
+					number,
+				},
 				password,
 				tags,
 				deliveryTime,
@@ -103,16 +109,40 @@ const RegisterScreen = ({ history }) => {
 					/>
 				</div>
 
-				<div className="form-group">
-					<label htmlFor="address">Address:</label>
-					<input
-						type="address"
-						required
-						id="address"
-						placeholder="Enter address"
-						value={address}
-						onChange={(e) => setAddress(e.target.value)}
-					/>
+				<div className="form-group address">
+					<h5>Address:</h5>
+					<div className="address-container">
+						<div className="city">
+							<label htmlFor="city">City:</label>
+							<input
+								type="city"
+								required
+								id="city"
+								value={city}
+								onChange={(e) => setCity(e.target.value)}
+							/>
+						</div>
+						<div className="street">
+							<label htmlFor="street">Street:</label>
+							<input
+								type="street"
+								required
+								id="street"
+								value={street}
+								onChange={(e) => setStreet(e.target.value)}
+							/>
+						</div>
+						<div className="number">
+							<label htmlFor="number">Number:</label>
+							<input
+								type="text"
+								required
+								id="number"
+								value={number}
+								onChange={(e) => setNumber(e.target.value)}
+							/>
+						</div>
+					</div>
 				</div>
 
 				<div className="form-group tags-input">

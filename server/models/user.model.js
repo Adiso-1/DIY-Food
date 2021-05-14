@@ -34,9 +34,18 @@ const userSchema = new Schema(
 			minlength: 6,
 		},
 		address: {
-			type: String,
-			required: [true, 'Please provide address'],
-			trim: true,
+			city: {
+				type: String,
+				required: [true, 'Please add a city'],
+			},
+			street: {
+				type: String,
+				required: [true, 'Please add a street'],
+			},
+			number: {
+				type: String,
+				required: [true, 'Please add a number'],
+			},
 		},
 		resetPasswordToken: String,
 		resetPasswordExpire: Date,

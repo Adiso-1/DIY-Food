@@ -35,9 +35,22 @@ const restaurantSchema = new Schema({
 		minlength: 6,
 	},
 	address: {
-		type: String,
-		required: [true, 'Please provide address'],
-		trim: true,
+		city: {
+			type: String,
+			required: true,
+		},
+		street: {
+			type: String,
+			required: true,
+		},
+		number: {
+			type: String,
+			required: true,
+		},
+		apartment: {
+			type: String,
+			required: true,
+		},
 	},
 	category: {
 		type: String,
