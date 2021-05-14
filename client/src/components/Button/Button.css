@@ -1,7 +1,7 @@
 .navbar-button {
 	width: 150px;
-	background: #fff;
-	color: var(--main-color);
+	color: #fff;
+	background: var(--main-color);
 	outline: none;
 	border: none;
 	border-radius: 20px;
@@ -11,5 +11,5 @@
 	transition: 0.3s;
 }
 .navbar-button:hover {
-	transform: scale(1.1);
+	background: var(--dark-main-color);
 }

@@ -66,6 +66,14 @@ const restaurantSchema = new Schema({
 	coverPhoto: {
 		type: Buffer,
 	},
+	deliveryTime: {
+		type: String,
+		required: true,
+	},
+	minPayment: {
+		type: String,
+		required: true,
+	},
 });
 
 restaurantSchema.virtual('orders', {

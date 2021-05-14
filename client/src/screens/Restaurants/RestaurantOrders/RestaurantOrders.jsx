@@ -49,8 +49,8 @@ const RestaurantOrders = () => {
 					</thead>
 					{orders.map((el) =>
 						el.isCompleted === 'false' ? (
-							<tbody>
-								<tr key={el._id}>
+							<tbody key={el._id}>
+								<tr>
 									<td>{el.owner}</td>
 									<td>{el.userPhone}</td>
 									<td>{el.deliveryAddress}</td>

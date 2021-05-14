@@ -55,15 +55,17 @@ const RestaurantMenu = () => {
 						/>
 					</div>
 
-					<div className="form-group">
+					<div className="form-group new-dish-description">
 						<label htmlFor="description">Description:</label>
-						<input
+						<textarea
 							type="text"
 							required
 							id="description"
 							placeholder="Write description"
 							onChange={(e) => setDescription(e.target.value)}
 							value={description}
+							maxLength="200"
+							size="100"
 							tabIndex={2}
 						/>
 					</div>

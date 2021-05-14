@@ -20,3 +20,8 @@
 .restaurant-menu-container .error-feedback {
 	color: red;
 }
+.form-group.new-dish-description textarea {
+	max-width: 100%;
+	min-width: 100%;
+	height: 140px;
+}

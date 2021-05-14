@@ -13,3 +13,9 @@
 .button-container {
 	align-self: center;
 }
+.button-container button {
+	border: 1px solid #fff;
+}
+.button-container button:hover {
+	box-shadow: 0px 0px 5px 0px #fff;
+}

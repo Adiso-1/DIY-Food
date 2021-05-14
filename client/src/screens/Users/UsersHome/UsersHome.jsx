@@ -1,22 +1,14 @@
 import { Link } from 'react-router-dom';
 import api from '../../../api/api';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import './UsersHome.css';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 
 const UsersHome = ({ history }) => {
-	const [userData, setUserData] = useState(null);
 	const [restaurantsData, setRestaurantsData] = useState([]);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
-
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-		},
-	};
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
@@ -54,10 +46,28 @@ const UsersHome = ({ history }) => {
 							Email: <a href={`mailto:${el.email}`}>{el.email}</a>
 						</p>
 						<p className="restaurant-phone">
-							{' '}
-							<a href={`tel:+${el.phone}`}>{el.phone}</a>
+							Phone: <a href={`tel:+${el.phone}`}>{el.phone}</a>
 						</p>
 						<p className="restaurant-address">Address: {el.address}</p>
+						<div className="tags-section">
+							{el.tags.map((tag) => {
+								return (
+									<span
+										key={tag}
+										className={`restaurant-tag ${tag
+											.replace(' ', '')
+											.toLowerCase()}`}
+									>
+										{tag}
+									</span>
+								);
+							})}
+						</div>
+
+						<div className="delivery-section">
+							<span>&#177; {el.deliveryTime} Minutes</span>
+							<span>Min delivery {el.minPayment}&#8362;</span>
+						</div>
 					</div>
 					<Link to={`users/order/${el._id}`}>
 						<Button text="Order Now" />

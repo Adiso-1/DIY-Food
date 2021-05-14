@@ -13,8 +13,10 @@ const RegisterScreen = ({ history }) => {
 	const [address, setAddress] = useState('');
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [tagInput, setTagInput] = useState('');
+	const [deliveryTime, setDeliveryTime] = useState('');
+	const [minPayment, setMinPayment] = useState('');
 	const [tags, setTags] = useState([]);
-	const [isQuestion, setIsQuestion] = useState(true);
+	const [isQuestion, setIsQuestion] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 	const buttonRef = useRef(null);
@@ -39,6 +41,8 @@ const RegisterScreen = ({ history }) => {
 				address,
 				password,
 				tags,
+				deliveryTime,
+				minPayment,
 			});
 			setSuccess(`${name} registered successfully`);
 			buttonRef.current.disabled = true;
@@ -65,7 +69,7 @@ const RegisterScreen = ({ history }) => {
 					</span>
 				)}
 				<div className="form-group">
-					<label htmlFor="name">Restaurant Name:</label>
+					<label htmlFor="name">Restaurant name:</label>
 					<input
 						type="text"
 						required
@@ -131,7 +135,6 @@ const RegisterScreen = ({ history }) => {
 							</div>
 						)}
 					</label>
-
 					<div className="restaurant-tags-container">
 						<input
 							type="tags"
@@ -168,8 +171,40 @@ const RegisterScreen = ({ history }) => {
 					</div>
 				</div>
 
+				<div className="form-group more-details">
+					<h5>Delivery details</h5>
+					<div className="more-details-container">
+						<div className="delivery-time">
+							<label htmlFor="">Average delivey minutes:</label>
+							<input
+								type="number"
+								required
+								id="delivery-time"
+								autoComplete="true"
+								value={deliveryTime}
+								max={180}
+								min={0}
+								onChange={(e) => setDeliveryTime(e.target.value)}
+							/>
+						</div>
+						<div className="min-delivery-time">
+							<label htmlFor="">Minimum delivery payment:</label>
+							<input
+								type="number"
+								required
+								id="min-payment"
+								autoComplete="true"
+								max={1000}
+								min={0}
+								value={minPayment}
+								onChange={(e) => setMinPayment(e.target.value)}
+							/>
+						</div>
+					</div>
+				</div>
+
 				<div className="form-group">
-					<label htmlFor="category">Select Restaurant Category:</label>
+					<label htmlFor="category">Select restaurant category:</label>
 					<select
 						onChange={(e) => setCategory(e.target.value)}
 						name="category"
@@ -184,6 +219,7 @@ const RegisterScreen = ({ history }) => {
 						<option value="asian">Asian</option>
 						<option value="italian">Italian</option>
 						<option value="cafe">Cafe</option>
+						<option value="gelato">Gelato</option>
 					</select>
 				</div>
 
@@ -200,7 +236,7 @@ const RegisterScreen = ({ history }) => {
 					/>
 				</div>
 				<div className="form-group">
-					<label htmlFor="confirmpassword">Confirm Password:</label>
+					<label htmlFor="confirmpassword">Confirm password:</label>
 					<input
 						type="password"
 						required

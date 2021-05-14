@@ -179,7 +179,7 @@ const RestaurantsHome = ({ history }) => {
 								<>
 									<img
 										src={`/api/menu/get-dish-image/${dish._id}`}
-										alt="dish-image"
+										alt="dish"
 									/>
 									<div className="dish-button-container">
 										<Button
@@ -241,21 +241,20 @@ const RestaurantsHome = ({ history }) => {
 					<div className="dishes-container">
 						{restaurantData &&
 							(restaurantData.coverPhoto ? (
-								<div className="cover-container">
-									<img
-										className="cover-image"
-										src={`/api/restaurants/profile/coverPhoto/${restaurantData._id}`}
-										alt="cover-photo"
-									/>
-								</div>
+								<div
+									className="cover-container"
+									style={{
+										background: `url(/api/restaurants/profile/coverPhoto/${restaurantData._id}) no-repeat top center/cover`,
+									}}
+								></div>
 							) : (
 								<div className="cover-image-container">
-									<h3>We highly recommand to add a cover image</h3>
+									<h3>We highly recommand to add a cover photo</h3>
 									<Button
 										onClick={() =>
 											history.push('/restaurants/RestaurantProfileDetails')
 										}
-										text="Click here to upload"
+										text="Move to personal details"
 									/>
 								</div>
 							))}

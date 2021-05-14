@@ -163,6 +163,25 @@ const RestaurantProfileDetails = ({ history }) => {
 						<span>Address: </span>
 						{personalDetails.address}
 					</div>
+
+					<div className="tags-section">
+						{personalDetails.tags.map((tag) => {
+							return (
+								<span
+									key={tag}
+									className={`restaurant-tag ${tag
+										.replace(' ', '')
+										.toLowerCase()}`}
+								>
+									{tag}
+								</span>
+							);
+						})}
+					</div>
+					<div className="delivery-section">
+						<span>&#177; {personalDetails.deliveryTime} Minutes</span>
+						<span>Min delivery {personalDetails.minPayment}&#8362;</span>
+					</div>
 					<section className="images-section">
 						<div className="profile-picture-container">
 							<h3>Upload a logo image </h3>
