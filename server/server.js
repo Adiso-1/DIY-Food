@@ -33,7 +33,7 @@ app.use('/api/orders', require('./routes/orders'));
 app.use('/api/menu', require('./routes/menus'));
 app.use(errorHandler);
 
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
 	res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
