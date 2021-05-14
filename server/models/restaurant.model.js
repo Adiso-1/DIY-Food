@@ -68,11 +68,9 @@ const restaurantSchema = new Schema({
 	},
 	deliveryTime: {
 		type: String,
-		required: true,
 	},
 	minPayment: {
 		type: String,
-		required: true,
 	},
 });
 
