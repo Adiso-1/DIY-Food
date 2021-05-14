@@ -221,7 +221,9 @@ const RestaurantsHome = ({ history }) => {
 						</div>
 					</div>
 					<div className="dish-price">
-						<p>{dish.price}&#8362;</p>
+						<p style={{ marginTop: `${dish.image ? '0px' : '20px'}` }}>
+							{dish.price}&#8362;
+						</p>
 					</div>
 				</div>
 			);

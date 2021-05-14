@@ -133,7 +133,7 @@
 	display: flex;
 	justify-content: center;
 	width: 90%;
-	margin: 0 auto;
+	margin: 0px auto 15px auto;
 }
 .add-dish-button button {
 	width: 200px;
@@ -184,5 +184,22 @@
 @media screen and (max-width: 1000px) {
 	.menu-empty {
 		max-width: 90%;
+	}
+	.cover-container {
+		margin: auto;
+	}
+	.dish-button-container {
+		flex-direction: column;
+	}
+	.dishes-container .dish-button-container button {
+		width: 100%;
+		margin-bottom: 5px;
+	}
+	.dishes-container .cover-container {
+		margin: auto;
+	}
+	.dishes-container .dish-description {
+		white-space: normal;
+		font-size: 14px;
 	}
 }

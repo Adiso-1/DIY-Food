@@ -63,3 +63,20 @@
 .images-section .success-message-images {
 	color: rgb(29, 160, 29);
 }
+@media screen and (max-width: 550px) {
+	.images-section {
+		display: flex;
+		justify-content: space-between;
+	}
+	.images-section h3 {
+		font-size: 16px;
+	}
+	.profile-buttons-container,
+	.cover-buttons-container {
+		flex-direction: column;
+	}
+	.profile-buttons-container button,
+	.cover-buttons-container button {
+		margin-bottom: 5px;
+	}
+}
