@@ -55,7 +55,7 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logout`, {}, config);
 					localStorage.removeItem('authToken');
-					window.location.reload();
+					history.push(`/`);
 				} catch (error) {
 					console.log(error);
 				}
@@ -64,7 +64,7 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
-					window.location.reload();
+					history.push(`/`);
 				} catch (error) {
 					console.log(error);
 				}

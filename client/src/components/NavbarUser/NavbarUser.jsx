@@ -56,7 +56,7 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logout`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`${path}/login`);
+					history.push(`/`);
 				} catch (error) {
 					console.log(error);
 				}
@@ -65,7 +65,7 @@ const Navbar = () => {
 				try {
 					await api.post(`${path}/logoutAll`, {}, config);
 					localStorage.removeItem('authToken');
-					history.push(`${path}/login`);
+					history.push(`/`);
 				} catch (error) {
 					console.log(error);
 				}
@@ -103,7 +103,10 @@ const Navbar = () => {
 							<div className="inner-text">Personal Information</div>
 						</div>
 						<div>
-							<div className="inner-text">
+							<div
+								onClick={() => history.push(`${path}/Orders`)}
+								className="inner-text"
+							>
 								My Orders
 								{checkForUncompleted() > 0 && (
 									<span className="incomplete-orders">
