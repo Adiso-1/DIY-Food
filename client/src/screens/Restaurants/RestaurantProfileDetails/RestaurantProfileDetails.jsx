@@ -161,7 +161,8 @@ const RestaurantProfileDetails = ({ history }) => {
 					</div>
 					<div className="address">
 						<span>Address: </span>
-						{personalDetails.address}
+						{personalDetails.address.city}, {personalDetails.address.street},{' '}
+						{personalDetails.address.number}
 					</div>
 
 					<div className="tags-section">

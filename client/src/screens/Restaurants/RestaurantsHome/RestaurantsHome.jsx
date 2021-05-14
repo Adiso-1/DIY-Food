@@ -215,9 +215,9 @@ const RestaurantsHome = ({ history }) => {
 								</div>
 							)}
 						</div>
-						<div className="dish-description">
+						<div className="dish-description-container">
 							<h3 className="dish-title">{dish.dish}</h3>
-							<p className="dish-description">{dish.description}</p>
+							<p className="dish-description-restaurant">{dish.description}</p>
 						</div>
 					</div>
 					<div className="dish-price">

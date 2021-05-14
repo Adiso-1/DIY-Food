@@ -12,12 +12,12 @@ const restaurantSchema = new Schema({
 		type: String,
 		required: [true, 'Please provide username'],
 		trim: true,
-		unique: true,
+		unique: [true, 'Name must be unique'],
 	},
 	email: {
 		type: String,
 		required: [true, 'Please provide email address'],
-		unique: true,
+		unique: [true, 'Email must be uniqe'],
 		match: [
 			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 			'Please provide a valid email',
@@ -27,12 +27,11 @@ const restaurantSchema = new Schema({
 		type: String,
 		required: [true, 'Please provide a phone number'],
 		trim: true,
-		unique: true,
 	},
 	password: {
 		type: String,
 		required: [true, 'Please add a password'],
-		minlength: 6,
+		minlength: [6, 'Password should be at least 6 characters'],
 	},
 	address: {
 		city: {
@@ -44,10 +43,6 @@ const restaurantSchema = new Schema({
 			required: true,
 		},
 		number: {
-			type: String,
-			required: true,
-		},
-		apartment: {
 			type: String,
 			required: true,
 		},
@@ -71,6 +66,9 @@ const restaurantSchema = new Schema({
 		type: Array,
 	},
 	comments: {
+		type: Array,
+	},
+	rating: {
 		type: Array,
 	},
 	logo: {

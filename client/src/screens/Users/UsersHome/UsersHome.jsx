@@ -48,7 +48,10 @@ const UsersHome = ({ history }) => {
 						<p className="restaurant-phone">
 							Phone: <a href={`tel:+${el.phone}`}>{el.phone}</a>
 						</p>
-						<p className="restaurant-address">Address: {el.address}</p>
+						<p className="restaurant-address">
+							Address: {el.address.city}, {el.address.street},{' '}
+							{el.address.number}
+						</p>
 						<div className="tags-section">
 							{el.tags.map((tag) => {
 								return (

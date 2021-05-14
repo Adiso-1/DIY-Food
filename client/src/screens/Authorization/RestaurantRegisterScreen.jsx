@@ -1,4 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import api from '../../api/api';
 import { Link } from 'react-router-dom';
 import Navbar from '../../components/NavbarMedium/NavbarMedium';
@@ -10,9 +11,12 @@ const RegisterScreen = ({ history }) => {
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
 	const [category, setCategory] = useState('');
+	//! address
+	const [allCities, setAllcities] = useState({});
 	const [city, setCity] = useState('');
 	const [street, setStreet] = useState('');
 	const [number, setNumber] = useState('');
+	const [addressesToShow, setAddressesToShow] = useState([]);
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [tagInput, setTagInput] = useState('');
 	const [deliveryTime, setDeliveryTime] = useState('');
@@ -21,8 +25,24 @@ const RegisterScreen = ({ history }) => {
 	const [isQuestion, setIsQuestion] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
+
 	const buttonRef = useRef(null);
+
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+
+	useEffect(() => {
+		const getCities = async () => {
+			try {
+				const { data } = await axios.get(
+					'https://raw.githubusercontent.com/Adiso-1/Delicious/main/server/citiesDB/cities.json'
+				);
+				setAllcities(data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		getCities();
+	}, []);
 
 	const registerHandler = async (e) => {
 		e.preventDefault();
@@ -63,12 +83,37 @@ const RegisterScreen = ({ history }) => {
 		}
 	};
 
+	const handleAddress = (word, type) => {
+		if (type === 'city') {
+			if (word.length > 0) {
+				const filteredCities = Object.keys(allCities).filter((city) =>
+					city.startsWith(word)
+				);
+				setAddressesToShow(filteredCities.slice(0, 5));
+			} else {
+				setAddressesToShow([]);
+			}
+		}
+		if (type === 'street') {
+			if (word.length > 0) {
+				try {
+					const filteredStreets = allCities[city].filter((street) =>
+						street.startsWith(word)
+					);
+					setAddressesToShow(filteredStreets.slice(0, 5));
+				} catch (error) {
+					setAddressesToShow([]);
+				}
+			} else {
+			}
+		}
+	};
 	return (
 		<div className="register-screen">
 			<Navbar />
 			<form onSubmit={registerHandler} className="register-screen__form">
 				<h3 className="register-screen__title">Register</h3>
-				{error && <span className="error-message">{error}</span>}
+				{error && <span className="register-error-message">{error}</span>}
 				{success && (
 					<span className="success-message">
 						{success} <Link to={`${path}/login`}>Login</Link>
@@ -118,18 +163,28 @@ const RegisterScreen = ({ history }) => {
 								type="city"
 								required
 								id="city"
+								autoComplete="new-password"
 								value={city}
-								onChange={(e) => setCity(e.target.value)}
+								onChange={(e) => {
+									setCity(e.target.value);
+									handleAddress(e.target.value, 'city');
+								}}
 							/>
 						</div>
 						<div className="street">
 							<label htmlFor="street">Street:</label>
 							<input
 								type="street"
+								disabled={city.length > 0 ? false : true}
 								required
 								id="street"
+								autoComplete="new-password"
+								placeholder="fill city"
 								value={street}
-								onChange={(e) => setStreet(e.target.value)}
+								onChange={(e) => {
+									setStreet(e.target.value);
+									handleAddress(e.target.value, 'street');
+								}}
 							/>
 						</div>
 						<div className="number">
@@ -138,11 +193,47 @@ const RegisterScreen = ({ history }) => {
 								type="text"
 								required
 								id="number"
+								autoComplete="new-password"
+								placeholder="fill street"
+								disabled={street.length > 0 ? false : true}
 								value={number}
-								onChange={(e) => setNumber(e.target.value)}
+								onChange={(e) => {
+									setNumber(
+										e.target.value.match(/[0-9]$/) ? e.target.value : ''
+									);
+									handleAddress(e.target.value);
+								}}
 							/>
 						</div>
 					</div>
+					{addressesToShow.length > 0 && (
+						<div className="search-results">
+							{addressesToShow.map((city) => (
+								<div key={city} className="city-container">
+									<span
+										onClick={(e) => {
+											if (street.length === 0) {
+												setCity(e.target.textContent);
+												setAddressesToShow([]);
+												return;
+											}
+											if (number.length === 0) {
+												setStreet(e.target.textContent);
+												setAddressesToShow([]);
+												return;
+											} else {
+												setNumber(e.target.textContent);
+												setAddressesToShow([]);
+												return;
+											}
+										}}
+									>
+										{city}
+									</span>
+								</div>
+							))}
+						</div>
+					)}
 				</div>
 
 				<div className="form-group tags-input">
@@ -186,9 +277,9 @@ const RegisterScreen = ({ history }) => {
 							></i>
 						)}
 						<div className="tags-chosen">
-							{tags.map((tag) => {
+							{tags.map((tag, i) => {
 								return (
-									<span className="tag">
+									<span key={i} className="tag">
 										{tag}
 										<i
 											onClick={() => setTags(tags.filter((el) => tag !== el))}
@@ -205,29 +296,37 @@ const RegisterScreen = ({ history }) => {
 					<h5>Delivery details</h5>
 					<div className="more-details-container">
 						<div className="delivery-time">
-							<label htmlFor="">Average delivey minutes:</label>
+							<label htmlFor="">Average delivey time:</label>
 							<input
-								type="number"
+								type="text"
 								required
 								id="delivery-time"
 								autoComplete="true"
 								value={deliveryTime}
 								max={180}
 								min={0}
-								onChange={(e) => setDeliveryTime(e.target.value)}
+								onChange={(e) =>
+									setDeliveryTime(
+										e.target.value.match(/[0-9]$/) ? e.target.value : ''
+									)
+								}
 							/>
 						</div>
 						<div className="min-delivery-time">
-							<label htmlFor="">Minimum delivery payment:</label>
+							<label htmlFor="">Minimum per order:</label>
 							<input
-								type="number"
+								type="text"
 								required
 								id="min-payment"
 								autoComplete="true"
 								max={1000}
 								min={0}
 								value={minPayment}
-								onChange={(e) => setMinPayment(e.target.value)}
+								onChange={(e) =>
+									setMinPayment(
+										e.target.value.match(/[0-9]$/) ? e.target.value : ''
+									)
+								}
 							/>
 						</div>
 					</div>
@@ -277,9 +376,11 @@ const RegisterScreen = ({ history }) => {
 						onChange={(e) => setConfirmPassword(e.target.value)}
 					/>
 				</div>
-				<button ref={buttonRef} type="submit" className="btn btn-primary">
-					Register
-				</button>
+				<a href="#root">
+					<button ref={buttonRef} type="submit" className="btn btn-primary">
+						Register
+					</button>
+				</a>
 
 				<span className="register-screen__subtext">
 					Already have an account? <Link to={`${path}/login`}>Login</Link>

@@ -46,6 +46,10 @@ const userSchema = new Schema(
 				type: String,
 				required: [true, 'Please add a number'],
 			},
+			apartment: {
+				type: String,
+				required: [true, 'Please add an apartment'],
+			},
 		},
 		resetPasswordToken: String,
 		resetPasswordExpire: Date,

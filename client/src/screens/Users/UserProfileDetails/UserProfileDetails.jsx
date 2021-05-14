@@ -31,15 +31,6 @@ const UserProfileDetails = ({ history }) => {
 		fetchUser();
 	}, []);
 
-	// useEffect(() => {
-	// 	if (personalDetails && personalDetails.avatar) {
-	// 		const getImage = async () => {
-	// 			await api.get(`users/profile/${personalDetails._id}`);
-	// 		};
-	// 		getImage();
-	// 	}
-	// }, [personalDetails]);
-
 	const handleImage = (e) => {
 		setSuccessMessage('You selected 1 file');
 		setAvatar(e.target.files[0]);
@@ -57,6 +48,7 @@ const UserProfileDetails = ({ history }) => {
 			await api.post('/users/profile/upload', fd, config);
 			setTimeout(() => {
 				setSuccess(false);
+				window.location.reload();
 			}, 2000);
 			setSuccessMessage('');
 			setSuccess(true);
@@ -75,6 +67,7 @@ const UserProfileDetails = ({ history }) => {
 			await api.delete('/users/profile/upload', config);
 			setTimeout(() => {
 				setSuccessMessage('');
+				window.location.reload();
 			}, 2000);
 			setSuccessMessage('Profile image deleted');
 		} catch (error) {
@@ -101,7 +94,8 @@ const UserProfileDetails = ({ history }) => {
 					</div>
 					<div className="address">
 						<span>Address: </span>
-						{personalDetails.address}
+						{personalDetails.address.city}, {personalDetails.address.street},{' '}
+						{personalDetails.address.number}/{personalDetails.address.apartment}
 					</div>
 					<div className="profile-picture-container">
 						<div>Upload a profile picture </div>
@@ -113,7 +107,9 @@ const UserProfileDetails = ({ history }) => {
 								id="profile-picture"
 								ref={fileInput}
 							/>
-							<Button onClick={deleteImageHandler} text="Delete Image" />
+							{personalDetails.avatar && (
+								<Button onClick={deleteImageHandler} text="Delete Image" />
+							)}
 							<Button
 								onClick={() => fileInput.current.click()}
 								text="Select Image"
