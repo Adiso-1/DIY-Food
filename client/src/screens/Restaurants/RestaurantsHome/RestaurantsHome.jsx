@@ -15,6 +15,7 @@ const RestaurantsHome = ({ history }) => {
 	const [nameToEdit, setNameToEdit] = useState('');
 	const [descriptionToEdit, setDescriptionToEdit] = useState('');
 	const [priceToEdit, setPriceToEdit] = useState('');
+	const [categoryToEdit, setCategoryToEdit] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 
@@ -124,6 +125,7 @@ const RestaurantsHome = ({ history }) => {
 		setNameToEdit(dish.dish);
 		setDescriptionToEdit(dish.description);
 		setPriceToEdit(dish.price);
+		setCategoryToEdit(dish.category);
 	};
 
 	const onEditSubmit = async (e) => {
@@ -135,6 +137,7 @@ const RestaurantsHome = ({ history }) => {
 					dish: nameToEdit,
 					description: descriptionToEdit,
 					price: priceToEdit,
+					category: categoryToEdit,
 				},
 				config
 			);
@@ -298,6 +301,19 @@ const RestaurantsHome = ({ history }) => {
 									</div>
 
 									<div className="form-group">
+										<label htmlFor="category">Category:</label>
+										<input
+											type="text"
+											required
+											id="category"
+											placeholder="Enter category"
+											onChange={(e) => setCategoryToEdit(e.target.value)}
+											value={categoryToEdit}
+											tabIndex={3}
+										/>
+									</div>
+
+									<div className="form-group">
 										<label htmlFor="price">Price:</label>
 										<input
 											type="number"
@@ -306,7 +322,7 @@ const RestaurantsHome = ({ history }) => {
 											placeholder="Enter price"
 											onChange={(e) => setPriceToEdit(e.target.value)}
 											value={priceToEdit}
-											tabIndex={3}
+											tabIndex={4}
 										/>
 									</div>
 

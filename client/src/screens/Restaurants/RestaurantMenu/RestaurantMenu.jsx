@@ -8,6 +8,7 @@ const RestaurantMenu = () => {
 	const [dish, setDish] = useState('');
 	const [description, setDescription] = useState('');
 	const [price, setPrice] = useState('');
+	const [category, setCategory] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 
@@ -21,7 +22,11 @@ const RestaurantMenu = () => {
 	const addHandler = async (e) => {
 		e.preventDefault();
 		try {
-			await api.post('/menu/add-dish', { dish, description, price }, config);
+			await api.post(
+				'/menu/add-dish',
+				{ dish, description, price, category },
+				config
+			);
 			setTimeout(() => {
 				setSuccessMsg('');
 			}, 2000);
@@ -71,6 +76,19 @@ const RestaurantMenu = () => {
 					</div>
 
 					<div className="form-group">
+						<label htmlFor="category">Category:</label>
+						<input
+							type="text"
+							required
+							id="category"
+							placeholder="Enter category"
+							onChange={(e) => setCategory(e.target.value)}
+							value={category}
+							tabIndex={3}
+						/>
+					</div>
+
+					<div className="form-group">
 						<label htmlFor="price">Price:</label>
 						<input
 							type="number"
@@ -79,7 +97,7 @@ const RestaurantMenu = () => {
 							placeholder="Enter price"
 							onChange={(e) => setPrice(e.target.value)}
 							value={price}
-							tabIndex={3}
+							tabIndex={4}
 						/>
 					</div>
 

@@ -23,6 +23,10 @@ const menuSchema = new Schema({
 	image: {
 		type: Buffer,
 	},
+	category: {
+		type: String,
+		required: true,
+	},
 	tags: {
 		type: Array,
 	},
