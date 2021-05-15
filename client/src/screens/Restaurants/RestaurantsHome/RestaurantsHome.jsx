@@ -1,6 +1,6 @@
 import api from '../../../api/api';
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Fragment } from 'react';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import './RestaurantsHome.css';
@@ -18,8 +18,6 @@ const RestaurantsHome = ({ history }) => {
 	const [categoryToEdit, setCategoryToEdit] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
-
-	console.log(restaurantData);
 
 	const fileInput = useRef();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
@@ -40,6 +38,10 @@ const RestaurantsHome = ({ history }) => {
 			if (data.length === 0) {
 				return setIsMenuEmpty(true);
 			}
+			data.sort(
+				(a, b) =>
+					(a.category.toLowerCase() > b.category.toLowerCase() && -1) || 1
+			);
 			setMenu(data);
 		} catch (error) {
 			console.log(error);
@@ -93,7 +95,6 @@ const RestaurantsHome = ({ history }) => {
 			setTimeout(() => {
 				setErrorMsg('');
 			}, 2000);
-			console.log(error.response);
 			setErrorMsg(error.response.data.error);
 		}
 	};
@@ -166,69 +167,78 @@ const RestaurantsHome = ({ history }) => {
 		if (menu.length === 0) {
 			return;
 		}
-		console.log(menu);
-		return menu.map((dish) => {
+		const categories = [];
+		return menu.map((dish, i) => {
 			return (
-				<div className="dish-details" key={dish._id}>
-					<div
-						className="delete-dish-button"
-						onClick={(e) => deleteDish(e, dish)}
-					>
-						<i className="far fa-trash-alt"></i>
-					</div>
-					<div className="dish-image-description">
-						<div className="dish-image">
-							{dish.image ? (
-								<>
-									<img
-										src={`/api/menu/get-dish-image/${dish._id}`}
-										alt="dish"
-									/>
-									<div className="dish-button-container">
-										<Button
-											onClick={(e) => editDishHandler(e, dish)}
-											text="Edit Dish"
-										/>
-										<Button
-											onClick={(e) => deleteImageHandler(e, dish._id)}
-											text="Delete Image"
-										/>
-									</div>
-								</>
-							) : (
-								<div className="add-dish-image-container">
-									<div>Upload a dish picture </div>
-									<div>
-										<input
-											onChange={handleImage}
-											type="file"
-											name="dish-picture"
-											id="dish-picture"
-											ref={fileInput}
-										/>
-										<Button
-											onClick={() => fileInput.current.click()}
-											text="Select Image"
-										/>
-										<Button
-											onClick={(e, dish_id) => uploadHandler(e, dish._id)}
-											text="Upload"
-										/>
-									</div>
-								</div>
-							)}
+				<Fragment key={dish._id}>
+					<h3 className="category">
+						{categories.includes(dish.category)
+							? null
+							: categories.push(dish.category) && dish.category}
+					</h3>
+					<div className="dish-details">
+						<div
+							className="delete-dish-button"
+							onClick={(e) => deleteDish(e, dish)}
+						>
+							<i className="far fa-trash-alt"></i>
 						</div>
-						<div className="dish-description-container">
-							<h3 className="dish-title">{dish.dish}</h3>
-							<p className="dish-description-restaurant">{dish.description}</p>
+						<div className="dish-image-description">
+							<div className="dish-image">
+								{dish.image ? (
+									<>
+										<img
+											src={`/api/menu/get-dish-image/${dish._id}`}
+											alt="dish"
+										/>
+										<div className="dish-button-container">
+											<Button
+												onClick={(e) => editDishHandler(e, dish)}
+												text="Edit Dish"
+											/>
+											<Button
+												onClick={(e) => deleteImageHandler(e, dish._id)}
+												text="Delete Image"
+											/>
+										</div>
+									</>
+								) : (
+									<div className="add-dish-image-container">
+										<div>Upload a dish picture </div>
+										<div>
+											<input
+												onChange={handleImage}
+												type="file"
+												name="dish-picture"
+												id="dish-picture"
+												ref={fileInput}
+											/>
+											<Button
+												onClick={() => fileInput.current.click()}
+												text="Select Image"
+											/>
+											<Button
+												onClick={(e, dish_id) => uploadHandler(e, dish._id)}
+												text="Upload"
+											/>
+										</div>
+									</div>
+								)}
+							</div>
+							<div className="dish-description-container">
+								<h3 className="dish-title">{dish.dish}</h3>
+								<p className="dish-description-restaurant">
+									{dish.description}
+								</p>
+							</div>
+						</div>
+						<div className="dish-price">
+							<p style={{ marginTop: `${dish.image ? '0px' : '20px'}` }}>
+								{dish.price}&#8362;
+							</p>
 						</div>
 					</div>
-					<div className="dish-price">
-						<p style={{ marginTop: `${dish.image ? '0px' : '20px'}` }}>
-							{dish.price}&#8362;
-						</p>
-					</div>
-				</div>
+				</Fragment>
 			);
 		});
 	};

@@ -32,3 +32,14 @@
 .profile-picture-container input {
 	display: none;
 }
+@media screen and (max-width: 450px) {
+	.profile-user-images-buttons {
+		display: flex;
+		margin-left: -10px;
+		justify-content: space-between;
+	}
+	.profile-user-images-buttons button {
+		width: 110px !important;
+		margin: 2px !important;
+	}
+}

@@ -99,7 +99,7 @@ const UserProfileDetails = ({ history }) => {
 					</div>
 					<div className="profile-picture-container">
 						<div>Upload a profile picture </div>
-						<div>
+						<div className="profile-user-images-buttons">
 							<input
 								onChange={handleImage}
 								type="file"

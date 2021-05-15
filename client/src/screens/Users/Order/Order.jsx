@@ -1,5 +1,5 @@
 import api from '../../../api/api';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Payment from '../Payment/Payment';
 import './Order.css';
@@ -35,6 +35,10 @@ const Order = ({ history }) => {
 				const { data } = await api.get(`/restaurants/profile/menu/${id}`);
 				const restaurantDetails = await api.get(`/users/getRestaurants/${id}`);
 				setRestaurantDetails(restaurantDetails.data);
+				data.sort(
+					(a, b) =>
+						(a.category.toLowerCase() > b.category.toLowerCase() && -1) || 1
+				);
 				setMenu(data);
 			} catch (error) {
 				console.log(error);
@@ -115,30 +119,41 @@ const Order = ({ history }) => {
 	};
 
 	const renderMenu = () => {
+		const categories = [];
 		return menu.map((dish) => {
 			return (
-				<div key={`${dish._id}1`} className="dish-container">
-					<div>
-						<img
-							onClick={(e) => zoomInImage(e, dish._id)}
-							onMouseEnter={(e) => zoomInImage(e, dish._id)}
-							onMouseLeave={(e) => setIsZoom(false)}
-							src={`/api/menu/get-dish-image/${dish._id}`}
-							alt="dish-image"
-						/>
+				<Fragment key={`${dish._id}1`}>
+					<h3 className="category">
+						{categories.includes(dish.category)
+							? null
+							: categories.push(dish.category) && dish.category}
+					</h3>
+					<div className="dish-container">
+						<div className="dish-image-container">
+							<img
+								onClick={(e) => zoomInImage(e, dish._id)}
+								onMouseEnter={(e) => zoomInImage(e, dish._id)}
+								onMouseLeave={(e) => setIsZoom(false)}
+								src={`/api/menu/get-dish-image/${dish._id}`}
+								alt="dish-image"
+							/>
+						</div>
+						<div
+							onClick={(e) => showAllDish(e, dish)}
+							className="dish-details-text"
+						>
+							<span className="dish-name">{dish.dish}</span>
+							<span className="dish-description">{dish.description}</span>
+							<span className="dish-price">{dish.price}&#8362;</span>
+						</div>
+						<div className="add-to-cart">
+							<i
+								onClick={(e) => addToCart(e, dish)}
+								className="fas fa-plus"
+							></i>
+						</div>
 					</div>
-					<div
-						onClick={(e) => showAllDish(e, dish)}
-						className="dish-details-text"
-					>
-						<span className="dish-name">{dish.dish}</span>
-						<span className="dish-description">{dish.description}</span>
-						<span className="dish-price">{dish.price}&#8362;</span>
-					</div>
-					<div className="add-to-cart">
-						<i onClick={(e) => addToCart(e, dish)} className="fas fa-plus"></i>
-					</div>
-				</div>
+				</Fragment>
 			);
 		});
 	};

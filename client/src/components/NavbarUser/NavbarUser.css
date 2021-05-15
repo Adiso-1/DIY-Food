@@ -1,10 +1,10 @@
 .navbar-container-small {
 	background: var(--main-color);
-	padding: 10px 30px;
+	padding: 0px 30px;
 	display: flex;
 	justify-content: space-between;
 	position: relative;
-	margin-bottom: 20px;
+	margin-bottom: 0px;
 	top: 0;
 	width: 100%;
 	align-items: center;
@@ -63,13 +63,13 @@
 
 .menu-open {
 	position: absolute;
-	height: calc(100% - 96px);
+	height: calc(100% - 76px);
 	width: 100%;
 	background: transparent;
 	overflow: hidden;
 	z-index: 1;
 	display: flex;
-	top: 96px;
+	top: 76px;
 }
 .left-side {
 	width: 30%;

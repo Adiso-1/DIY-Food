@@ -181,6 +181,9 @@
 	width: 100%;
 	margin: 0 10px;
 }
+.category {
+	padding: 5px 15px;
+}
 @media screen and (max-width: 1000px) {
 	.menu-empty {
 		max-width: 90%;

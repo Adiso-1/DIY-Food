@@ -33,6 +33,7 @@ const RestaurantMenu = () => {
 			setDish('');
 			setDescription('');
 			setPrice('');
+			setCategory('');
 			setSuccessMsg('Dish Added successfully');
 		} catch (error) {
 			setTimeout(() => {

@@ -33,7 +33,12 @@ const UsersHome = ({ history }) => {
 			return (
 				// TODO - Find a path name to make an order
 				<div key={el._id} className="restaurant-profile">
-					<div className="logo-container">
+					<div
+						style={{
+							background: `url(/api/restaurants/profile/coverPhoto/${el._id}) no-repeat top center/cover`,
+						}}
+						className="logo-container"
+					>
 						<img
 							src={`/api/restaurants/profile/${el._id}`}
 							alt="Restaurant-Logo"
@@ -82,7 +87,9 @@ const UsersHome = ({ history }) => {
 	return (
 		<div className="user-home">
 			<Navbar />
-
+			<div className="delivery-cover">
+				<img src="/images/food-cover.png" alt="food-delivery" />
+			</div>
 			<div className="restaurants-grid">{renderRestaurants()}</div>
 		</div>
 	);
