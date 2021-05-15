@@ -91,6 +91,8 @@
 	text-align: center;
 	height: fit-content;
 	padding: 20px;
+	position: sticky;
+	top: 30px;
 }
 .cart .cart-button {
 	width: 100%;
@@ -218,7 +220,7 @@
 		padding: 5px 0;
 	}
 	.dish-description {
-		max-width: 250px;
+		max-width: 235px;
 		font-size: 14px;
 	}
 	.dish-image-container img {

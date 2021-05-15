@@ -40,8 +40,22 @@ const orederSchema = new Schema({
 		required: true,
 	},
 	deliveryAddress: {
-		type: String,
-		required: true,
+		city: {
+			type: String,
+			required: [true, 'Please add a city'],
+		},
+		street: {
+			type: String,
+			required: [true, 'Please add a street'],
+		},
+		number: {
+			type: String,
+			required: [true, 'Please add a number'],
+		},
+		apartment: {
+			type: String,
+			required: [true, 'Please add an apartment'],
+		},
 	},
 	isCompleted: {
 		type: String,
@@ -49,7 +63,7 @@ const orederSchema = new Schema({
 	},
 	dateAdded: {
 		type: Date,
-		default: new Date(),
+		default: Date.now(),
 	},
 });
 

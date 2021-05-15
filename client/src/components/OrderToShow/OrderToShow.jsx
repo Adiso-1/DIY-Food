@@ -13,14 +13,18 @@ const OrderToShow = (props) => {
 			<div className="pop-order-details">
 				<table>
 					<thead>
-						<th>Dish</th>
-						<th>Amount</th>
+						<tr>
+							<th>Dish</th>
+							<th>Amount</th>
+						</tr>
 					</thead>
 					{props.data.cart.map((dish) => {
 						return (
-							<tbody>
-								<td>{dish.dishName}</td>
-								<td>{dish.amount}</td>
+							<tbody key={dish._id}>
+								<tr>
+									<td>{dish.dishName}</td>
+									<td>{dish.amount}</td>
+								</tr>
 							</tbody>
 						);
 					})}

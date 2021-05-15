@@ -2,14 +2,20 @@ import { useRef, useState, useEffect } from 'react';
 import Button from '../../../components/Button/Button';
 import api from '../../../api/api';
 import './Payment.css';
+import Address from '../../../components/Address/Address';
 
 const Payment = (props) => {
 	const [cardOwner, setCardOwner] = useState('');
 	const [cardNumber, setCardNumber] = useState('');
 	const [CVV, setCVV] = useState('');
-	const [deliveryAddress, setDeliveryAddress] = useState('');
 	const [isSuccessMsg, SetIsSuccessMsg] = useState(false);
-	const inputRef = useRef();
+	const [city, setCity] = useState('');
+	const [street, setStreet] = useState('');
+	const [number, setNumber] = useState('');
+	const [apartment, setApartment] = useState('');
+	const inputRef = useRef(null);
+	const addressRef = useRef(null);
+	const [isChecked, setIsChecked] = useState(true);
 
 	const onsubmit = async (e) => {
 		e.preventDefault();
@@ -20,6 +26,17 @@ const Payment = (props) => {
 			},
 		};
 		const cart = [];
+		let deliveryAddress;
+		if (!isChecked) {
+			deliveryAddress = {
+				city,
+				street,
+				number,
+				apartment,
+			};
+		} else {
+			deliveryAddress = props.user.address;
+		}
 		props.cart.map((el) => {
 			const obj = {
 				dish_id: el._id,
@@ -47,13 +64,15 @@ const Payment = (props) => {
 			SetIsSuccessMsg(false);
 			props.clearCart();
 			props.closePayment(false);
-			props.renderUser();
+			window.location.reload();
 		}, 2000);
 		SetIsSuccessMsg(true);
 	};
 
 	useEffect(() => {
+		// addressRef.current.checked;
 		inputRef.current.focus();
+		console.log(props);
 	}, []);
 
 	return (
@@ -79,14 +98,31 @@ const Payment = (props) => {
 						/>
 					</div>
 
-					<div className="delivery-address">
-						<label htmlFor="delivery-address">Delivery Address:</label>
-						<input
-							value={deliveryAddress}
-							onChange={(e) => setDeliveryAddress(e.target.value)}
-							type="text"
-							id="delivery-address"
-							required
+					<div className="delivery-address-cotainer">
+						<div className="is-same-address">
+							<input
+								ref={addressRef}
+								type="checkbox"
+								id="same-address"
+								name="same-address"
+								onChange={(e) => setIsChecked(!e.target.checked)}
+							/>
+							<label htmlFor="same-address">
+								Do you want to change the delivery address?
+							</label>
+						</div>
+
+						<Address
+							city={city}
+							setCity={setCity}
+							street={street}
+							setStreet={setStreet}
+							number={number}
+							setNumber={setNumber}
+							apartment={apartment}
+							setApartment={setApartment}
+							isChecked={isChecked}
+							setCity={setCity}
 						/>
 					</div>
 
@@ -109,6 +145,8 @@ const Payment = (props) => {
 							type="text"
 							id="cvv"
 							required
+							maxLength={3}
+							minLength={3}
 						/>
 					</div>
 					<div className="total">

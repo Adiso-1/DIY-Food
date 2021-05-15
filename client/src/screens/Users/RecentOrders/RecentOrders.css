@@ -14,3 +14,40 @@ td {
 tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
+.table {
+	overflow-x: scroll;
+}
+@media screen and (max-width: 1048px) {
+	.uncompleted-orders,
+	.completed-orders {
+		width: auto;
+	}
+	.uncompleted-orders table,
+	.completed-orders table {
+		overflow-x: scroll;
+		white-space: nowrap;
+	}
+	.uncompleted-table th,
+	.uncompleted-table td,
+	.completed-table th,
+	.completed-table td {
+		padding: 8px 8px;
+	}
+}
+@media screen and (max-width: 450px) {
+	.uncompleted-orders,
+	.completed-orders {
+		width: auto;
+	}
+	.uncompleted-orders table,
+	.completed-orders table {
+		overflow-x: scroll;
+		white-space: nowrap;
+	}
+	.uncompleted-table th,
+	.uncompleted-table td,
+	.completed-table th,
+	.completed-table td {
+		padding: 8px 8px;
+	}
+}

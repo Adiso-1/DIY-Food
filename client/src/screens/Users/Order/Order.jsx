@@ -25,11 +25,11 @@ const Order = ({ history }) => {
 			},
 		};
 		const { data } = await api.get('/users/profile', config);
-		console.log(data);
 		setUser(data);
 	};
 
 	useEffect(() => {
+		renderUser();
 		const getRestaurantDetails = async () => {
 			try {
 				const { data } = await api.get(`/restaurants/profile/menu/${id}`);
@@ -238,6 +238,7 @@ const Order = ({ history }) => {
 			{isOpenPayment && (
 				<Payment
 					restaurant={restaurantDetails._id}
+					user={user}
 					price={getTotalPrice()}
 					closePayment={setIsOpenPayment}
 					cart={cart}
