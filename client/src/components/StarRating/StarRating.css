@@ -1,0 +1,24 @@
+.order-to-feedback {
+	width: 500px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	box-shadow: 0px 0px 10px 0px #333;
+	text-align: center;
+}
+
+input[type='radio'] {
+	display: none;
+}
+.star {
+	cursor: pointer;
+	transition: color 0.2s;
+}
+.stars-container {
+	margin: 10px 0;
+}
+.leave-feedback button {
+	margin-bottom: 10px;
+}

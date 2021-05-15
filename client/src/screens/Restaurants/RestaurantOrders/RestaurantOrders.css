@@ -5,3 +5,38 @@
 	cursor: pointer;
 	color: rgb(70, 181, 70);
 }
+/* @media screen and (max-width: 1048px) {
+	.uncompleted-orders,
+	.completed-orders {
+		width: auto;
+	}
+	.uncompleted-orders table,
+	.completed-orders table {
+		overflow-x: scroll;
+		white-space: nowrap;
+	}
+	.uncompleted-table th,
+	.uncompleted-table td,
+	.completed-table th,
+	.completed-table td {
+		padding: 8px 12px;
+	}
+} */
+.table::-webkit-scrollbar {
+	height: 5px;
+}
+
+/* Track */
+.table::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+.table::-webkit-scrollbar-thumb {
+	background: #222;
+}
+
+/* Handle on hover */
+.table::-webkit-scrollbar-thumb:hover {
+	background: #222;
+}

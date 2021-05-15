@@ -2,9 +2,6 @@ import { useEffect } from 'react';
 import './OrderToShow.css';
 
 const OrderToShow = (props) => {
-	useEffect(() => {
-		console.log(props.data);
-	}, []);
 	return (
 		<div className="pop-up-order">
 			<div className="exit-button">

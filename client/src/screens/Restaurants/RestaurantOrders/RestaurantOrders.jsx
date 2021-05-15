@@ -35,67 +35,81 @@ const RestaurantOrders = () => {
 			<Navbar />
 			<div className="uncompleted-orders">
 				<h2>Uncompleted Orders</h2>
-				<table className="uncompleted-table">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Phone</th>
-							<th>Date</th>
-							<th>Delivered To</th>
-							<th>Price</th>
-							<th>Mark As Completed</th>
-							<th></th>
-						</tr>
-					</thead>
-					{orders.map((el) =>
-						el.isCompleted === 'false' ? (
-							<tbody key={el._id}>
-								<tr>
-									<td>{el.owner}</td>
-									<td>{el.userPhone}</td>
-									<td>{el.deliveryAddress}</td>
-									<td>{dateFormat(el.dateAdded, 'dd/mm/yy HH:MM:ss')}</td>
-									<td>{el.price}&#8362;</td>
-									<td className="mark-as-completed">
-										<i
-											onClick={(e) => markAsCompleted(e, el)}
-											className="fas fa-check"
-										></i>
-									</td>
-									<td onClick={(e) => setOrderToShow(el)}>
-										<span className="show-details-span">Show details</span>
-									</td>
-								</tr>
-							</tbody>
-						) : null
-					)}
-				</table>
+				<div className="table">
+					<table className="uncompleted-table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Phone</th>
+								<th>Delivered To</th>
+								<th>Date</th>
+								<th>Price</th>
+								<th>Mark As Completed</th>
+								<th></th>
+							</tr>
+						</thead>
+						{orders.map((el) =>
+							el.isCompleted === 'false' ? (
+								<tbody key={el._id}>
+									<tr>
+										<td>{el.owner}</td>
+										<td>{el.userPhone}</td>
+										<td>
+											{el.deliveryAddress.city}, {el.deliveryAddress.street},{' '}
+											{el.deliveryAddress.number}/{el.deliveryAddress.apartment}
+										</td>
+										<td>{dateFormat(el.dateAdded, 'dd/mm/yy HH:MM:ss')}</td>
+										<td>{el.price}&#8362;</td>
+										<td className="mark-as-completed">
+											<i
+												onClick={(e) => markAsCompleted(e, el)}
+												className="fas fa-check"
+											></i>
+										</td>
+										<td onClick={(e) => setOrderToShow(el)}>
+											<span className="show-details-span">Show details</span>
+										</td>
+									</tr>
+								</tbody>
+							) : null
+						)}
+					</table>
+				</div>
 			</div>
 
 			<div className="completed-orders">
 				<h2>Completed Orders</h2>
-				<table className="uncompleted-table">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Delivered To</th>
-							<th>Date</th>
-							<th>Price</th>
-						</tr>
-					</thead>
-					{orders.map((el) =>
-						el.isCompleted === 'true' ? (
-							<tbody key={el._id}>
-								<tr>
-									<td>{el.owner}</td>
-									<td>{el.deliveryAddress}</td>
-									<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
-									<td>{el.price}&#8362;</td>
-								</tr>
-							</tbody>
-						) : null
-					)}
-				</table>
+				<div className="table">
+					<table className="uncompleted-table">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Delivered To</th>
+								<th>Date</th>
+								<th>Price</th>
+								<th></th>
+							</tr>
+						</thead>
+						{orders.map((el) =>
+							el.isCompleted === 'true' ? (
+								<tbody key={el._id}>
+									<tr>
+										<td>{el.owner}</td>
+										<td>
+											{el.deliveryAddress.city}, {el.deliveryAddress.street},{' '}
+											{el.deliveryAddress.number}/{el.deliveryAddress.apartment}
+										</td>
+										<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+										<td>{el.price}&#8362;</td>
+										<td onClick={(e) => setOrderToShow(el)}>
+											<span className="show-details-span">Show details</span>
+										</td>
+									</tr>
+								</tbody>
+							) : null
+						)}
+					</table>
+				</div>
 			</div>
 			{orderToShow && (
 				<OrderToShow data={orderToShow} closePopUp={setOrderToShow} />

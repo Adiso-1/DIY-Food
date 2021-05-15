@@ -2,12 +2,14 @@ import Navbar from '../../../components/NavbarUser/NavbarUser';
 import api from '../../../api/api';
 import { useState, useEffect } from 'react';
 import OrderToShow from '../../../components/OrderToShow/OrderToShow';
+import StarRating from '../../../components/StarRating/StarRating';
 import dateFormat from 'dateformat';
 import './RecentOrders.css';
 
 const RecentOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [orderToShow, setOrderToShow] = useState(null);
+	const [orderTofeedback, setOrderTofeedback] = useState(false);
 
 	const getUserInfo = async () => {
 		const config = {
@@ -74,6 +76,7 @@ const RecentOrders = () => {
 								<th>Delivered To</th>
 								<th>Price</th>
 								<th></th>
+								<th></th>
 							</tr>
 						</thead>
 						{orders.map((el) =>
@@ -92,6 +95,11 @@ const RecentOrders = () => {
 										<td onClick={(e) => setOrderToShow(el)}>
 											<span className="show-details-span">Show details</span>
 										</td>
+										<td onClick={(e) => setOrderTofeedback(el)}>
+											<span className="leave-feedback-span">
+												Leave feedback
+											</span>
+										</td>
 									</tr>
 								</tbody>
 							) : null
@@ -100,6 +108,9 @@ const RecentOrders = () => {
 				</div>
 				{orderToShow && (
 					<OrderToShow data={orderToShow} closePopUp={setOrderToShow} />
+				)}
+				{orderTofeedback && (
+					<StarRating data={orderTofeedback} closePopUp={setOrderTofeedback} />
 				)}
 			</div>
 		</div>

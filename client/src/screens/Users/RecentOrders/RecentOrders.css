@@ -1,6 +1,7 @@
 .uncompleted-orders,
 .completed-orders {
 	padding: 10px;
+	width: 1200px;
 }
 table {
 	border-collapse: collapse;
@@ -14,10 +15,34 @@ td {
 tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
-.table {
-	overflow-x: scroll;
+thead,
+tbody {
+	white-space: nowrap;
 }
-@media screen and (max-width: 1048px) {
+.table::-webkit-scrollbar {
+	height: 5px;
+}
+.leave-feedback-span {
+	cursor: pointer;
+}
+/* Track */
+.table::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+.table::-webkit-scrollbar-thumb {
+	background: #222;
+}
+
+/* Handle on hover */
+.table::-webkit-scrollbar-thumb:hover {
+	background: #222;
+}
+@media screen and (max-width: 1100px) {
+	.table {
+		overflow-x: scroll;
+	}
 	.uncompleted-orders,
 	.completed-orders {
 		width: auto;
@@ -27,14 +52,18 @@ tr:nth-child(even) {
 		overflow-x: scroll;
 		white-space: nowrap;
 	}
+
 	.uncompleted-table th,
 	.uncompleted-table td,
 	.completed-table th,
 	.completed-table td {
-		padding: 8px 8px;
+		padding: 8px 12px;
 	}
 }
-@media screen and (max-width: 450px) {
+@media only screen and (max-width: 450px) {
+	.table {
+		overflow-x: scroll;
+	}
 	.uncompleted-orders,
 	.completed-orders {
 		width: auto;
@@ -44,10 +73,16 @@ tr:nth-child(even) {
 		overflow-x: scroll;
 		white-space: nowrap;
 	}
+	.uncompleted-orders table {
+		margin: 0 auto;
+	}
 	.uncompleted-table th,
 	.uncompleted-table td,
 	.completed-table th,
 	.completed-table td {
-		padding: 8px 8px;
+		padding: 8px 12px;
+	}
+	.table::-webkit-scrollbar {
+		height: 0px;
 	}
 }
