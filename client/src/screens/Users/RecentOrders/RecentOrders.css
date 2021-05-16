@@ -60,6 +60,14 @@ tbody {
 		padding: 8px 12px;
 	}
 }
+.star-full {
+	cursor: auto;
+	color: #ffc107;
+}
+.star-empty {
+	cursor: auto;
+	color: #e4e5e9;
+}
 @media only screen and (max-width: 450px) {
 	.table {
 		overflow-x: scroll;

@@ -1,13 +1,38 @@
 import { useState } from 'react';
+import api from '../../api/api';
 import Button from '../Button/Button';
 import './StarRating.css';
 const StarRating = (props) => {
 	const [rating, setRating] = useState(null);
 	const [hover, setHover] = useState(null);
-	console.log(props);
+	const [feedbackMsg, setFeedbackMsg] = useState(null);
+	const [errorMsg, setErrorMsg] = useState(null);
 
-	const saveFeedback = () => {
-		props.closePopUp(null);
+	const saveFeedback = async () => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
+		try {
+			await api.post(
+				`/users/addRating/${props.data._id}?rating=${rating}`,
+				{},
+				config
+			);
+			setTimeout(() => {
+				setFeedbackMsg(null);
+				props.closePopUp(null);
+				props.getUserInfo();
+			}, 2000);
+			setFeedbackMsg('Thank you for your feedback');
+		} catch (error) {
+			setTimeout(() => {
+				setErrorMsg(null);
+			}, 2000);
+			setErrorMsg(error.response.data.error);
+		}
 	};
 
 	return (
@@ -21,7 +46,7 @@ const StarRating = (props) => {
 					{[...Array(5)].map((star, i) => {
 						const ratingValue = i + 1;
 						return (
-							<label>
+							<label key={i}>
 								<input
 									type="radio"
 									name="rating"
@@ -40,6 +65,10 @@ const StarRating = (props) => {
 							</label>
 						);
 					})}
+				</div>
+				<div className="on-feedback-submit">
+					{feedbackMsg && <h3>{feedbackMsg}</h3>}
+					{errorMsg && <h3>{errorMsg}</h3>}
 				</div>
 				<Button onClick={saveFeedback} text="Save Feedback" />
 			</div>

@@ -76,7 +76,7 @@ const RecentOrders = () => {
 								<th>Date</th>
 								<th>Delivered To</th>
 								<th>Price</th>
-								<th></th>
+								<th>Your feedback</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -93,13 +93,24 @@ const RecentOrders = () => {
 											<span>{el.deliveryAddress.apartment}</span>
 										</td>
 										<td>{el.price}&#8362;</td>
+										{el.rating ? (
+											<td>
+												{[...Array(Number(el.rating))].map((e) => (
+													<i className="fas fa-star star-full"></i>
+												))}
+												{[...Array(Number(5 - el.rating))].map((e) => (
+													<i className="fas fa-star star-empty"></i>
+												))}
+											</td>
+										) : (
+											<td onClick={(e) => setOrderTofeedback(el)}>
+												<span className="leave-feedback-span">
+													Leave feedback
+												</span>
+											</td>
+										)}
 										<td onClick={(e) => setOrderToShow(el)}>
 											<span className="show-details-span">Show details</span>
-										</td>
-										<td onClick={(e) => setOrderTofeedback(el)}>
-											<span className="leave-feedback-span">
-												Leave feedback
-											</span>
 										</td>
 									</tr>
 								</tbody>
@@ -111,7 +122,11 @@ const RecentOrders = () => {
 					<OrderToShow data={orderToShow} closePopUp={setOrderToShow} />
 				)}
 				{orderTofeedback && (
-					<StarRating data={orderTofeedback} closePopUp={setOrderTofeedback} />
+					<StarRating
+						data={orderTofeedback}
+						closePopUp={setOrderTofeedback}
+						getUserInfo={getUserInfo}
+					/>
 				)}
 			</div>
 		</div>

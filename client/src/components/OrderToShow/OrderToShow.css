@@ -16,7 +16,8 @@
 	cursor: pointer;
 	color: red;
 }
-.show-details-span {
+.show-details-span,
+.leave-feedback-span {
 	background: black;
 	color: #fff;
 	padding: 4px 10px;
@@ -27,6 +28,16 @@
 }
 .show-details-span:hover {
 	background: rgb(52, 52, 52);
+	box-shadow: 0px 0px 10px 0px rgba(68, 68, 68, 0.6);
+}
+
+.leave-feedback-span {
+	color: black;
+	background: #ffc107;
+	font-weight: bold;
+}
+.leave-feedback-span:hover {
+	background: #ffc824;
 	box-shadow: 0px 0px 10px 0px rgba(68, 68, 68, 0.6);
 }
 .uncompleted-orders,
