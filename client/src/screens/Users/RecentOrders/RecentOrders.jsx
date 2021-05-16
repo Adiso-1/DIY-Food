@@ -56,7 +56,7 @@ const RecentOrders = () => {
 										</td>
 										<td>{el.price}&#8362;</td>
 										<td onClick={(e) => setOrderToShow(el)}>
-											<span className="show-details-span">Show details</span>
+											<span className="show-details-span">Show order</span>
 										</td>
 									</tr>
 								</tbody>
@@ -110,7 +110,7 @@ const RecentOrders = () => {
 											</td>
 										)}
 										<td onClick={(e) => setOrderToShow(el)}>
-											<span className="show-details-span">Show details</span>
+											<span className="show-details-span">Show order</span>
 										</td>
 									</tr>
 								</tbody>
