@@ -5,7 +5,6 @@ import './Payment.css';
 import Address from '../../../components/Address/Address';
 
 const Payment = (props) => {
-	console.log(props);
 	const [cardOwner, setCardOwner] = useState('');
 	const [cardNumber, setCardNumber] = useState('');
 	const [CVV, setCVV] = useState('');

@@ -7,22 +7,45 @@ import Button from '../../../components/Button/Button';
 
 const UsersHome = ({ history }) => {
 	const [restaurantsData, setRestaurantsData] = useState([]);
+	const [personalDetails, setPersonalDetails] = useState(null);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
-			return history.push(`${path}/login`);
+			return history.push(`users/login`);
 		}
-		const getAllRestaurants = async () => {
+		const fetchUser = async () => {
+			const config = {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				},
+			};
 			try {
-				const { data } = await api.get(`${path}/getAllRestaurants`);
-				setRestaurantsData(data);
+				const { data } = await api.get(`users/profile`, config);
+				setPersonalDetails(data);
 			} catch (error) {
 				console.log(error);
 			}
 		};
-		getAllRestaurants();
+		fetchUser();
+	}, []);
+
+	const getAllRestaurants = async () => {
+		try {
+			const { data } = await api.get(`${path}/getAllRestaurants`);
+			setRestaurantsData(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	useEffect(() => {
+		if (!localStorage.getItem('authToken')) {
+			return history.push(`${path}/login`);
+		} else {
+			getAllRestaurants();
+		}
 	}, []);
 
 	const renderRestaurants = () => {
@@ -31,7 +54,6 @@ const UsersHome = ({ history }) => {
 		}
 		return restaurantsData.map((el) => {
 			return (
-				// TODO - Find a path name to make an order
 				<div key={el._id} className="restaurant-profile">
 					<div
 						style={{
@@ -98,7 +120,7 @@ const UsersHome = ({ history }) => {
 	};
 	return (
 		<div className="user-home">
-			<Navbar />
+			<Navbar personalDetails={personalDetails} />
 			<div className="delivery-cover">
 				<img src="/images/food-cover.png" alt="food-delivery" />
 			</div>

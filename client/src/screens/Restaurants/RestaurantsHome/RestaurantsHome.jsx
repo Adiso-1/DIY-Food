@@ -244,7 +244,7 @@ const RestaurantsHome = ({ history }) => {
 	};
 	return (
 		<div>
-			<Navbar />
+			<Navbar personalDetails={restaurantData} />
 			<div className="menu-container">
 				{isMenuEmpty ? (
 					<div className="menu-empty">

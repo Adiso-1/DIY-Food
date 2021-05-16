@@ -163,7 +163,7 @@ const Order = ({ history }) => {
 	};
 	return (
 		<div className="menu-container">
-			<Navbar />
+			<Navbar personalDetails={user} />
 			{Object.keys(restaurantDetails).length === 0 ? null : (
 				<div className="restaurant-display">
 					<div className="restaurant-details"></div>

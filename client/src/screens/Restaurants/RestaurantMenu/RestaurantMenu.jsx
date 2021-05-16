@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../../api/api';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import './RestaurantMenu.css';
 
-const RestaurantMenu = () => {
+const RestaurantMenu = ({ history }) => {
+	const [personalDetails, setPersonalDetails] = useState(null);
 	const [dish, setDish] = useState('');
 	const [description, setDescription] = useState('');
 	const [price, setPrice] = useState('');
@@ -18,6 +19,20 @@ const RestaurantMenu = () => {
 			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 		},
 	};
+	useEffect(() => {
+		if (!localStorage.getItem('authToken')) {
+			return history.push(`/restaurants/login`);
+		}
+		const renderRestaurant = async () => {
+			try {
+				const { data } = await api.get(`/restaurants/profile`, config);
+				setPersonalDetails(data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
+		renderRestaurant();
+	}, []);
 
 	const addHandler = async (e) => {
 		e.preventDefault();
@@ -44,7 +59,7 @@ const RestaurantMenu = () => {
 	};
 	return (
 		<div className="restaurant-menu-container">
-			<Navbar />
+			<Navbar personalDetails={personalDetails} />
 			<div onSubmit={addHandler} className="add-dish-container">
 				<form className="login-screen__form">
 					<h2>Add Your New Dish</h2>

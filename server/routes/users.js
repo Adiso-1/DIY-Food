@@ -15,6 +15,7 @@ const {
 	getAllRestaurants,
 	getRestaurant,
 	addRating,
+	updateProfile,
 } = require('../controllers/users.js');
 
 const upload = multer({
@@ -55,7 +56,7 @@ router.delete(
 	}
 );
 router.get('/profile/:id', getUserImage);
-
 router.post('/addRating/:id', auth, addRating);
+router.patch('/updateUser', auth, updateProfile);
 
 module.exports = router;

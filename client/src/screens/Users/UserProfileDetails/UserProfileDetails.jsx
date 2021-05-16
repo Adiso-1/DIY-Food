@@ -10,24 +10,25 @@ const UserProfileDetails = ({ history }) => {
 	const [success, setSuccess] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
 	const fileInput = useRef();
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-		},
+
+	const fetchUser = async () => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
+		try {
+			const { data } = await api.get(`users/profile`, config);
+			setPersonalDetails(data);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`users/login`);
 		}
-		const fetchUser = async () => {
-			try {
-				const { data } = await api.get(`users/profile`, config);
-				setPersonalDetails(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
 		fetchUser();
 	}, []);
 
@@ -48,7 +49,7 @@ const UserProfileDetails = ({ history }) => {
 			await api.post('/users/profile/upload', fd, config);
 			setTimeout(() => {
 				setSuccess(false);
-				window.location.reload();
+				fetchUser();
 			}, 2000);
 			setSuccessMessage('');
 			setSuccess(true);
@@ -67,7 +68,7 @@ const UserProfileDetails = ({ history }) => {
 			await api.delete('/users/profile/upload', config);
 			setTimeout(() => {
 				setSuccessMessage('');
-				window.location.reload();
+				fetchUser();
 			}, 2000);
 			setSuccessMessage('Profile image deleted');
 		} catch (error) {
@@ -76,7 +77,7 @@ const UserProfileDetails = ({ history }) => {
 	};
 	return (
 		<div className="user-details">
-			<Navbar />
+			<Navbar personalDetails={personalDetails} />
 			{personalDetails && (
 				<div className="update-details">
 					<h2>Update your details</h2>

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import RestaurantsHome from './screens/Restaurants/RestaurantsHome/RestaurantsHome';

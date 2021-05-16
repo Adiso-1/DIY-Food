@@ -25,16 +25,16 @@ const RestaurantOrders = () => {
 		getOrders();
 	}, []);
 
-	const markAsCompleted = (e, el) => {
-		api.patch(`/orders/markAsCompleted/${el._id}`, {}, config);
+	const markAsCompleted = async (e, el) => {
+		await api.patch(`/orders/markAsCompleted/${el._id}`, {}, config);
 		getOrders();
 	};
 
 	return (
 		<div>
-			<Navbar />
+			<Navbar restaurantOrders={orders} />
 			<div className="uncompleted-orders">
-				<h2>Uncompleted Orders</h2>
+				<h2>Awaiting to delivered</h2>
 				<div className="table">
 					<table className="uncompleted-table">
 						<thead>
@@ -78,12 +78,13 @@ const RestaurantOrders = () => {
 			</div>
 
 			<div className="completed-orders">
-				<h2>Completed Orders</h2>
+				<h2>Delivered Orders</h2>
 				<div className="table">
 					<table className="uncompleted-table">
 						<thead>
 							<tr>
 								<th>Name</th>
+								<th>Phone</th>
 								<th>Delivered To</th>
 								<th>Date</th>
 								<th>Price</th>
@@ -96,11 +97,12 @@ const RestaurantOrders = () => {
 								<tbody key={el._id}>
 									<tr>
 										<td>{el.owner}</td>
+										<td>{el.userPhone}</td>
 										<td>
 											{el.deliveryAddress.city}, {el.deliveryAddress.street},{' '}
 											{el.deliveryAddress.number}/{el.deliveryAddress.apartment}
 										</td>
-										<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
+										<td>{dateFormat(el.dateAdded, 'dd/mm/yy HH:MM:ss')}</td>
 										<td>{el.price}&#8362;</td>
 										{el.rating ? (
 											<td>

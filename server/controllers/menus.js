@@ -2,7 +2,7 @@ const Menu = require('../models/menu.model');
 const sharp = require('sharp');
 const ErrorResponse = require('../utils/errorResponse');
 
-const addDish = async (req, res) => {
+const addDish = async (req, res, next) => {
 	try {
 		const menu = new Menu({
 			...req.body,
@@ -11,7 +11,7 @@ const addDish = async (req, res) => {
 		await menu.save();
 		res.status(201).send(menu);
 	} catch (error) {
-		res.status(400).send(error);
+		next(error);
 	}
 };
 

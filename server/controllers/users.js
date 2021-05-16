@@ -34,7 +34,6 @@ const forgotPassword = async (req, res) => {
 	try {
 		const user = await User.findOne({ email });
 		if (!user) {
-			res.status(400).json('Email could not be sent');
 			return new Error('Email could not be sent');
 		}
 		const resetToken = await user.getResetPasswordToken();
@@ -85,7 +84,8 @@ const resetPassword = async (req, res, next) => {
 		await user.save();
 		res.status(201).json('Password Reset Success');
 	} catch (error) {
-		res.status(400).json(error);
+		// res.status(400).json(error);
+		return next(new ErrorResponse('Token Expired', 404));
 	}
 };
 
@@ -124,7 +124,7 @@ const uploadProfileImage = async (req, res) => {
 	res.status(201).send();
 };
 
-const getUserImage = async (req, res) => {
+const getUserImage = async (req, res, next) => {
 	try {
 		const user = await User.findById(req.params.id);
 
@@ -134,7 +134,7 @@ const getUserImage = async (req, res) => {
 		res.set('Content-Type', 'image/png');
 		res.send(user.avatar);
 	} catch (error) {
-		res.status(404).send();
+		next(error);
 	}
 };
 
@@ -178,6 +178,19 @@ const addRating = async (req, res, next) => {
 	}
 };
 
+const updateProfile = async (req, res, next) => {
+	try {
+		const user = await User.findByIdAndUpdate(
+			req.user._id,
+			{ ...req.user.toObject(), ...req.body },
+			{ new: true }
+		);
+		res.send(user);
+	} catch (error) {
+		return next(new ErrorResponse('User not found', 404));
+	}
+};
+
 module.exports = {
 	signUp,
 	login,
@@ -192,4 +205,5 @@ module.exports = {
 	getAllRestaurants,
 	getRestaurant,
 	addRating,
+	updateProfile,
 };

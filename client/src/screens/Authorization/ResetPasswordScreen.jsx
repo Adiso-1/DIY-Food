@@ -35,9 +35,9 @@ const ResetPasswordScreen = ({ history, match }) => {
 			buttonRef.current.disabled = true;
 			setTimeout(() => {
 				history.push(`${path}/login`);
-			}, 10000);
+			}, 5000);
 		} catch (error) {
-			setError(error);
+			setError(error.response.data.error);
 			setTimeout(() => {
 				setError('');
 			}, 2000);

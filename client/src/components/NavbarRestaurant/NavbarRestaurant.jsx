@@ -3,40 +3,33 @@ import { Link, useHistory } from 'react-router-dom';
 import api from '../../api/api';
 import './NavbarRestaurant.css';
 
-const Navbar = () => {
+const Navbar = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [personalDetails, setPersonalDetails] = useState(null);
-	const [restauramtOrders, setRestauramtOrders] = useState([]);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
-	const renderRestaurant = async () => {
-		try {
-			const { data } = await api.get(`restaurants/profile`, config);
-			const response = await api.get(`/orders/restaurantInfo`, config);
-			setRestauramtOrders(response.data);
-			setPersonalDetails(data);
-		} catch (error) {
-			console.log(error);
-			localStorage.removeItem('authToken');
-			history.push('/restaurants/login');
-		}
-	};
+	// const renderRestaurant = async () => {
+	// 	try {
+	// 	} catch (error) {
+	// 		localStorage.removeItem('authToken');
+	// 		history.push('/restaurants/login');
+	// 	}
+	// };
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`restaurants/login`);
 		}
-		renderRestaurant();
+		// renderRestaurant();
 	}, []);
 
-	useEffect(() => {
-		if (personalDetails && personalDetails.logo) {
-			const getImage = async () => {
-				await api.get(`/restaurants/profile/${personalDetails._id}`);
-			};
-			getImage();
-		}
-	}, [personalDetails]);
+	// useEffect(() => {
+	// 	if (props.personalDetails && props.personalDetails.logo) {
+	// 		const getImage = async () => {
+	// 			await api.get(`/restaurants/profile/${props.personalDetails._id}`);
+	// 		};
+	// 		getImage();
+	// 	}
+	// }, [props.personalDetails]);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -77,9 +70,12 @@ const Navbar = () => {
 
 	const checkForUncompleted = () => {
 		let counter = 0;
-		restauramtOrders.forEach((el) =>
-			el.isCompleted === 'false' ? (counter += 1) : null
-		);
+		{
+			props.restaurantOrders &&
+				props.restaurantOrders.forEach((el) =>
+					el.isCompleted === 'false' ? (counter += 1) : null
+				);
+		}
 		return counter;
 	};
 	return (
@@ -131,19 +127,19 @@ const Navbar = () => {
 				>
 					<div className="menu-btn__burger"></div>
 				</div>
-				{personalDetails && (
+				{props.personalDetails && (
 					<div className="welcome-container">
 						<Link to={`${path}/RestaurantProfileDetails`}>
 							<img
 								src={
-									personalDetails.logo
-										? `/api${path}/profile/${personalDetails._id}`
+									props.personalDetails.logo
+										? `/api${path}/profile/${props.personalDetails._id}`
 										: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
 								}
 								alt="restaurant-logo"
 							/>
 						</Link>
-						<span>Hello, {personalDetails.name}</span>
+						<span>Hello, {props.personalDetails.name}</span>
 					</div>
 				)}
 				<Link to="/">

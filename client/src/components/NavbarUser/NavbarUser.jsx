@@ -3,10 +3,10 @@ import { Link, useHistory } from 'react-router-dom';
 import api from '../../api/api';
 import './NavbarUser.css';
 
-const Navbar = () => {
+const Navbar = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [personalDetails, setPersonalDetails] = useState(null);
-	const [userOrders, setUserOrders] = useState([]);
+	// const [props.personalDetails, setPersonalDetails] = useState(null);
+	// const [props.userOrders, setUserOrders] = useState([]);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
@@ -14,33 +14,33 @@ const Navbar = () => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`users/login`);
 		}
-		const fetchUser = async () => {
-			try {
-				const { data } = await api.get(`/users/profile`, config);
-				setPersonalDetails(data);
-			} catch (error) {
-				console.log(error);
-				localStorage.removeItem('authToken');
-				history.push('/users/login');
-			}
-		};
-		fetchUser();
+		// const fetchUser = async () => {
+		// 	try {
+		// 		const { data } = await api.get(`/users/profile`, config);
+		// 		// setPersonalDetails(data);
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 		localStorage.removeItem('authToken');
+		// 		history.push('/users/login');
+		// 	}
+		// };
+		// fetchUser();
 	}, []);
-	useEffect(() => {
-		if (personalDetails && personalDetails.avatar) {
-			const getImage = async () => {
-				await api.get(`/users/profile/${personalDetails._id}`);
-			};
-			getImage();
-		}
-	}, [personalDetails]);
-	useEffect(() => {
-		const getOrders = async () => {
-			const { data } = await api.get('/orders/userInfo', config);
-			setUserOrders(data);
-		};
-		getOrders();
-	}, []);
+	// useEffect(() => {
+	// 	if (props.personalDetails && props.personalDetails.avatar) {
+	// 		const getImage = async () => {
+	// 			await api.get(`/users/profile/${props.personalDetails._id}`);
+	// 		};
+	// 		getImage();
+	// 	}
+	// }, [props.personalDetails]);
+	// useEffect(() => {
+	// 	const getOrders = async () => {
+	// 		const { data } = await api.get('/orders/userInfo', config);
+	// 		// setUserOrders(data);
+	// 	};
+	// 	getOrders();
+	// }, []);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -81,9 +81,12 @@ const Navbar = () => {
 
 	const checkForUncompleted = () => {
 		let counter = 0;
-		userOrders.forEach((el) =>
-			el.isCompleted === 'false' ? (counter += 1) : null
-		);
+		{
+			props.userOrders &&
+				props.userOrders.forEach((el) =>
+					el.isCompleted === 'false' ? (counter += 1) : null
+				);
+		}
 		return counter;
 	};
 	return (
@@ -132,19 +135,19 @@ const Navbar = () => {
 				>
 					<div className="menu-btn__burger"></div>
 				</div>
-				{personalDetails && (
+				{props.personalDetails && (
 					<div className="welcome-container">
 						<Link to={`${path}/UserProfileDetails`}>
 							<img
 								src={
-									personalDetails.avatar
-										? `/api${path}/profile/${personalDetails._id}`
+									props.personalDetails.avatar
+										? `/api${path}/profile/${props.personalDetails._id}`
 										: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
 								}
 								alt="user-avatar"
 							/>
 						</Link>
-						<span>Hello, {personalDetails.name}</span>
+						<span>Hello, {props.personalDetails.name}</span>
 					</div>
 				)}
 				<Link to="/">

@@ -143,7 +143,7 @@ const RestaurantProfileDetails = ({ history }) => {
 
 	return (
 		<div className="user-details">
-			<Navbar />
+			<Navbar personalDetails={personalDetails} />
 			{personalDetails && (
 				<div className="update-details">
 					<h2>Update Restaurants details</h2>

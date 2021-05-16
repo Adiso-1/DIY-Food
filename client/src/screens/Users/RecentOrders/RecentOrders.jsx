@@ -8,6 +8,7 @@ import './RecentOrders.css';
 
 const RecentOrders = () => {
 	const [orders, setOrders] = useState([]);
+	const [personalDetails, setPersonalDetails] = useState(null);
 	const [orderToShow, setOrderToShow] = useState(null);
 	const [orderTofeedback, setOrderTofeedback] = useState(false);
 
@@ -18,6 +19,8 @@ const RecentOrders = () => {
 				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 			},
 		};
+		const respone = await api.get(`users/profile`, config);
+		setPersonalDetails(respone.data);
 		const { data } = await api.get('/orders/userInfo', config);
 		setOrders(data);
 	};
@@ -27,7 +30,7 @@ const RecentOrders = () => {
 
 	return (
 		<div className="recent-orders-container">
-			<Navbar />
+			<Navbar personalDetails={personalDetails} userOrders={orders} />
 			<div className="uncompleted-orders">
 				<h2>Orders On Delivery</h2>
 				<div className="table">
