@@ -76,6 +76,18 @@ const UsersHome = ({ history }) => {
 							<span>&#177; {el.deliveryTime} Minutes</span>
 							<span>Min delivery {el.minPayment}&#8362;</span>
 						</div>
+						<div className="rating-section">
+							<span>
+								{(
+									el.rating.reduce((acc, curr) => {
+										return acc + Number(curr.rate);
+									}, 0) / el.rating.length
+								).toFixed(1)}
+								/5
+							</span>
+							<i className="fas fa-star star-full"></i>
+							<span className="rating-out-of-span"> ({el.rating.length})</span>
+						</div>
 					</div>
 					<Link to={`users/order/${el._id}`}>
 						<Button text="Order Now" />

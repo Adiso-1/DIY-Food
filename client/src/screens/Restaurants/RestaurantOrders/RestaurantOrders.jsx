@@ -87,6 +87,7 @@ const RestaurantOrders = () => {
 								<th>Delivered To</th>
 								<th>Date</th>
 								<th>Price</th>
+								<th>Rating</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -101,6 +102,22 @@ const RestaurantOrders = () => {
 										</td>
 										<td>{dateFormat(el.dateAdded, 'dd/mm/yy')}</td>
 										<td>{el.price}&#8362;</td>
+										{el.rating ? (
+											<td>
+												{[...Array(Number(el.rating))].map((e, i) => (
+													<i key={i} className="fas fa-star star-full"></i>
+												))}
+												{[...Array(Number(5 - el.rating))].map((e, i) => (
+													<i key={i} className="fas fa-star star-empty"></i>
+												))}
+											</td>
+										) : (
+											<td>
+												{[...Array(Number(5))].map((e, i) => (
+													<i key={i} className="fas fa-star star-empty"></i>
+												))}
+											</td>
+										)}
 										<td onClick={(e) => setOrderToShow(el)}>
 											<span className="show-details-span">Show details</span>
 										</td>

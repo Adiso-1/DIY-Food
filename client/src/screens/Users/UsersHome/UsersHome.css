@@ -105,7 +105,12 @@
 	justify-content: center;
 	margin: 0 auto;
 }
-
+.rating-section span {
+	margin-right: 4px;
+}
+.rating-out-of-span {
+	color: #555;
+}
 @media screen and (max-width: 1200px) {
 	.delivery-cover img {
 		width: 100%;

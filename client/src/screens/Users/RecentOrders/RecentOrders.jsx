@@ -95,11 +95,11 @@ const RecentOrders = () => {
 										<td>{el.price}&#8362;</td>
 										{el.rating ? (
 											<td>
-												{[...Array(Number(el.rating))].map((e) => (
-													<i className="fas fa-star star-full"></i>
+												{[...Array(Number(el.rating))].map((e, i) => (
+													<i key={i} className="fas fa-star star-full"></i>
 												))}
-												{[...Array(Number(5 - el.rating))].map((e) => (
-													<i className="fas fa-star star-empty"></i>
+												{[...Array(Number(5 - el.rating))].map((e, i) => (
+													<i key={i} className="fas fa-star star-empty"></i>
 												))}
 											</td>
 										) : (
