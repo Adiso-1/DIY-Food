@@ -32,6 +32,15 @@
 .profile-picture-container input {
 	display: none;
 }
+.update-profile-button {
+	font-weight: bold;
+	cursor: pointer;
+	color: rgb(68, 68, 255);
+	transition: all 0.2s;
+}
+.update-profile-button:hover {
+	color: rgb(31, 31, 255);
+}
 @media screen and (max-width: 450px) {
 	.profile-user-images-buttons {
 		display: flex;

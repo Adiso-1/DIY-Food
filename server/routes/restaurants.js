@@ -17,6 +17,7 @@ const {
 	uploadCoverPhoto,
 	getCoverPhoto,
 	deleteCoverPhoto,
+	updateProfile,
 } = require('../controllers/restaurants.js');
 
 const upload = multer({
@@ -65,6 +66,9 @@ router.post(
 	upload.single('coverPhoto'),
 	uploadCoverPhoto
 );
+
 router.get('/profile/coverPhoto/:id', getCoverPhoto);
 router.delete('/profile/deleteCoverPhoto', auth, deleteCoverPhoto);
+router.patch('/updateRestaurant', auth, updateProfile);
+
 module.exports = router;

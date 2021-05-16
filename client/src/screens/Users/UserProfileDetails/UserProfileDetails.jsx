@@ -2,12 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import api from '../../../api/api';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
+import EditUser from '../../../components/EditUser/EditUser';
 import './UserProfileDetails.css';
 
 const UserProfileDetails = ({ history }) => {
 	const [personalDetails, setPersonalDetails] = useState(null);
 	const [avatar, setAvatar] = useState(null);
 	const [success, setSuccess] = useState(false);
+	const [isUpdateProfile, setIsUpdateProfile] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
 	const fileInput = useRef();
 
@@ -80,7 +82,7 @@ const UserProfileDetails = ({ history }) => {
 			<Navbar personalDetails={personalDetails} />
 			{personalDetails && (
 				<div className="update-details">
-					<h2>Update your details</h2>
+					<h2>Profile</h2>
 					<div className="username">
 						<span>Username: </span>
 						{personalDetails.name}
@@ -99,7 +101,7 @@ const UserProfileDetails = ({ history }) => {
 						{personalDetails.address.number}/{personalDetails.address.apartment}
 					</div>
 					<div className="profile-picture-container">
-						<div>Upload a profile picture </div>
+						<h4>Upload a profile picture </h4>
 						<div className="profile-user-images-buttons">
 							<input
 								onChange={handleImage}
@@ -123,6 +125,25 @@ const UserProfileDetails = ({ history }) => {
 						<h2 className="image-upload-success">
 							Image uploaded successfully
 						</h2>
+					)}
+					<div className="update-profile-container">
+						<h3>
+							Click{' '}
+							<span
+								onClick={() => setIsUpdateProfile(!isUpdateProfile)}
+								className="update-profile-button"
+							>
+								here
+							</span>{' '}
+							To update your profile
+						</h3>
+					</div>
+					{isUpdateProfile && (
+						<EditUser
+							closeUpdateProfile={setIsUpdateProfile}
+							userData={personalDetails}
+							fetchUser={fetchUser}
+						/>
 					)}
 				</div>
 			)}

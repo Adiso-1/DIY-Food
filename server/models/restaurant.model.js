@@ -127,8 +127,7 @@ restaurantSchema.methods.generateAuthToken = async function () {
 	const restaurant = this;
 	const token = jwt.sign(
 		{ _id: restaurant._id.toString() },
-		process.env.JWT_SECRET,
-		{ expiresIn: process.env.JWT_EXPIRE }
+		process.env.JWT_SECRET
 	);
 	restaurant.tokens = [...restaurant.tokens, { token }];
 	await restaurant.save();

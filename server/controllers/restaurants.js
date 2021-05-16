@@ -198,6 +198,19 @@ const deleteCoverPhoto = async (req, res) => {
 	}
 };
 
+const updateProfile = async (req, res, next) => {
+	try {
+		const restaurant = await Restaurant.findByIdAndUpdate(
+			req.restaurant._id,
+			{ ...req.restaurant.toObject(), ...req.body },
+			{ new: true }
+		);
+		res.send(restaurant);
+	} catch (error) {
+		return next(new ErrorResponse('User not found', 404));
+	}
+};
+
 module.exports = {
 	signUp,
 	login,
@@ -214,4 +227,5 @@ module.exports = {
 	uploadCoverPhoto,
 	getCoverPhoto,
 	deleteCoverPhoto,
+	updateProfile,
 };

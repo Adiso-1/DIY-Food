@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import api from '../../../api/api';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Button from '../../../components/Button/Button';
+import EditRestaurant from '../../../components/EditRestaurant/EditRestaurant';
 import './RestaurantProfileDetails.css';
 
 const RestaurantProfileDetails = ({ history }) => {
@@ -9,6 +10,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	const [logo, setLogo] = useState(null);
 	const [cover, setCover] = useState(null);
 	const [success, setSuccess] = useState(false);
+	const [isUpdateProfile, setIsUpdateProfile] = useState(false);
 	const [successMessage, setSuccessMessage] = useState('');
 	const profileInput = useRef();
 	const coverInput = useRef();
@@ -240,6 +242,25 @@ const RestaurantProfileDetails = ({ history }) => {
 						<h2 className="image-upload-success">
 							Image uploaded successfully
 						</h2>
+					)}
+					<div className="update-profile-container">
+						<h3>
+							Click{' '}
+							<span
+								onClick={() => setIsUpdateProfile(!isUpdateProfile)}
+								className="update-profile-button"
+							>
+								here
+							</span>{' '}
+							To update your profile
+						</h3>
+					</div>
+					{isUpdateProfile && (
+						<EditRestaurant
+							closeUpdateProfile={setIsUpdateProfile}
+							restaurantData={personalDetails}
+							renderRestaurant={renderRestaurant}
+						/>
 					)}
 				</div>
 			)}

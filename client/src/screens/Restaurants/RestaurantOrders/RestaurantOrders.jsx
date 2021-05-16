@@ -7,6 +7,7 @@ import './RestaurantOrders.css';
 
 const RestaurantOrders = () => {
 	const [orders, setOrders] = useState([]);
+	const [personalDetails, setPersonalDetails] = useState(null);
 	const [orderToShow, setOrderToShow] = useState(null);
 
 	const config = {
@@ -19,6 +20,8 @@ const RestaurantOrders = () => {
 	const getOrders = async () => {
 		const { data } = await api.get(`/orders/restaurantInfo`, config);
 		setOrders(data);
+		const response = await api.get(`/restaurants/profile`, config);
+		setPersonalDetails(response.data);
 	};
 
 	useEffect(() => {
@@ -32,7 +35,7 @@ const RestaurantOrders = () => {
 
 	return (
 		<div>
-			<Navbar restaurantOrders={orders} />
+			<Navbar personalDetails={personalDetails} restaurantOrders={orders} />
 			<div className="uncompleted-orders">
 				<h2>Awaiting to delivered</h2>
 				<div className="table">
