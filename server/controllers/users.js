@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const User = require('../models/user.model');
 const Restaurant = require('../models/restaurant.model');
+const Order = require('../models/order.model');
 const sendEmail = require('../utils/sendEmail');
 const sharp = require('sharp');
 const ErrorResponse = require('../utils/errorResponse');
@@ -160,6 +161,22 @@ const getRestaurant = async (req, res) => {
 		res.status(400).send();
 	}
 };
+const addRating = async (req, res, next) => {
+	try {
+		const order = await Order.findById(req.params.id);
+		order.rating = req.query.rating;
+		const restaurant = await Restaurant.findById(order.restaurant);
+		restaurant.rating.push({
+			owner: order.owner,
+			rate: req.query.rating,
+		});
+		await restaurant.save();
+		await order.save();
+		res.send(order);
+	} catch (error) {
+		next(error);
+	}
+};
 
 module.exports = {
 	signUp,
@@ -174,4 +191,5 @@ module.exports = {
 	getUserImage,
 	getAllRestaurants,
 	getRestaurant,
+	addRating,
 };

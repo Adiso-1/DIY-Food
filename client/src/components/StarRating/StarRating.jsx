@@ -4,6 +4,7 @@ import './StarRating.css';
 const StarRating = (props) => {
 	const [rating, setRating] = useState(null);
 	const [hover, setHover] = useState(null);
+	console.log(props);
 
 	const saveFeedback = () => {
 		props.closePopUp(null);

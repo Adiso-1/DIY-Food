@@ -57,6 +57,9 @@ const orederSchema = new Schema({
 			required: [true, 'Please add an apartment'],
 		},
 	},
+	rating: {
+		type: String,
+	},
 	isCompleted: {
 		type: String,
 		default: false,
@@ -69,7 +72,6 @@ const orederSchema = new Schema({
 
 orederSchema.pre('save', async function (next) {
 	const order = this;
-	console.log(order);
 	next();
 });
 

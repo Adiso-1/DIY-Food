@@ -70,6 +70,12 @@ const restaurantSchema = new Schema({
 	},
 	rating: {
 		type: Array,
+		owner: {
+			type: String,
+		},
+		score: {
+			type: String,
+		},
 	},
 	logo: {
 		type: Buffer,

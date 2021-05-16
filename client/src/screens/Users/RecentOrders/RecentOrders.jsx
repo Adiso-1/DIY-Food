@@ -24,6 +24,7 @@ const RecentOrders = () => {
 	useEffect(() => {
 		getUserInfo();
 	}, []);
+
 	return (
 		<div className="recent-orders-container">
 			<Navbar />
