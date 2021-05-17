@@ -5,37 +5,29 @@ import './NavbarRestaurant.css';
 
 const Navbar = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
+	const [restaurantOrders, setRestaurantOrders] = useState(null);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
-	// const renderRestaurant = async () => {
-	// 	try {
-	// 	} catch (error) {
-	// 		localStorage.removeItem('authToken');
-	// 		history.push('/restaurants/login');
-	// 	}
-	// };
-	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
-			return history.push(`restaurants/login`);
-		}
-		// renderRestaurant();
-	}, []);
-
-	// useEffect(() => {
-	// 	if (props.personalDetails && props.personalDetails.logo) {
-	// 		const getImage = async () => {
-	// 			await api.get(`/restaurants/profile/${props.personalDetails._id}`);
-	// 		};
-	// 		getImage();
-	// 	}
-	// }, [props.personalDetails]);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
 		},
 	};
+	useEffect(() => {
+		if (!localStorage.getItem('authToken')) {
+			return history.push(`restaurants/login`);
+		}
+		const getOrders = async () => {
+			try {
+				const { data } = await api.get(`/orders/restaurantInfo`, config);
+				setRestaurantOrders(data);
+			} catch (error) {}
+		};
+		getOrders();
+	}, []);
+
 	const handleSelect = async (e) => {
 		switch (e.target.textContent) {
 			case 'Home':
@@ -71,8 +63,8 @@ const Navbar = (props) => {
 	const checkForUncompleted = () => {
 		let counter = 0;
 		{
-			props.restaurantOrders &&
-				props.restaurantOrders.forEach((el) =>
+			restaurantOrders &&
+				restaurantOrders.forEach((el) =>
 					el.isCompleted === 'false' ? (counter += 1) : null
 				);
 		}

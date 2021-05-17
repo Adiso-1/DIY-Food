@@ -5,8 +5,7 @@ import './NavbarUser.css';
 
 const Navbar = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
-	// const [props.personalDetails, setPersonalDetails] = useState(null);
-	// const [props.userOrders, setUserOrders] = useState([]);
+	const [userOrders, setUserOrders] = useState([]);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
@@ -14,33 +13,14 @@ const Navbar = (props) => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`users/login`);
 		}
-		// const fetchUser = async () => {
-		// 	try {
-		// 		const { data } = await api.get(`/users/profile`, config);
-		// 		// setPersonalDetails(data);
-		// 	} catch (error) {
-		// 		console.log(error);
-		// 		localStorage.removeItem('authToken');
-		// 		history.push('/users/login');
-		// 	}
-		// };
-		// fetchUser();
 	}, []);
-	// useEffect(() => {
-	// 	if (props.personalDetails && props.personalDetails.avatar) {
-	// 		const getImage = async () => {
-	// 			await api.get(`/users/profile/${props.personalDetails._id}`);
-	// 		};
-	// 		getImage();
-	// 	}
-	// }, [props.personalDetails]);
-	// useEffect(() => {
-	// 	const getOrders = async () => {
-	// 		const { data } = await api.get('/orders/userInfo', config);
-	// 		// setUserOrders(data);
-	// 	};
-	// 	getOrders();
-	// }, []);
+	useEffect(() => {
+		const getOrders = async () => {
+			const { data } = await api.get('/orders/userInfo', config);
+			setUserOrders(data);
+		};
+		getOrders();
+	}, []);
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -48,6 +28,12 @@ const Navbar = (props) => {
 		},
 	};
 	const handleSelect = async (e) => {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			},
+		};
 		switch (e.target.textContent) {
 			case 'Home':
 				history.push(`${path}`);
@@ -82,8 +68,8 @@ const Navbar = (props) => {
 	const checkForUncompleted = () => {
 		let counter = 0;
 		{
-			props.userOrders &&
-				props.userOrders.forEach((el) =>
+			userOrders &&
+				userOrders.forEach((el) =>
 					el.isCompleted === 'false' ? (counter += 1) : null
 				);
 		}

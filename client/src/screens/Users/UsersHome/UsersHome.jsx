@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import './UsersHome.css';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
+import Spinner from '../../../components/Spinner/Spinner';
 
 const UsersHome = ({ history }) => {
 	const [restaurantsData, setRestaurantsData] = useState([]);
@@ -121,10 +122,16 @@ const UsersHome = ({ history }) => {
 	return (
 		<div className="user-home">
 			<Navbar personalDetails={personalDetails} />
-			<div className="delivery-cover">
-				<img src="/images/food-cover.png" alt="food-delivery" />
-			</div>
-			<div className="restaurants-grid">{renderRestaurants()}</div>
+			{restaurantsData.length === 0 || !personalDetails ? (
+				<Spinner />
+			) : (
+				<>
+					<div className="delivery-cover">
+						<img src="/images/food-cover.png" alt="food-delivery" />
+					</div>
+					<div className="restaurants-grid">{renderRestaurants()}</div>
+				</>
+			)}
 		</div>
 	);
 };

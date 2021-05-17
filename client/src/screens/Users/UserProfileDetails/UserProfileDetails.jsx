@@ -3,6 +3,7 @@ import api from '../../../api/api';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 import EditUser from '../../../components/EditUser/EditUser';
+import Spinner from '../../../components/Spinner/Spinner';
 import './UserProfileDetails.css';
 
 const UserProfileDetails = ({ history }) => {
@@ -80,72 +81,77 @@ const UserProfileDetails = ({ history }) => {
 	return (
 		<div className="user-details">
 			<Navbar personalDetails={personalDetails} />
-			{personalDetails && (
-				<div className="update-details">
-					<h2>Profile</h2>
-					<div className="username">
-						<span>Username: </span>
-						{personalDetails.name}
-					</div>
-					<div className="email">
-						<span>Email: </span>
-						{personalDetails.email}
-					</div>
-					<div className="phone">
-						<span>Phone: </span>
-						{personalDetails.phone}
-					</div>
-					<div className="address">
-						<span>Address: </span>
-						{personalDetails.address.city}, {personalDetails.address.street},{' '}
-						{personalDetails.address.number}/{personalDetails.address.apartment}
-					</div>
-					<div className="profile-picture-container">
-						<h4>Upload a profile picture </h4>
-						<div className="profile-user-images-buttons">
-							<input
-								onChange={handleImage}
-								type="file"
-								name="profile-picture"
-								id="profile-picture"
-								ref={fileInput}
-							/>
-							{personalDetails.avatar && (
-								<Button onClick={deleteImageHandler} text="Delete Image" />
-							)}
-							<Button
-								onClick={() => fileInput.current.click()}
-								text="Select Image"
-							/>
-							<Button onClick={uploadHandler} text="Upload" />
-							<h2>{successMessage}</h2>
+			{!personalDetails ? (
+				<Spinner />
+			) : (
+				<>
+					<div className="update-details">
+						<h2>Profile</h2>
+						<div className="username">
+							<span>Username: </span>
+							{personalDetails.name}
 						</div>
+						<div className="email">
+							<span>Email: </span>
+							{personalDetails.email}
+						</div>
+						<div className="phone">
+							<span>Phone: </span>
+							{personalDetails.phone}
+						</div>
+						<div className="address">
+							<span>Address: </span>
+							{personalDetails.address.city}, {personalDetails.address.street},{' '}
+							{personalDetails.address.number}/
+							{personalDetails.address.apartment}
+						</div>
+						<div className="profile-picture-container">
+							<h4>Upload a profile picture </h4>
+							<div className="profile-user-images-buttons">
+								<input
+									onChange={handleImage}
+									type="file"
+									name="profile-picture"
+									id="profile-picture"
+									ref={fileInput}
+								/>
+								{personalDetails.avatar && (
+									<Button onClick={deleteImageHandler} text="Delete Image" />
+								)}
+								<Button
+									onClick={() => fileInput.current.click()}
+									text="Select Image"
+								/>
+								<Button onClick={uploadHandler} text="Upload" />
+								<h2>{successMessage}</h2>
+							</div>
+						</div>
+						{success && (
+							<h2 className="image-upload-success">
+								Image uploaded successfully
+							</h2>
+						)}
+						<div className="update-profile-container">
+							<h3>
+								Click{' '}
+								<span
+									onClick={() => setIsUpdateProfile(!isUpdateProfile)}
+									className="update-profile-button"
+								>
+									here
+								</span>{' '}
+								To update your profile
+							</h3>
+						</div>
+						{isUpdateProfile && (
+							<EditUser
+								closeUpdateProfile={setIsUpdateProfile}
+								userData={personalDetails}
+								fetchUser={fetchUser}
+							/>
+						)}
 					</div>
-					{success && (
-						<h2 className="image-upload-success">
-							Image uploaded successfully
-						</h2>
-					)}
-					<div className="update-profile-container">
-						<h3>
-							Click{' '}
-							<span
-								onClick={() => setIsUpdateProfile(!isUpdateProfile)}
-								className="update-profile-button"
-							>
-								here
-							</span>{' '}
-							To update your profile
-						</h3>
-					</div>
-					{isUpdateProfile && (
-						<EditUser
-							closeUpdateProfile={setIsUpdateProfile}
-							userData={personalDetails}
-							fetchUser={fetchUser}
-						/>
-					)}
-				</div>
+				</>
 			)}
 		</div>
 	);

@@ -64,7 +64,7 @@ const RegisterScreen = ({ history }) => {
 			buttonRef.current.disabled = true;
 			setTimeout(() => {
 				history.push(`${path}/login`);
-			}, 10000);
+			}, 5000);
 		} catch (error) {
 			setError(error.response.data.error);
 			setTimeout(() => {

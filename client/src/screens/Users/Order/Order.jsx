@@ -1,17 +1,18 @@
 import api from '../../../api/api';
 import { Fragment, useEffect, useState } from 'react';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
+import Spinner from '../../../components/Spinner/Spinner';
 import Payment from '../Payment/Payment';
 import './Order.css';
 
 const Order = ({ history }) => {
 	const [user, setUser] = useState(null);
 	const [menu, setMenu] = useState([]);
+	const [cart, setCart] = useState([]);
 	const [restaurantDetails, setRestaurantDetails] = useState({});
 	const [isZoom, setIsZoom] = useState(false);
 	const [isDish, setIsDish] = useState(false);
 	const [dishIdZoom, setDishIdZoom] = useState('');
-	const [cart, setCart] = useState([]);
 	const [dishToDisplay, setDishToDisplay] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isOpenPayment, setIsOpenPayment] = useState(false);
@@ -164,87 +165,95 @@ const Order = ({ history }) => {
 	return (
 		<div className="menu-container">
 			<Navbar personalDetails={user} />
-			{Object.keys(restaurantDetails).length === 0 ? null : (
-				<div className="restaurant-display">
-					<div className="restaurant-details"></div>
-					<div
-						className="cover-container"
-						style={{
-							background: `url(/api/restaurants/profile/coverPhoto/${id}) no-repeat top center/cover`,
-						}}
-					>
-						<div className="image-logo">
-							<img src={`/api/restaurants/profile/${id}`} alt="logo" />
-						</div>
-					</div>
-				</div>
-			)}
-			<main className="main-container">
-				<div className="main-container-dishes">{renderMenu()}</div>
-				<div className="cart">
-					<div className="cart-button-container">
-						<button
-							onClick={() => setIsOpenPayment(true)}
-							className="cart-button"
-							disabled={cart.length === 0 ? true : false}
+			{menu.length === 0 ||
+			!user ||
+			Object.keys(restaurantDetails).length === 0 ? (
+				<Spinner />
+			) : (
+				<>
+					<div className="restaurant-display">
+						<div className="restaurant-details"></div>
+						<div
+							className="cover-container"
 							style={{
-								background: cart.length === 0 ? '#999' : '',
-								cursor: cart.length === 0 ? 'no-drop' : 'pointer',
+								background: `url(/api/restaurants/profile/coverPhoto/${id}) no-repeat top center/cover`,
 							}}
 						>
-							Proceed To Payment
-						</button>
-					</div>
-					{cart.length === 0 ? (
-						<div className="cart-empty-message">Your cart is empty</div>
-					) : (
-						<>
-							<div className="order-summary">{getTotalOrder()}</div>
-							<div className="total-sum">
-								<span>Total:</span>
-								<span className="total-sum-text">{getTotalPrice()}&#8362;</span>
+							<div className="image-logo">
+								<img src={`/api/restaurants/profile/${id}`} alt="logo" />
 							</div>
-						</>
+						</div>
+					</div>
+					<main className="main-container">
+						<div className="main-container-dishes">{renderMenu()}</div>
+						<div className="cart">
+							<div className="cart-button-container">
+								<button
+									onClick={() => setIsOpenPayment(true)}
+									className="cart-button"
+									disabled={cart.length === 0 ? true : false}
+									style={{
+										background: cart.length === 0 ? '#999' : '',
+										cursor: cart.length === 0 ? 'no-drop' : 'pointer',
+									}}
+								>
+									Proceed To Payment
+								</button>
+							</div>
+							{cart.length === 0 ? (
+								<div className="cart-empty-message">Your cart is empty</div>
+							) : (
+								<>
+									<div className="order-summary">{getTotalOrder()}</div>
+									<div className="total-sum">
+										<span>Total:</span>
+										<span className="total-sum-text">
+											{getTotalPrice()}&#8362;
+										</span>
+									</div>
+								</>
+							)}
+						</div>
+					</main>
+					{isZoom && (
+						<div className="zoomed-image">
+							<img
+								src={`/api/menu/get-dish-image/${dishIdZoom}`}
+								alt="Zoomed-Image"
+							/>
+						</div>
 					)}
-				</div>
-			</main>
-			{isZoom && (
-				<div className="zoomed-image">
-					<img
-						src={`/api/menu/get-dish-image/${dishIdZoom}`}
-						alt="Zoomed-Image"
-					/>
-				</div>
-			)}
-			{isDish && (
-				<div className="zoomed-dish">
-					<i onClick={() => setIsDish(false)} className="fas fa-times"></i>
-					<div className="zoomed-dish-description">
-						<h1>{dishToDisplay.dish}</h1>
-						<h3>{dishToDisplay.description}</h3>
-					</div>
-					<div className="zoomed-dish-cart">
-						<button onClick={(e) => addToCart(e, dishToDisplay)}>
-							Add {dishToDisplay.price}&#8362;
-						</button>
-					</div>
-				</div>
-			)}
-			{errorMsg && (
-				<div className="error-message">
-					<span>{errorMsg}</span>
-				</div>
-			)}
-			{isOpenPayment && (
-				<Payment
-					restaurant={restaurantDetails._id}
-					user={user}
-					price={getTotalPrice()}
-					closePayment={setIsOpenPayment}
-					cart={cart}
-					clearCart={clearCart}
-					renderUser={renderUser}
-				/>
+					{isDish && (
+						<div className="zoomed-dish">
+							<i onClick={() => setIsDish(false)} className="fas fa-times"></i>
+							<div className="zoomed-dish-description">
+								<h1>{dishToDisplay.dish}</h1>
+								<h3>{dishToDisplay.description}</h3>
+							</div>
+							<div className="zoomed-dish-cart">
+								<button onClick={(e) => addToCart(e, dishToDisplay)}>
+									Add {dishToDisplay.price}&#8362;
+								</button>
+							</div>
+						</div>
+					)}
+					{errorMsg && (
+						<div className="error-message">
+							<span>{errorMsg}</span>
+						</div>
+					)}
+					{isOpenPayment && (
+						<Payment
+							restaurant={restaurantDetails._id}
+							user={user}
+							price={getTotalPrice()}
+							closePayment={setIsOpenPayment}
+							cart={cart}
+							clearCart={clearCart}
+							renderUser={renderUser}
+						/>
+					)}
+				</>
 			)}
 		</div>
 	);

@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef, Fragment } from 'react';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
+import Spinner from '../../../components/Spinner/Spinner';
 import './RestaurantsHome.css';
 import EditDishImage from '../../../components/EditDishImage/EditDishImage';
 
 const RestaurantsHome = ({ history }) => {
 	const [restaurantData, setRestaurantData] = useState(null);
-	const [isMenuEmpty, setIsMenuEmpty] = useState(false);
 	const [menu, setMenu] = useState([]);
+	const [isMenuEmpty, setIsMenuEmpty] = useState(false);
 	const [dishImage, setDishImage] = useState(null);
 	const [isEdit, setIsEdit] = useState(false);
 	const [dishToEdit, setDishToEdit] = useState(null);
@@ -19,6 +20,7 @@ const RestaurantsHome = ({ history }) => {
 
 	const fileInput = useRef();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
@@ -192,57 +194,61 @@ const RestaurantsHome = ({ history }) => {
 		});
 	};
 	return (
-		<div>
+		<>
 			<Navbar personalDetails={restaurantData} />
-			<div className="menu-container">
-				{isMenuEmpty ? (
-					<div className="menu-empty">
-						<h2>Your restaurant has no dishes in menu</h2>
-						<h3>Click here to add your first dish now</h3>
-						<Button onClick={handleAddDish} text="Add Dish" />
-					</div>
-				) : (
-					<div className="dishes-container">
-						{restaurantData &&
-							(restaurantData.coverPhoto ? (
-								<div
-									className="cover-container"
-									style={{
-										background: `url(/api/restaurants/profile/coverPhoto/${restaurantData._id}) no-repeat center center/cover`,
-									}}
-								></div>
-							) : (
-								<div className="cover-image-container">
-									<h3>We highly recommand to add a cover photo</h3>
-									<Button
-										onClick={() =>
-											history.push('/restaurants/RestaurantProfileDetails')
-										}
-										text="Move to personal details"
-									/>
-								</div>
-							))}
-						{getMenu()}
-						{isEdit && (
-							<EditDishImage
-								setErrorMsg={setErrorMsg}
-								setSuccessMsg={setSuccessMsg}
-								renderMenu={renderMenu}
-								setIsEdit={setIsEdit}
-								dish={dishToEdit}
-							/>
-						)}
-						<h2 className="suceess-message-h2">{successMsg}</h2>
-						<h2 className="error-message-h2">{errorMsg}</h2>
-						<div className="add-dish-button">
-							<Link to="/restaurants/menu">
-								<Button text="Add a New Dish" />
-							</Link>
+			{menu.length === 0 || !restaurantData ? (
+				<Spinner />
+			) : (
+				<div className="menu-container">
+					{isMenuEmpty ? (
+						<div className="menu-empty">
+							<h2>Your restaurant has no dishes in menu</h2>
+							<h3>Click here to add your first dish now</h3>
+							<Button onClick={handleAddDish} text="Add Dish" />
 						</div>
-					</div>
-				)}
-			</div>
-		</div>
+					) : (
+						<div className="dishes-container">
+							{restaurantData &&
+								(restaurantData.coverPhoto ? (
+									<div
+										className="cover-container"
+										style={{
+											background: `url(/api/restaurants/profile/coverPhoto/${restaurantData._id}) no-repeat center center/cover`,
+										}}
+									></div>
+								) : (
+									<div className="cover-image-container">
+										<h3>We highly recommand to add a cover photo</h3>
+										<Button
+											onClick={() =>
+												history.push('/restaurants/RestaurantProfileDetails')
+											}
+											text="Move to personal details"
+										/>
+									</div>
+								))}
+							{getMenu()}
+							{isEdit && (
+								<EditDishImage
+									setErrorMsg={setErrorMsg}
+									setSuccessMsg={setSuccessMsg}
+									renderMenu={renderMenu}
+									setIsEdit={setIsEdit}
+									dish={dishToEdit}
+								/>
+							)}
+							<h2 className="suceess-message-h2">{successMsg}</h2>
+							<h2 className="error-message-h2">{errorMsg}</h2>
+							<div className="add-dish-button">
+								<Link to="/restaurants/menu">
+									<Button text="Add a New Dish" />
+								</Link>
+							</div>
+						</div>
+					)}
+				</div>
+			)}
+		</>
 	);
 };
 export default RestaurantsHome;

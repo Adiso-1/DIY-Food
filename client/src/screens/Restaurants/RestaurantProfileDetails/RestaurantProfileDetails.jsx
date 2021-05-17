@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import api from '../../../api/api';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Button from '../../../components/Button/Button';
+import Spinner from '../../../components/Spinner/Spinner';
 import EditRestaurant from '../../../components/EditRestaurant/EditRestaurant';
 import './RestaurantProfileDetails.css';
 
@@ -146,7 +147,10 @@ const RestaurantProfileDetails = ({ history }) => {
 	return (
 		<div className="user-details">
 			<Navbar personalDetails={personalDetails} />
-			{personalDetails && (
+
+			{!personalDetails ? (
+				<Spinner />
+			) : (
 				<div className="update-details">
 					<h2>Update Restaurants details</h2>
 					<div className="name">
