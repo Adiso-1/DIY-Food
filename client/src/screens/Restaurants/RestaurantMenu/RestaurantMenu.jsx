@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
 import api from '../../../api/api';
+import AddDishImage from '../../../components/AddDishImage/AddDishImage';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import './RestaurantMenu.css';
 
 const RestaurantMenu = ({ history }) => {
 	const [personalDetails, setPersonalDetails] = useState(null);
+	const [dishAdded, setDishAdded] = useState(null);
 	const [dish, setDish] = useState('');
 	const [description, setDescription] = useState('');
 	const [price, setPrice] = useState('');
 	const [category, setCategory] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
+	console.log(dishAdded);
 
 	const config = {
 		headers: {
@@ -37,11 +40,12 @@ const RestaurantMenu = ({ history }) => {
 	const addHandler = async (e) => {
 		e.preventDefault();
 		try {
-			await api.post(
+			const { data } = await api.post(
 				'/menu/add-dish',
 				{ dish, description, price, category },
 				config
 			);
+			setDishAdded(data);
 			setTimeout(() => {
 				setSuccessMsg('');
 			}, 2000);
@@ -54,7 +58,7 @@ const RestaurantMenu = ({ history }) => {
 			setTimeout(() => {
 				setErrorMsg('');
 			}, 2000);
-			setErrorMsg(error.resonse.data.error);
+			setErrorMsg(error.response.data.error);
 		}
 	};
 	return (
@@ -66,6 +70,7 @@ const RestaurantMenu = ({ history }) => {
 					<div className="form-group">
 						<label htmlFor="dish">Dish Name:</label>
 						<input
+							disabled={dishAdded && true}
 							type="text"
 							required
 							id="dish"
@@ -79,6 +84,7 @@ const RestaurantMenu = ({ history }) => {
 					<div className="form-group new-dish-description">
 						<label htmlFor="description">Description:</label>
 						<textarea
+							disabled={dishAdded && true}
 							type="text"
 							required
 							id="description"
@@ -94,6 +100,7 @@ const RestaurantMenu = ({ history }) => {
 					<div className="form-group">
 						<label htmlFor="category">Category:</label>
 						<input
+							disabled={dishAdded && true}
 							type="text"
 							required
 							id="category"
@@ -107,11 +114,14 @@ const RestaurantMenu = ({ history }) => {
 					<div className="form-group">
 						<label htmlFor="price">Price:</label>
 						<input
-							type="number"
+							disabled={dishAdded && true}
+							type="text"
 							required
 							id="price"
 							placeholder="Enter price"
-							onChange={(e) => setPrice(e.target.value)}
+							onChange={(e) =>
+								e.target.value.match(/^[0-9]*$/) && setPrice(e.target.value)
+							}
 							value={price}
 							tabIndex={4}
 						/>
@@ -127,10 +137,19 @@ const RestaurantMenu = ({ history }) => {
 							<h3>{errorMsg}</h3>
 						</div>
 					)}
-					<div className="restaurant-menu-button-container">
-						<Button type="submit" text="Add Dish" />
-					</div>
+					{!dishAdded && (
+						<div className="restaurant-menu-button-container">
+							<Button type="submit" text="Add Dish" />
+						</div>
+					)}
 				</form>
+				{dishAdded && (
+					<AddDishImage
+						setErrorMsg={setErrorMsg}
+						setSuccessMsg={setSuccessMsg}
+						dish={dishAdded}
+					/>
+				)}
 			</div>
 		</div>
 	);
