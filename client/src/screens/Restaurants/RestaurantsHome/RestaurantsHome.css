@@ -126,8 +126,19 @@
 	color: var(--main-color);
 	transition: all 0.2s;
 }
+.dish-details .edit-dish-button {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	cursor: pointer;
+	color: blue;
+	transition: all 0.2s;
+}
 .dish-details .delete-dish-button:hover {
-	transform: scale(1.05);
+	color: var(--dark-main-color);
+}
+.dish-details .edit-dish-button:hover {
+	color: rgb(0, 0, 177);
 }
 .add-dish-button {
 	display: flex;
@@ -173,16 +184,22 @@
 	transform: scale(1);
 	background: var(--dark-main-color);
 }
-.cover-container {
+.dishes-container .cover-container {
 	width: 100%;
 	margin: 0 auto;
 }
-.cover-container img {
-	width: 100%;
-	margin: 0 10px;
-}
 .category {
 	padding: 5px 15px;
+}
+.suceess-message-h2 {
+	max-width: 95%;
+	margin: 5px auto;
+	color: rgb(9, 186, 9);
+}
+.error-message-h2 {
+	max-width: 95%;
+	margin: 5px auto;
+	color: rgb(204, 1, 1);
 }
 @media screen and (max-width: 1000px) {
 	.menu-empty {

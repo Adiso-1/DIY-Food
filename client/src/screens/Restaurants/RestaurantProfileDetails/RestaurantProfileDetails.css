@@ -60,9 +60,11 @@
 	transform: scale(1);
 	background: var(--dark-main-color);
 }
-.images-section .success-message-images {
+.images-section .success-message-images,
+.image-upload-success {
 	color: rgb(29, 160, 29);
 }
+
 @media screen and (max-width: 550px) {
 	.images-section {
 		display: flex;

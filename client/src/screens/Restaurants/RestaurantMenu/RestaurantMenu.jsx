@@ -66,7 +66,7 @@ const RestaurantMenu = ({ history }) => {
 			<Navbar personalDetails={personalDetails} />
 			<div onSubmit={addHandler} className="add-dish-container">
 				<form className="login-screen__form">
-					<h2>Add Your New Dish</h2>
+					<h2>Add new dish</h2>
 					<div className="form-group">
 						<label htmlFor="dish">Dish Name:</label>
 						<input
@@ -148,6 +148,7 @@ const RestaurantMenu = ({ history }) => {
 						setErrorMsg={setErrorMsg}
 						setSuccessMsg={setSuccessMsg}
 						dish={dishAdded}
+						setDishAdded={setDishAdded}
 					/>
 				)}
 			</div>

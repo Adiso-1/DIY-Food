@@ -170,7 +170,7 @@ const RegisterScreen = ({ history }) => {
 								required
 								id="street"
 								autoComplete="new-password"
-								placeholder="fill city"
+								placeholder={city ? '' : 'fill city'}
 								value={street}
 								onChange={(e) => {
 									setStreet(e.target.value);

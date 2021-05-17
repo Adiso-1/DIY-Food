@@ -1,0 +1,11 @@
+.delete-image {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+.edit-dish-container .restaurant-menu-button-container button {
+	background: rgb(20, 202, 20);
+}
+.edit-dish-container .restaurant-menu-button-container button:hover {
+	background: rgb(0, 147, 0);
+}

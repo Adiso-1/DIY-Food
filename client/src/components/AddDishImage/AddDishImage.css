@@ -1,7 +1,7 @@
 .invisible-input {
 	display: none;
 }
-.add-dish-image-container button {
+.add-dish-image-container-div button {
 	margin-right: 5px;
 }
 .add-dish-image-buttons {
@@ -9,7 +9,7 @@
 	justify-content: left;
 	margin-top: 5px;
 }
-.add-dish-image-container {
+.add-dish-image-container-div {
 	width: 380px;
 	padding: 1.5rem;
 	padding-top: 0px;

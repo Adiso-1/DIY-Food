@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Fragment } from 'react';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import './RestaurantsHome.css';
+import EditDishImage from '../../../components/EditDishImage/EditDishImage';
 
 const RestaurantsHome = ({ history }) => {
 	const [restaurantData, setRestaurantData] = useState(null);
@@ -11,11 +12,8 @@ const RestaurantsHome = ({ history }) => {
 	const [menu, setMenu] = useState([]);
 	const [dishImage, setDishImage] = useState(null);
 	const [isEdit, setIsEdit] = useState(false);
+	const [dishToEdit, setDishToEdit] = useState(null);
 	const [idToEdit, setIdToEdit] = useState('');
-	const [nameToEdit, setNameToEdit] = useState('');
-	const [descriptionToEdit, setDescriptionToEdit] = useState('');
-	const [priceToEdit, setPriceToEdit] = useState('');
-	const [categoryToEdit, setCategoryToEdit] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 
@@ -99,59 +97,6 @@ const RestaurantsHome = ({ history }) => {
 		}
 	};
 
-	const deleteImageHandler = async (e, id) => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-			},
-		};
-		try {
-			await api.delete(`/menu/delete-dish-image/${id}`, config);
-			setTimeout(() => {
-				setSuccessMsg('');
-			}, 2000);
-			renderMenu();
-			setSuccessMsg('Image Deleted Succesfully');
-		} catch (error) {
-			setTimeout(() => {
-				setErrorMsg('');
-			}, 2000);
-			setErrorMsg(error.response.data.error);
-		}
-	};
-
-	const editDishHandler = (e, dish) => {
-		setIsEdit(true);
-		setIdToEdit(dish._id);
-		setNameToEdit(dish.dish);
-		setDescriptionToEdit(dish.description);
-		setPriceToEdit(dish.price);
-		setCategoryToEdit(dish.category);
-	};
-
-	const onEditSubmit = async (e) => {
-		e.preventDefault();
-		try {
-			await api.patch(
-				`/menu/edit-dish/${idToEdit}`,
-				{
-					dish: nameToEdit,
-					description: descriptionToEdit,
-					price: priceToEdit,
-					category: categoryToEdit,
-				},
-				config
-			);
-			setIsEdit(false);
-			renderMenu();
-		} catch (error) {
-			setTimeout(() => {
-				setErrorMsg('');
-			}, 2000);
-			setErrorMsg(error.response.data.error);
-		}
-	};
-
 	const deleteDish = async (e, dish) => {
 		try {
 			await api.delete(`/menu/delete-dish/${dish._id}`, config);
@@ -183,6 +128,15 @@ const RestaurantsHome = ({ history }) => {
 						>
 							<i className="far fa-trash-alt"></i>
 						</div>
+						<div className="edit-dish-button">
+							<i
+								onClick={(e) => {
+									setDishToEdit(dish);
+									setIsEdit(true);
+								}}
+								className="far fa-edit "
+							></i>
+						</div>
 						<div className="dish-image-description">
 							<div className="dish-image">
 								{dish.image ? (
@@ -191,16 +145,6 @@ const RestaurantsHome = ({ history }) => {
 											src={`/api/menu/get-dish-image/${dish._id}`}
 											alt="dish"
 										/>
-										<div className="dish-button-container">
-											<Button
-												onClick={(e) => editDishHandler(e, dish)}
-												text="Edit Dish"
-											/>
-											<Button
-												onClick={(e) => deleteImageHandler(e, dish._id)}
-												text="Delete Image"
-											/>
-										</div>
 									</>
 								) : (
 									<div className="add-dish-image-container">
@@ -233,7 +177,12 @@ const RestaurantsHome = ({ history }) => {
 							</div>
 						</div>
 						<div className="dish-price">
-							<p style={{ marginTop: `${dish.image ? '0px' : '20px'}` }}>
+							<p
+								style={{
+									marginTop: `${dish.image ? '0px' : '25px'}`,
+									marginBottom: `${dish.image ? '0px' : '25px'}`,
+								}}
+							>
 								{dish.price}&#8362;
 							</p>
 						</div>
@@ -249,7 +198,7 @@ const RestaurantsHome = ({ history }) => {
 				{isMenuEmpty ? (
 					<div className="menu-empty">
 						<h2>Your restaurant has no dishes in menu</h2>
-						<h3>Click here to add your first dish</h3>
+						<h3>Click here to add your first dish now</h3>
 						<Button onClick={handleAddDish} text="Add Dish" />
 					</div>
 				) : (
@@ -259,7 +208,7 @@ const RestaurantsHome = ({ history }) => {
 								<div
 									className="cover-container"
 									style={{
-										background: `url(/api/restaurants/profile/coverPhoto/${restaurantData._id}) no-repeat top center/cover`,
+										background: `url(/api/restaurants/profile/coverPhoto/${restaurantData._id}) no-repeat center center/cover`,
 									}}
 								></div>
 							) : (
@@ -275,85 +224,16 @@ const RestaurantsHome = ({ history }) => {
 							))}
 						{getMenu()}
 						{isEdit && (
-							<div onSubmit={onEditSubmit} className="edit-dish-container">
-								<form className="login-screen__form">
-									<span
-										className="close-edit"
-										onClick={(e) => setIsEdit(false)}
-									>
-										<i className="fas fa-times"></i>
-									</span>
-
-									<div className="form-group">
-										<label htmlFor="dish">Dish Name:</label>
-										<input
-											type="text"
-											required
-											id="dish"
-											placeholder="Dish Name"
-											onChange={(e) => setNameToEdit(e.target.value)}
-											value={nameToEdit}
-											tabIndex={1}
-										/>
-									</div>
-
-									<div className="form-group">
-										<label htmlFor="description">Description:</label>
-										<input
-											type="text"
-											required
-											id="description"
-											placeholder="Write description"
-											onChange={(e) => setDescriptionToEdit(e.target.value)}
-											value={descriptionToEdit}
-											tabIndex={2}
-										/>
-									</div>
-
-									<div className="form-group">
-										<label htmlFor="category">Category:</label>
-										<input
-											type="text"
-											required
-											id="category"
-											placeholder="Enter category"
-											onChange={(e) => setCategoryToEdit(e.target.value)}
-											value={categoryToEdit}
-											tabIndex={3}
-										/>
-									</div>
-
-									<div className="form-group">
-										<label htmlFor="price">Price:</label>
-										<input
-											type="number"
-											required
-											id="price"
-											placeholder="Enter price"
-											onChange={(e) => setPriceToEdit(e.target.value)}
-											value={priceToEdit}
-											tabIndex={4}
-										/>
-									</div>
-
-									{successMsg && (
-										<div className="success-feedback">
-											<h3>{successMsg}</h3>
-										</div>
-									)}
-									{errorMsg && (
-										<div className="error-feedback">
-											<h3>{errorMsg}</h3>
-										</div>
-									)}
-									<div className="restaurant-menu-button-container">
-										<Button type="submit" text="Save" />
-									</div>
-								</form>
-							</div>
+							<EditDishImage
+								setErrorMsg={setErrorMsg}
+								setSuccessMsg={setSuccessMsg}
+								renderMenu={renderMenu}
+								setIsEdit={setIsEdit}
+								dish={dishToEdit}
+							/>
 						)}
-						<h2>{successMsg}</h2>
-						<h2>{errorMsg}</h2>
+						<h2 className="suceess-message-h2">{successMsg}</h2>
+						<h2 className="error-message-h2">{errorMsg}</h2>
 						<div className="add-dish-button">
 							<Link to="/restaurants/menu">
 								<Button text="Add a New Dish" />

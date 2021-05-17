@@ -26,6 +26,8 @@ const AddDishImage = (props) => {
 			await api.post(`/menu/add-dish-image/${id}`, fd, config);
 			setTimeout(() => {
 				props.setSuccessMsg('');
+				props.setDishAdded(null);
+				setDishImage(null);
 			}, 2000);
 			props.setSuccessMsg('Image Uploaded Succesfully');
 		} catch (error) {
@@ -36,7 +38,7 @@ const AddDishImage = (props) => {
 		}
 	};
 	return (
-		<div className="add-dish-image-container">
+		<div className="add-dish-image-container-div">
 			<h3>Upload a dish picture </h3>
 			<div className="add-dish-image-buttons">
 				<input
