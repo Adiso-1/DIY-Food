@@ -31,7 +31,6 @@ const LoginScreen = ({ history }) => {
 			setTimeout(() => {
 				setError('');
 			}, 2000);
-			setIsLoading(true);
 			setError(error.response.data.error);
 		}
 	};

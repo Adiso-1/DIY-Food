@@ -29,7 +29,8 @@ const UsersHome = ({ history }) => {
 				const { data } = await api.get(`users/profile`, config);
 				setPersonalDetails(data);
 			} catch (error) {
-				console.log(error.response.data.error);
+				localStorage.removeItem('authToken');
+				history.push(`${path}/login`);
 			}
 		};
 		fetchUser();

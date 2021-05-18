@@ -57,7 +57,8 @@ const RestaurantsHome = ({ history }) => {
 				const { data } = await api.get(`${path}/profile`, config);
 				setRestaurantData(data);
 			} catch (error) {
-				console.log(error);
+				localStorage.removeItem('authToken');
+				history.push(`${path}/login`);
 			}
 		};
 		fetchUser();
