@@ -101,15 +101,18 @@ const UsersHome = ({ history }) => {
 						</div>
 						<div className="rating-section">
 							<span>
-								{(
-									el.rating.reduce((acc, curr) => {
-										return acc + Number(curr.rate);
-									}, 0) / el.rating.length
-								).toFixed(1)}
-								/5
+								{el.rating.length
+									? (
+											el.rating.reduce((acc, curr) => {
+												return acc + Number(curr.rate);
+											}, 0) / el.rating.length
+									  ).toFixed(1) + '/5'
+									: 'No Rating'}
 							</span>
 							<i className="fas fa-star star-full"></i>
-							<span className="rating-out-of-span"> ({el.rating.length})</span>
+							<span className="rating-out-of-span">
+								({el.rating.length} reviews)
+							</span>
 						</div>
 					</div>
 					<Link to={`users/order/${el._id}`}>
