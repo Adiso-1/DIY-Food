@@ -129,7 +129,7 @@ const RegisterScreen = ({ history }) => {
 						id="email"
 						placeholder="Email address"
 						value={email}
-						onChange={(e) => setEmail(e.target.value)}
+						onChange={(e) => setEmail(e.target.value.toLowerCase())}
 					/>
 				</div>
 

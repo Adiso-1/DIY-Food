@@ -5,9 +5,11 @@ import './UsersHome.css';
 import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 import Spinner from '../../../components/Spinner/Spinner';
+import SearchRestaurant from '../../../components/SearchRestaurant/SearchRestaurant';
 
 const UsersHome = ({ history }) => {
-	const [restaurantsData, setRestaurantsData] = useState([]);
+	const [restaurantsData, setRestaurantsData] = useState(null);
+	const [originalData, setOriginalData] = useState(null);
 	const [personalDetails, setPersonalDetails] = useState(null);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
@@ -37,10 +39,12 @@ const UsersHome = ({ history }) => {
 		try {
 			const { data } = await api.get(`${path}/getAllRestaurants`);
 			setRestaurantsData(data);
+			setOriginalData(data);
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
 	useEffect(() => {
 		if (!localStorage.getItem('authToken')) {
 			return history.push(`${path}/login`);
@@ -50,7 +54,7 @@ const UsersHome = ({ history }) => {
 	}, []);
 
 	const renderRestaurants = () => {
-		if (restaurantsData.length === 0) {
+		if (!restaurantsData) {
 			return;
 		}
 		return restaurantsData.map((el) => {
@@ -71,10 +75,16 @@ const UsersHome = ({ history }) => {
 						<p className="restaurant-name">{el.name}</p>
 						<p className="restaurant-category">{el.category}</p>
 						<p className="restaurant-email">
-							Email: <a href={`mailto:${el.email}`}>{el.email}</a>
+							Email: {el.email}
+							<a href={`mailto:${el.email}`}>
+								<i className="far fa-envelope"></i>
+							</a>
 						</p>
 						<p className="restaurant-phone">
-							Phone: <a href={`tel:+${el.phone}`}>{el.phone}</a>
+							Phone: {el.phone}
+							<a href={`tel:+${el.phone}`}>
+								<i className="fas fa-phone"></i>
+							</a>
 						</p>
 						<p className="restaurant-address">
 							Address: {el.address.city}, {el.address.street},{' '}
@@ -125,7 +135,12 @@ const UsersHome = ({ history }) => {
 	return (
 		<div className="user-home">
 			<Navbar personalDetails={personalDetails} />
-			{restaurantsData.length === 0 || !personalDetails ? (
+			<SearchRestaurant
+				originalData={originalData}
+				setRestaurantsData={setRestaurantsData}
+				data={restaurantsData}
+			/>
+			{!restaurantsData || !personalDetails ? (
 				<Spinner />
 			) : (
 				<>

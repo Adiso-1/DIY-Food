@@ -52,7 +52,7 @@ const LoginScreen = ({ history }) => {
 								required
 								id="email"
 								placeholder="Email address"
-								onChange={(e) => setEmail(e.target.value)}
+								onChange={(e) => setEmail(e.target.value.toLowerCase())}
 								value={email}
 								tabIndex={1}
 							/>

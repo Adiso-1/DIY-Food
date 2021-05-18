@@ -111,7 +111,14 @@
 .rating-out-of-span {
 	color: #555;
 }
-
+.fa-phone {
+	font-size: 14px;
+	margin-left: 5px;
+}
+.fa-envelope {
+	font-size: 15px;
+	margin-left: 5px;
+}
 @media screen and (max-width: 1200px) {
 	.delivery-cover img {
 		width: 100%;
