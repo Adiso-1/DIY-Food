@@ -10,6 +10,7 @@ const RestaurantOrders = () => {
 	const [orders, setOrders] = useState([]);
 	const [personalDetails, setPersonalDetails] = useState(null);
 	const [orderToShow, setOrderToShow] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const config = {
 		headers: {
@@ -19,10 +20,12 @@ const RestaurantOrders = () => {
 	};
 
 	const getOrders = async () => {
+		setIsLoading(true);
 		const { data } = await api.get(`/orders/restaurantInfo`, config);
 		setOrders(data);
 		const response = await api.get(`/restaurants/profile`, config);
 		setPersonalDetails(response.data);
+		setIsLoading(false);
 	};
 
 	useEffect(() => {
@@ -37,7 +40,7 @@ const RestaurantOrders = () => {
 	return (
 		<div>
 			<Navbar personalDetails={personalDetails} restaurantOrders={orders} />
-			{!personalDetails || orders.length === 0 ? (
+			{isLoading ? (
 				<Spinner />
 			) : (
 				<>

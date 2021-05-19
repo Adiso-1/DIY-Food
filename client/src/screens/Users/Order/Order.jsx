@@ -16,9 +16,11 @@ const Order = ({ history }) => {
 	const [dishToDisplay, setDishToDisplay] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
 	const [isOpenPayment, setIsOpenPayment] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const id = history.location.pathname.split('/')[3];
 
 	const renderUser = async () => {
+		setIsLoading(true);
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -27,24 +29,25 @@ const Order = ({ history }) => {
 		};
 		const { data } = await api.get('/users/profile', config);
 		setUser(data);
+		setIsLoading(false);
 	};
 
+	const getRestaurantDetails = async () => {
+		try {
+			const { data } = await api.get(`/restaurants/profile/menu/${id}`);
+			const restaurantDetails = await api.get(`/users/getRestaurants/${id}`);
+			setRestaurantDetails(restaurantDetails.data);
+			data.sort(
+				(a, b) =>
+					(a.category.toLowerCase() > b.category.toLowerCase() && -1) || 1
+			);
+			setMenu(data);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	useEffect(() => {
 		renderUser();
-		const getRestaurantDetails = async () => {
-			try {
-				const { data } = await api.get(`/restaurants/profile/menu/${id}`);
-				const restaurantDetails = await api.get(`/users/getRestaurants/${id}`);
-				setRestaurantDetails(restaurantDetails.data);
-				data.sort(
-					(a, b) =>
-						(a.category.toLowerCase() > b.category.toLowerCase() && -1) || 1
-				);
-				setMenu(data);
-			} catch (error) {
-				console.log(error);
-			}
-		};
 		getRestaurantDetails();
 	}, []);
 
@@ -165,96 +168,102 @@ const Order = ({ history }) => {
 	return (
 		<div className="menu-container">
 			<Navbar personalDetails={user} />
-			{menu.length === 0 ||
-			!user ||
-			Object.keys(restaurantDetails).length === 0 ? (
-				<Spinner />
-			) : (
-				<>
-					<div className="restaurant-display">
-						<div className="restaurant-details"></div>
-						<div
-							className="cover-container"
-							style={{
-								background: `url(/api/restaurants/profile/coverPhoto/${id}) no-repeat top center/cover`,
-							}}
-						>
-							<div className="image-logo">
-								<img src={`/api/restaurants/profile/${id}`} alt="logo" />
+			{
+				// menu.length === 0 ||
+				// !user ||
+				// Object.keys(restaurantDetails).length === 0
+				isLoading ? (
+					<Spinner />
+				) : (
+					<>
+						<div className="restaurant-display">
+							<div className="restaurant-details"></div>
+							<div
+								className="cover-container"
+								style={{
+									background: `url(/api/restaurants/profile/coverPhoto/${id}) no-repeat top center/cover`,
+								}}
+							>
+								<div className="image-logo">
+									<img src={`/api/restaurants/profile/${id}`} alt="logo" />
+								</div>
 							</div>
 						</div>
-					</div>
-					<main className="main-container">
-						<div className="main-container-dishes">{renderMenu()}</div>
-						<div className="cart">
-							<div className="cart-button-container">
-								<button
-									onClick={() => setIsOpenPayment(true)}
-									className="cart-button"
-									disabled={cart.length === 0 ? true : false}
-									style={{
-										background: cart.length === 0 ? '#999' : '',
-										cursor: cart.length === 0 ? 'no-drop' : 'pointer',
-									}}
-								>
-									Proceed To Payment
-								</button>
+						<main className="main-container">
+							<div className="main-container-dishes">{renderMenu()}</div>
+							<div className="cart">
+								<div className="cart-button-container">
+									<button
+										onClick={() => setIsOpenPayment(true)}
+										className="cart-button"
+										disabled={cart.length === 0 ? true : false}
+										style={{
+											background: cart.length === 0 ? '#999' : '',
+											cursor: cart.length === 0 ? 'no-drop' : 'pointer',
+										}}
+									>
+										Proceed To Payment
+									</button>
+								</div>
+								{cart.length === 0 ? (
+									<div className="cart-empty-message">Your cart is empty</div>
+								) : (
+									<>
+										<div className="order-summary">{getTotalOrder()}</div>
+										<div className="total-sum">
+											<span>Total:</span>
+											<span className="total-sum-text">
+												{getTotalPrice()}&#8362;
+											</span>
+										</div>
+									</>
+								)}
 							</div>
-							{cart.length === 0 ? (
-								<div className="cart-empty-message">Your cart is empty</div>
-							) : (
-								<>
-									<div className="order-summary">{getTotalOrder()}</div>
-									<div className="total-sum">
-										<span>Total:</span>
-										<span className="total-sum-text">
-											{getTotalPrice()}&#8362;
-										</span>
-									</div>
-								</>
-							)}
-						</div>
-					</main>
-					{isZoom && (
-						<div className="zoomed-image">
-							<img
-								src={`/api/menu/get-dish-image/${dishIdZoom}`}
-								alt="Zoomed-Image"
+						</main>
+						{isZoom && (
+							<div className="zoomed-image">
+								<img
+									src={`/api/menu/get-dish-image/${dishIdZoom}`}
+									alt="Zoomed-Image"
+								/>
+							</div>
+						)}
+						{isDish && (
+							<div className="zoomed-dish">
+								<i
+									onClick={() => setIsDish(false)}
+									className="fas fa-times"
+								></i>
+								<div className="zoomed-dish-description">
+									<h1>{dishToDisplay.dish}</h1>
+									<h3>{dishToDisplay.description}</h3>
+								</div>
+								<div className="zoomed-dish-cart">
+									<button onClick={(e) => addToCart(e, dishToDisplay)}>
+										Add {dishToDisplay.price}&#8362;
+									</button>
+								</div>
+							</div>
+						)}
+						{errorMsg && (
+							<div className="error-message">
+								<span>{errorMsg}</span>
+							</div>
+						)}
+						{isOpenPayment && (
+							<Payment
+								restaurant={restaurantDetails._id}
+								user={user}
+								price={getTotalPrice()}
+								closePayment={setIsOpenPayment}
+								cart={cart}
+								clearCart={clearCart}
+								renderUser={renderUser}
 							/>
-						</div>
-					)}
-					{isDish && (
-						<div className="zoomed-dish">
-							<i onClick={() => setIsDish(false)} className="fas fa-times"></i>
-							<div className="zoomed-dish-description">
-								<h1>{dishToDisplay.dish}</h1>
-								<h3>{dishToDisplay.description}</h3>
-							</div>
-							<div className="zoomed-dish-cart">
-								<button onClick={(e) => addToCart(e, dishToDisplay)}>
-									Add {dishToDisplay.price}&#8362;
-								</button>
-							</div>
-						</div>
-					)}
-					{errorMsg && (
-						<div className="error-message">
-							<span>{errorMsg}</span>
-						</div>
-					)}
-					{isOpenPayment && (
-						<Payment
-							restaurant={restaurantDetails._id}
-							user={user}
-							price={getTotalPrice()}
-							closePayment={setIsOpenPayment}
-							cart={cart}
-							clearCart={clearCart}
-							renderUser={renderUser}
-						/>
-					)}
-				</>
-			)}
+						)}
+					</>
+				)
+			}
 		</div>
 	);
 };

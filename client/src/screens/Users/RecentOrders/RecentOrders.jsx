@@ -32,7 +32,7 @@ const RecentOrders = () => {
 	return (
 		<div className="recent-orders-container">
 			<Navbar personalDetails={personalDetails} userOrders={orders} />
-			{orders.length === 0 || !personalDetails ? (
+			{!personalDetails ? (
 				<Spinner />
 			) : (
 				<>

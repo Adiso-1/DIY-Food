@@ -25,8 +25,11 @@ const RegisterScreen = ({ history }) => {
 	const [isQuestion, setIsQuestion] = useState(false);
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
+	const [current, setCurrent] = useState(null);
 
+	const cityRef = useRef(null);
 	const buttonRef = useRef(null);
+	const streetRef = useRef(null);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
@@ -160,7 +163,7 @@ const RegisterScreen = ({ history }) => {
 						<div className="city">
 							<label htmlFor="city">City:</label>
 							<input
-								type="city"
+								type="text"
 								required
 								id="city"
 								autoComplete="new-password"
@@ -169,12 +172,16 @@ const RegisterScreen = ({ history }) => {
 									setCity(e.target.value);
 									handleAddress(e.target.value, 'city');
 								}}
+								ref={cityRef}
+								onClick={() => {
+									setCurrent('city');
+								}}
 							/>
 						</div>
 						<div className="street">
 							<label htmlFor="street">Street:</label>
 							<input
-								type="street"
+								type="text"
 								disabled={city.length > 0 ? false : true}
 								required
 								id="street"
@@ -185,6 +192,8 @@ const RegisterScreen = ({ history }) => {
 									setStreet(e.target.value);
 									handleAddress(e.target.value, 'street');
 								}}
+								ref={streetRef}
+								onClick={() => setCurrent('street')}
 							/>
 						</div>
 						<div className="number">
@@ -212,17 +221,13 @@ const RegisterScreen = ({ history }) => {
 								<div key={city} className="city-container">
 									<span
 										onClick={(e) => {
-											if (street.length === 0) {
+											if (current === 'city') {
 												setCity(e.target.textContent);
 												setAddressesToShow([]);
 												return;
 											}
-											if (number.length === 0) {
+											if (current === 'street') {
 												setStreet(e.target.textContent);
-												setAddressesToShow([]);
-												return;
-											} else {
-												setNumber(e.target.textContent);
 												setAddressesToShow([]);
 												return;
 											}

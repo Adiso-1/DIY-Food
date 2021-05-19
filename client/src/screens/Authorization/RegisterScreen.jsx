@@ -18,8 +18,11 @@ const RegisterScreen = ({ history }) => {
 	const [addressesToShow, setAddressesToShow] = useState([]);
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
+	const [current, setCurrent] = useState(null);
 	const [success, setSuccess] = useState('');
 	const buttonRef = useRef(null);
+	console.log('number:' + number);
+	console.log('street:' + street);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
@@ -94,7 +97,6 @@ const RegisterScreen = ({ history }) => {
 				} catch (error) {
 					setAddressesToShow([]);
 				}
-			} else {
 			}
 		}
 	};
@@ -147,11 +149,12 @@ const RegisterScreen = ({ history }) => {
 
 				<div className="form-group user-address">
 					<h5>Address:</h5>
+
 					<div className="user-address-container">
 						<div className="city">
 							<label htmlFor="city">City:</label>
 							<input
-								type="city"
+								type="text"
 								required
 								id="city"
 								autoComplete="new-password"
@@ -160,12 +163,15 @@ const RegisterScreen = ({ history }) => {
 									setCity(e.target.value);
 									handleAddress(e.target.value, 'city');
 								}}
+								onClick={() => {
+									setCurrent('city');
+								}}
 							/>
 						</div>
 						<div className="street">
 							<label htmlFor="street">Street:</label>
 							<input
-								type="street"
+								type="text"
 								disabled={city.length > 0 ? false : true}
 								required
 								id="street"
@@ -175,6 +181,9 @@ const RegisterScreen = ({ history }) => {
 								onChange={(e) => {
 									setStreet(e.target.value);
 									handleAddress(e.target.value, 'street');
+								}}
+								onClick={() => {
+									setCurrent('street');
 								}}
 							/>
 						</div>
@@ -219,17 +228,13 @@ const RegisterScreen = ({ history }) => {
 								<div key={city} className="city-container">
 									<span
 										onClick={(e) => {
-											if (street.length === 0) {
+											if (current === 'city') {
 												setCity(e.target.textContent);
 												setAddressesToShow([]);
 												return;
 											}
-											if (number.length === 0) {
+											if (current === 'street') {
 												setStreet(e.target.textContent);
-												setAddressesToShow([]);
-												return;
-											} else {
-												setNumber(e.target.textContent);
 												setAddressesToShow([]);
 												return;
 											}

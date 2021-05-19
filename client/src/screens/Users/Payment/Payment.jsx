@@ -70,9 +70,7 @@ const Payment = (props) => {
 	};
 
 	useEffect(() => {
-		// addressRef.current.checked;
 		inputRef.current.focus();
-		console.log(props);
 	}, []);
 
 	return (
@@ -99,6 +97,11 @@ const Payment = (props) => {
 					</div>
 
 					<div className="delivery-address-cotainer">
+						<h4 style={{ color: isChecked ? '#000' : '#888' }}>
+							Delivered To: {props.user.address.city},{' '}
+							{props.user.address.street}, {props.user.address.number}/
+							{props.user.address.apartment}
+						</h4>
 						<div className="is-same-address">
 							<input
 								ref={addressRef}
@@ -108,7 +111,7 @@ const Payment = (props) => {
 								onChange={(e) => setIsChecked(!e.target.checked)}
 							/>
 							<label htmlFor="same-address">
-								Do you want to change the delivery address?
+								Would you like to change the delivery address?
 							</label>
 						</div>
 
@@ -130,7 +133,16 @@ const Payment = (props) => {
 						<label htmlFor="card-number">Card Number:</label>
 						<input
 							value={cardNumber}
-							onChange={(e) => setCardNumber(e.target.value)}
+							onChange={(e) =>
+								setCardNumber(
+									e.target.value
+										.replace(/[^\dA-Z]/g, '')
+										.replace(/(.{4})/g, '$1 ')
+										.trim()
+								)
+							}
+							maxLength={19}
+							minLength={19}
 							type="text"
 							id="card-number"
 							required
