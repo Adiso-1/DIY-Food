@@ -17,7 +17,7 @@ const AddDishImage = (props) => {
 		e.preventDefault();
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		const fd = new FormData();

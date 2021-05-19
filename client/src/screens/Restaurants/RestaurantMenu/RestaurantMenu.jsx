@@ -19,11 +19,11 @@ const RestaurantMenu = ({ history }) => {
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 		},
 	};
 	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
+		if (!localStorage.getItem('authTokenRestaurants')) {
 			return history.push(`/restaurants/login`);
 		}
 		const renderRestaurant = async () => {

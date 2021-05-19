@@ -15,21 +15,21 @@ const UsersHome = ({ history }) => {
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
+		if (!localStorage.getItem('authTokenUsers')) {
 			return history.push(`users/login`);
 		}
 		const fetchUser = async () => {
 			const config = {
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+					Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
 				},
 			};
 			try {
 				const { data } = await api.get(`users/profile`, config);
 				setPersonalDetails(data);
 			} catch (error) {
-				localStorage.removeItem('authToken');
+				localStorage.removeItem('authTokenUsers');
 				history.push(`${path}/login`);
 			}
 		};
@@ -47,7 +47,7 @@ const UsersHome = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
+		if (!localStorage.getItem('authTokenUsers')) {
 			return history.push(`${path}/login`);
 		} else {
 			getAllRestaurants();

@@ -37,19 +37,21 @@ const Address = (props) => {
 					required={props.isChecked}
 					disabled={props.isChecked}
 				/>
-				<label htmlFor="delivery-apartment">Apartment</label>
-				<input
-					value={props.apartment}
-					onChange={(e) =>
-						props.setApartment(
-							e.target.value.match(/[0-9]$/) ? e.target.value : ''
-						)
-					}
-					type="text"
-					id="delivery-apartment"
-					required={props.isChecked}
-					disabled={props.isChecked}
-				/>
+				<div className="apartment-input-container">
+					<label htmlFor="delivery-apartment">Apartment</label>
+					<input
+						value={props.apartment}
+						onChange={(e) =>
+							props.setApartment(
+								e.target.value.match(/[0-9]$/) ? e.target.value : ''
+							)
+						}
+						type="text"
+						id="delivery-apartment"
+						required={props.isChecked}
+						disabled={props.isChecked}
+					/>
+				</div>
 			</div>
 		</div>
 	);

@@ -64,6 +64,9 @@
 .image-upload-success {
 	color: rgb(29, 160, 29);
 }
+.restaurant-profile-details .apartment-input-container {
+	display: none;
+}
 
 @media screen and (max-width: 550px) {
 	.images-section {

@@ -13,9 +13,12 @@ const LoginScreen = ({ history }) => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
+	const tokenType =
+		path === '/users' ? 'authTokenUsers' : 'authTokenRestaurants';
+
 	useEffect(() => {
-		const path = window.location.pathname.match(/^\/([^/]*)/)[0];
-		if (localStorage.getItem('authToken')) {
+		console.log(tokenType);
+		if (localStorage.getItem(tokenType)) {
 			return history.push(path);
 		}
 	}, [history]);
@@ -24,7 +27,7 @@ const LoginScreen = ({ history }) => {
 		e.preventDefault();
 		try {
 			const { data } = await api.post(`${path}/login`, { email, password });
-			localStorage.setItem('authToken', data.token);
+			localStorage.setItem(tokenType, data.token);
 			setIsLoading(true);
 			history.push(path);
 		} catch (error) {

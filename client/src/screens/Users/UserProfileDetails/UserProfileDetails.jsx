@@ -18,7 +18,7 @@ const UserProfileDetails = ({ history }) => {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
 			},
 		};
 		try {
@@ -29,7 +29,7 @@ const UserProfileDetails = ({ history }) => {
 		}
 	};
 	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
+		if (!localStorage.getItem('authTokenUsers')) {
 			return history.push(`users/login`);
 		}
 		fetchUser();
@@ -43,7 +43,7 @@ const UserProfileDetails = ({ history }) => {
 	const uploadHandler = async (e) => {
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
 			},
 		};
 		const fd = new FormData();
@@ -64,7 +64,7 @@ const UserProfileDetails = ({ history }) => {
 	const deleteImageHandler = async () => {
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
 			},
 		};
 		try {

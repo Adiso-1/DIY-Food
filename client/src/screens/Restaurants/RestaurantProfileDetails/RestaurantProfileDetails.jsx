@@ -18,7 +18,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 		},
 	};
 	const renderRestaurant = async () => {
@@ -30,7 +30,7 @@ const RestaurantProfileDetails = ({ history }) => {
 		}
 	};
 	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
+		if (!localStorage.getItem('authTokenRestaurants')) {
 			return history.push(`/restaurants/login`);
 		}
 		renderRestaurant();
@@ -52,7 +52,7 @@ const RestaurantProfileDetails = ({ history }) => {
 		}
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		const fd = new FormData();
@@ -76,7 +76,7 @@ const RestaurantProfileDetails = ({ history }) => {
 		}
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		const fd = new FormData();
@@ -97,7 +97,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	const deleteImageHandler = async () => {
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		if (!personalDetails.logo) {
@@ -122,7 +122,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	const deleteCoverHandler = async () => {
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		if (!personalDetails.coverPhoto) {
@@ -145,7 +145,7 @@ const RestaurantProfileDetails = ({ history }) => {
 	};
 
 	return (
-		<div className="user-details">
+		<div className="user-details restaurant-profile-details">
 			<Navbar personalDetails={personalDetails} />
 
 			{!personalDetails ? (

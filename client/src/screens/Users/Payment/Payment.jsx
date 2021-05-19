@@ -22,7 +22,7 @@ const Payment = (props) => {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
 			},
 		};
 		const cart = [];

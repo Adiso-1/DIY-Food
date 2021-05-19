@@ -24,7 +24,7 @@ const RestaurantsHome = ({ history }) => {
 	const config = {
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 		},
 	};
 	const renderMenu = async () => {
@@ -49,7 +49,7 @@ const RestaurantsHome = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (!localStorage.getItem('authToken')) {
+		if (!localStorage.getItem('authTokenRestaurants')) {
 			return history.push(`${path}/login`);
 		}
 		const fetchUser = async () => {
@@ -57,7 +57,7 @@ const RestaurantsHome = ({ history }) => {
 				const { data } = await api.get(`${path}/profile`, config);
 				setRestaurantData(data);
 			} catch (error) {
-				localStorage.removeItem('authToken');
+				localStorage.removeItem('authTokenRestaurants');
 				history.push(`${path}/login`);
 			}
 		};
@@ -80,7 +80,7 @@ const RestaurantsHome = ({ history }) => {
 	const uploadHandler = async (e, id) => {
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		const fd = new FormData();

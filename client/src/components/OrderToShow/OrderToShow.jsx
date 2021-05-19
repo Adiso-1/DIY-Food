@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import './OrderToShow.css';
 
 const OrderToShow = (props) => {

@@ -24,7 +24,7 @@ const EditDishImage = (props) => {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		e.preventDefault();
@@ -53,7 +53,7 @@ const EditDishImage = (props) => {
 		e.preventDefault();
 		const config = {
 			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
 			},
 		};
 		try {
