@@ -37,14 +37,14 @@ const RecentOrders = () => {
 			) : (
 				<>
 					<div className="uncompleted-orders">
-						<h2>Orders On Delivery</h2>
+						<h2>Orders on delivery</h2>
 						<div className="table">
 							<table className="uncompleted-table">
 								<thead>
 									<tr>
 										<th>Restaurant</th>
 										<th>Date</th>
-										<th>Delivered To</th>
+										<th>Delivered to</th>
 										<th>Price</th>
 										<th></th>
 									</tr>
@@ -75,14 +75,14 @@ const RecentOrders = () => {
 					</div>
 
 					<div className="completed-orders">
-						<h2>Recent Orders</h2>
+						<h2>Recent orders</h2>
 						<div className="table">
 							<table className="uncompleted-table">
 								<thead>
 									<tr>
 										<th>Restaurant</th>
 										<th>Date</th>
-										<th>Delivered To</th>
+										<th>Delivered to</th>
 										<th>Price</th>
 										<th>Your feedback</th>
 										<th></th>

@@ -45,17 +45,17 @@ const RestaurantOrders = () => {
 			) : (
 				<>
 					<div className="uncompleted-orders">
-						<h2>Awaiting to delivered</h2>
+						<h2>Awaiting to be delivered</h2>
 						<div className="table">
 							<table className="uncompleted-table">
 								<thead>
 									<tr>
 										<th>Name</th>
 										<th>Phone</th>
-										<th>Delivered To</th>
+										<th>Delivered to</th>
 										<th>Date</th>
 										<th>Price</th>
-										<th>Mark As Completed</th>
+										<th>Mark as completed</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -92,14 +92,14 @@ const RestaurantOrders = () => {
 					</div>
 
 					<div className="completed-orders">
-						<h2>Delivered Orders</h2>
+						<h2>Delivered orders</h2>
 						<div className="table">
 							<table className="uncompleted-table">
 								<thead>
 									<tr>
 										<th>Name</th>
 										<th>Phone</th>
-										<th>Delivered To</th>
+										<th>Delivered to</th>
 										<th>Date</th>
 										<th>Price</th>
 										<th>Rating</th>
