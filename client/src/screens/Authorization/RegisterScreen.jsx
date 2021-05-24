@@ -21,8 +21,6 @@ const RegisterScreen = ({ history }) => {
 	const [current, setCurrent] = useState(null);
 	const [success, setSuccess] = useState('');
 	const buttonRef = useRef(null);
-	console.log('number:' + number);
-	console.log('street:' + street);
 
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 

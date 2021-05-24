@@ -40,19 +40,3 @@ app.get('/*', (req, res) => {
 app.listen(port, () => {
 	console.log(`Server is running on port: ${port}`);
 });
-
-//! Check populates
-// const Menu = require('./models/menu.model');
-// const Restaurant = require('./models/restaurant.model');
-
-// const main = async () => {
-//* This block will give us the restaurant who created this dish
-// const menu = await Menu.findById('608fe4421d19ea32c0e64f3e');
-// await menu.populate('restaurant').execPopulate();
-// console.log(menu.restaurant);
-//* This block will the the restaurant and find their menu};
-// const restaurant = await Restaurant.findById('608fdffddd19823ebcdc045a');
-// await restaurant.populate('menus').execPopulate();
-// console.log(restaurant.menus);
-// };
-// main();

@@ -17,7 +17,6 @@ const LoginScreen = ({ history }) => {
 		path === '/users' ? 'authTokenUsers' : 'authTokenRestaurants';
 
 	useEffect(() => {
-		console.log(tokenType);
 		if (localStorage.getItem(tokenType)) {
 			return history.push(path);
 		}

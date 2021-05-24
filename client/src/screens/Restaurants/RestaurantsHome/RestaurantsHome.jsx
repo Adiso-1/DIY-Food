@@ -197,7 +197,7 @@ const RestaurantsHome = ({ history }) => {
 	return (
 		<>
 			<Navbar personalDetails={restaurantData} />
-			{menu.length === 0 || !restaurantData ? (
+			{!restaurantData ? (
 				<Spinner />
 			) : (
 				<div className="menu-container">
