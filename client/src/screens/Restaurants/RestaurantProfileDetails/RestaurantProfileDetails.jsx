@@ -1,14 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import api from '../../../api/api';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Button from '../../../components/Button/Button';
 import Spinner from '../../../components/Spinner/Spinner';
 import EditRestaurant from '../../../components/EditRestaurant/EditRestaurant';
 import config from '../../../utils/authConfig';
+import AppContext from '../../../context/AppContext';
+import fetchFromToken from '../../../utils/fetchFromToken';
 import './RestaurantProfileDetails.css';
 
 const RestaurantProfileDetails = ({ history }) => {
-	const [personalDetails, setPersonalDetails] = useState(null);
 	const [logo, setLogo] = useState(null);
 	const [cover, setCover] = useState(null);
 	const [success, setSuccess] = useState(false);
@@ -17,22 +18,17 @@ const RestaurantProfileDetails = ({ history }) => {
 	const profileInput = useRef();
 	const coverInput = useRef();
 
-	const renderRestaurant = async () => {
-		try {
-			const { data } = await api.get(
-				`/restaurants/profile`,
-				config('authTokenRestaurants')
-			);
-			setPersonalDetails(data);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	const { profile, setProfile } = useContext(AppContext);
+
 	useEffect(() => {
-		if (!localStorage.getItem('authTokenRestaurants')) {
-			return history.push(`/restaurants/login`);
+		if (!profile?.restaurant || !profile?.token) {
+			if (localStorage.getItem('authTokenRestaurants')) {
+				fetchFromToken(setProfile);
+			} else {
+				history.push(`/restaurants/login`);
+				return;
+			}
 		}
-		renderRestaurant();
 	}, []);
 
 	const handleImage = (e) => {
@@ -52,17 +48,17 @@ const RestaurantProfileDetails = ({ history }) => {
 		const fd = new FormData();
 		fd.append('logo', logo, logo.name);
 		try {
-			await api.post(
+			const { data } = await api.post(
 				'/restaurants/profile/upload',
 				fd,
 				config('authTokenRestaurants')
 			);
+			setProfile({ ...profile, restaurant: data });
 			setTimeout(() => {
 				setSuccess(false);
 			}, 2000);
 			setSuccessMessage('');
 			setSuccess(true);
-			renderRestaurant();
 		} catch (error) {
 			console.log(error);
 		}
@@ -75,7 +71,7 @@ const RestaurantProfileDetails = ({ history }) => {
 		const fd = new FormData();
 		fd.append('coverPhoto', cover, cover.name);
 		try {
-			await api.post(
+			const { data } = await api.post(
 				'/restaurants/profile/uploadCoverPhoto',
 				fd,
 				config('authTokenRestaurants')
@@ -85,31 +81,29 @@ const RestaurantProfileDetails = ({ history }) => {
 			}, 2000);
 			setSuccessMessage('');
 			setSuccess(true);
-			renderRestaurant();
+			setProfile({ ...profile, restaurant: data });
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
 	const deleteImageHandler = async () => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
-		if (!personalDetails.logo) {
+		if (!profile.restaurant.logo) {
 			setTimeout(() => {
 				setSuccessMessage('');
 			}, 2000);
 			setSuccessMessage('No logo to delete');
 		} else {
 			try {
-				await api.delete('/restaurants/profile/upload', config);
+				const { data } = await api.delete(
+					'/restaurants/profile/upload',
+					config('authTokenRestaurants')
+				);
+				setProfile({ ...profile, restaurant: data });
 				setTimeout(() => {
 					setSuccessMessage('');
 				}, 2000);
 				setSuccessMessage('Logo image deleted');
-				renderRestaurant();
 			} catch (error) {
 				console.log(error);
 			}
@@ -117,24 +111,22 @@ const RestaurantProfileDetails = ({ history }) => {
 	};
 
 	const deleteCoverHandler = async () => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
-		if (!personalDetails.coverPhoto) {
+		if (!profile.restaurant.coverPhoto) {
 			setTimeout(() => {
 				setSuccessMessage('');
 			}, 2000);
 			setSuccessMessage('No cover to delete');
 		} else {
 			try {
-				await api.delete('/restaurants/profile/deleteCoverPhoto', config);
+				const { data } = await api.delete(
+					'/restaurants/profile/deleteCoverPhoto',
+					config('authTokenRestaurants')
+				);
 				setTimeout(() => {
 					setSuccessMessage('');
 				}, 2000);
 				setSuccessMessage('cover photo deleted');
-				renderRestaurant();
+				setProfile({ ...profile, restaurant: data });
 			} catch (error) {
 				console.log(error);
 			}
@@ -143,33 +135,34 @@ const RestaurantProfileDetails = ({ history }) => {
 
 	return (
 		<div className="user-details restaurant-profile-details">
-			<Navbar personalDetails={personalDetails} />
+			<Navbar personalDetails={profile?.restaurant && profile.restaurant} />
 
-			{!personalDetails ? (
+			{!profile?.restaurant ? (
 				<Spinner />
 			) : (
 				<div className="update-details">
 					<h2>Update Restaurants details</h2>
 					<div className="name">
 						<span>Name: </span>
-						{personalDetails.name}
+						{profile.restaurant.name}
 					</div>
 					<div className="email">
 						<span>Email: </span>
-						{personalDetails.email}
+						{profile.restaurant.email}
 					</div>
 					<div className="phone">
 						<span>Phone: </span>
-						{personalDetails.phone}
+						{profile.restaurant.phone}
 					</div>
 					<div className="address">
 						<span>Address: </span>
-						{personalDetails.address.city}, {personalDetails.address.street},{' '}
-						{personalDetails.address.number}
+						{profile.restaurant.address.city},{' '}
+						{profile.restaurant.address.street},{' '}
+						{profile.restaurant.address.number}
 					</div>
 
 					<div className="tags-section">
-						{personalDetails.tags.map((tag) => {
+						{profile.restaurant.tags.map((tag) => {
 							return (
 								<span
 									key={tag}
@@ -183,8 +176,8 @@ const RestaurantProfileDetails = ({ history }) => {
 						})}
 					</div>
 					<div className="delivery-section">
-						<span>&#177; {personalDetails.deliveryTime} Minutes</span>
-						<span>Min delivery {personalDetails.minPayment}&#8362;</span>
+						<span>&#177; {profile.restaurant.deliveryTime} Minutes</span>
+						<span>Min delivery {profile.restaurant.minPayment}&#8362;</span>
 					</div>
 					<section className="images-section">
 						<div className="profile-picture-container">
@@ -197,7 +190,7 @@ const RestaurantProfileDetails = ({ history }) => {
 									id="logo-image"
 									ref={profileInput}
 								/>
-								{personalDetails.logo && (
+								{profile.restaurant.logo && (
 									<Button
 										onClick={deleteImageHandler}
 										text="Delete profile image"
@@ -220,7 +213,7 @@ const RestaurantProfileDetails = ({ history }) => {
 									id="cover-image"
 									ref={coverInput}
 								/>
-								{personalDetails.coverPhoto && (
+								{profile.restaurant.coverPhoto && (
 									<Button
 										onClick={deleteCoverHandler}
 										text="Delete cover photo"
@@ -259,8 +252,9 @@ const RestaurantProfileDetails = ({ history }) => {
 					{isUpdateProfile && (
 						<EditRestaurant
 							closeUpdateProfile={setIsUpdateProfile}
-							restaurantData={personalDetails}
-							renderRestaurant={renderRestaurant}
+							restaurantData={profile.restaurant}
+							profile={profile}
+							setProfile={setProfile}
 						/>
 					)}
 				</div>

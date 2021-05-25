@@ -137,7 +137,7 @@ const uploadLogoImage = async (req, res) => {
 		.toBuffer();
 	req.restaurant.logo = buffer;
 	await req.restaurant.save();
-	res.status(201).send();
+	res.status(201).send(req.restaurant);
 };
 
 const getRestaurantLogo = async (req, res) => {
@@ -157,7 +157,7 @@ const getRestaurantLogo = async (req, res) => {
 const deleteLogoImage = async (req, res) => {
 	req.restaurant.logo = undefined;
 	await req.restaurant.save();
-	res.send();
+	res.send(req.restaurant);
 };
 
 const uploadCoverPhoto = async (req, res, next) => {
@@ -168,7 +168,7 @@ const uploadCoverPhoto = async (req, res, next) => {
 			.toBuffer();
 		req.restaurant.coverPhoto = buffer;
 		await req.restaurant.save();
-		res.status(201).send();
+		res.status(201).send(req.restaurant);
 	} catch (error) {
 		next(error);
 	}
@@ -192,7 +192,7 @@ const deleteCoverPhoto = async (req, res) => {
 	try {
 		req.restaurant.coverPhoto = undefined;
 		await req.restaurant.save();
-		res.send();
+		res.send(req.restaurant);
 	} catch (error) {
 		next(error);
 	}

@@ -25,7 +25,7 @@ const UserProfileDetails = ({ history }) => {
 	};
 	useEffect(() => {
 		if (!localStorage.getItem('authTokenUsers')) {
-			return history.push(`users/login`);
+			return history.push(`/users/login`);
 		}
 		fetchUser();
 	}, []);

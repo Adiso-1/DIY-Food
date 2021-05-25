@@ -1,46 +1,37 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../../api/api';
+import config from '../../utils/authConfig';
 import './NavbarUser.css';
 
 const Navbar = (props) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [userOrders, setUserOrders] = useState([]);
+
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	useEffect(() => {
 		if (!localStorage.getItem('authTokenUsers')) {
-			return history.push(`users/login`);
+			return history.push(`/users/login`);
 		}
-	}, []);
-	useEffect(() => {
 		const getOrders = async () => {
-			const { data } = await api.get('/orders/userInfo', config);
+			const { data } = await api.get(
+				'/orders/userInfo',
+				config('authTokenUsers')
+			);
 			setUserOrders(data);
 		};
 		getOrders();
 	}, []);
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-		},
-	};
 	const handleSelect = async (e) => {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-			},
-		};
 		switch (e.target.textContent) {
 			case 'Home':
 				history.push(`${path}`);
 				break;
 			case 'Logout':
 				try {
-					await api.post(`${path}/logout`, {}, config);
+					await api.post(`${path}/logout`, {}, config('authTokenUsers'));
 					localStorage.removeItem('authTokenUsers');
 					history.push(`/`);
 				} catch (error) {

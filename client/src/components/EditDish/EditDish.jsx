@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import api from '../../api/api';
 import Button from '../Button/Button';
-import './EditDishImage.css';
+import config from '../../utils/authConfig';
+import './EditDish.css';
 
 const EditDishImage = (props) => {
 	const [nameToEdit, setNameToEdit] = useState('');
@@ -21,15 +22,9 @@ const EditDishImage = (props) => {
 	}, []);
 
 	const onEditSubmit = async (e) => {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
 		e.preventDefault();
 		try {
-			await api.patch(
+			const { data } = await api.patch(
 				`/menu/edit-dish/${idToEdit}`,
 				{
 					dish: nameToEdit,
@@ -37,10 +32,10 @@ const EditDishImage = (props) => {
 					price: priceToEdit,
 					category: categoryToEdit,
 				},
-				config
+				config('authTokenRestaurants')
 			);
+			props.updateMenu(data);
 			props.setIsEdit(false);
-			props.renderMenu();
 		} catch (error) {
 			setTimeout(() => {
 				setErrorMsg('');
@@ -51,17 +46,16 @@ const EditDishImage = (props) => {
 
 	const deleteImageHandler = async (e, id) => {
 		e.preventDefault();
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
 		try {
-			await api.delete(`/menu/delete-dish-image/${id}`, config);
+			const { data } = await api.delete(
+				`/menu/delete-dish-image/${id}`,
+				config('authTokenRestaurants')
+			);
 			setTimeout(() => {
 				setSuccessMsg('');
+				props.setIsEdit(false);
 			}, 2000);
-			props.renderMenu();
+			props.updateMenu(data);
 			setSuccessMsg('Image Deleted Succesfully');
 		} catch (error) {
 			setTimeout(() => {

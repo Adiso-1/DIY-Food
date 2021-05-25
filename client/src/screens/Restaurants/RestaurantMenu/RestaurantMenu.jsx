@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import api from '../../../api/api';
 import AddDishImage from '../../../components/AddDishImage/AddDishImage';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import config from '../../../utils/authConfig';
+import fetchFromToken from '../../../utils/fetchFromToken';
+import AppContext from '../../../context/AppContext';
 import './RestaurantMenu.css';
 
 const RestaurantMenu = ({ history }) => {
-	const [personalDetails, setPersonalDetails] = useState(null);
 	const [dishAdded, setDishAdded] = useState(null);
 	const [dish, setDish] = useState('');
 	const [description, setDescription] = useState('');
@@ -16,22 +17,17 @@ const RestaurantMenu = ({ history }) => {
 	const [errorMsg, setErrorMsg] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 
+	const { profile, setProfile, menu, setMenu } = useContext(AppContext);
+
 	useEffect(() => {
-		if (!localStorage.getItem('authTokenRestaurants')) {
-			return history.push(`/restaurants/login`);
-		}
-		const renderRestaurant = async () => {
-			try {
-				const { data } = await api.get(
-					`/restaurants/profile`,
-					config('authTokenRestaurants')
-				);
-				setPersonalDetails(data);
-			} catch (error) {
-				console.log(error);
+		if (!profile?.restaurant || !profile?.token) {
+			if (localStorage.getItem('authTokenRestaurants')) {
+				fetchFromToken(setProfile);
+			} else {
+				history.push(`/restaurants/login`);
+				return;
 			}
-		};
-		renderRestaurant();
+		}
 	}, []);
 
 	const addHandler = async (e) => {
@@ -40,8 +36,11 @@ const RestaurantMenu = ({ history }) => {
 			const { data } = await api.post(
 				'/menu/add-dish',
 				{ dish, description, price, category },
-				config
+				config('authTokenRestaurants')
 			);
+			if (menu) {
+				setMenu((prevState) => [...prevState, data]);
+			}
 			setDishAdded(data);
 			setTimeout(() => {
 				setSuccessMsg('');
@@ -60,7 +59,7 @@ const RestaurantMenu = ({ history }) => {
 	};
 	return (
 		<div className="restaurant-menu-container">
-			<Navbar personalDetails={personalDetails} />
+			<Navbar personalDetails={profile?.restaurant && profile.restaurant} />
 			<div onSubmit={addHandler} className="add-dish-container">
 				<form className="login-screen__form">
 					<h2>Add new dish</h2>

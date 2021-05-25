@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../../api/api';
+import config from '../../utils/authConfig';
+import Appcotext from '../../context/AppContext';
 import './NavbarRestaurant.css';
 
 const Navbar = (props) => {
@@ -8,20 +10,18 @@ const Navbar = (props) => {
 	const [restaurantOrders, setRestaurantOrders] = useState(null);
 	const history = useHistory();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
+	const { setProfile, setMenu } = useContext(Appcotext);
 
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-		},
-	};
 	useEffect(() => {
 		if (!localStorage.getItem('authTokenRestaurants')) {
 			return history.push(`restaurants/login`);
 		}
 		const getOrders = async () => {
 			try {
-				const { data } = await api.get(`/orders/restaurantInfo`, config);
+				const { data } = await api.get(
+					`/orders/restaurantInfo`,
+					config('authTokenRestaurants')
+				);
 				setRestaurantOrders(data);
 			} catch (error) {}
 		};
@@ -38,8 +38,10 @@ const Navbar = (props) => {
 				break;
 			case 'Logout':
 				try {
-					await api.post(`${path}/logout`, {}, config);
+					await api.post(`${path}/logout`, {}, config('authTokenRestaurants'));
 					localStorage.removeItem('authTokenRestaurants');
+					setProfile(null);
+					setMenu(null);
 					history.push(`/`);
 				} catch (error) {
 					console.log(error);
@@ -47,8 +49,14 @@ const Navbar = (props) => {
 				break;
 			case 'Logout All Devices':
 				try {
-					await api.post(`${path}/logoutAll`, {}, config);
+					await api.post(
+						`${path}/logoutAll`,
+						{},
+						config('authTokenRestaurants')
+					);
 					localStorage.removeItem('authTokenRestaurants');
+					setProfile(null);
+					setMenu(null);
 					history.push(`/`);
 				} catch (error) {
 					console.log(error);

@@ -1,34 +1,44 @@
 import api from '../../../api/api';
 import { Link } from 'react-router-dom';
-import { useState, useEffect, useRef, Fragment } from 'react';
+import { useState, useEffect, useRef, Fragment, useContext } from 'react';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Spinner from '../../../components/Spinner/Spinner';
-import EditDishImage from '../../../components/EditDishImage/EditDishImage';
+import EditDish from '../../../components/EditDish/EditDish';
 import config from '../../../utils/authConfig';
+import AppContext from '../../../context/AppContext';
+import fetchFromToken from '../../../utils/fetchFromToken';
 import './RestaurantsHome.css';
 
 const RestaurantsHome = ({ history }) => {
-	const [restaurantData, setRestaurantData] = useState(null);
-	const [menu, setMenu] = useState([]);
 	const [isMenuEmpty, setIsMenuEmpty] = useState(false);
 	const [dishImage, setDishImage] = useState(null);
 	const [isEdit, setIsEdit] = useState(false);
 	const [dishToEdit, setDishToEdit] = useState(null);
-	const [idToEdit, setIdToEdit] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
+
+	const { profile, setProfile, menu, setMenu } = useContext(AppContext);
 
 	const fileInput = useRef();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
+	const updateMenu = (data) => {
+		const index = menu.findIndex((dish) => dish._id === data._id);
+		menu.splice(index, 1, data);
+		setMenu(menu);
+	};
+
 	const renderMenu = async () => {
-		if (!restaurantData) {
+		if (!profile?.restaurant) {
+			return;
+		}
+		if (menu) {
 			return;
 		}
 		try {
 			const { data } = await api.get(
-				`/restaurants/profile/menu/${restaurantData._id}`
+				`/restaurants/profile/menu/${profile.restaurant._id}`
 			);
 			if (data.length === 0) {
 				return setIsMenuEmpty(true);
@@ -44,27 +54,16 @@ const RestaurantsHome = ({ history }) => {
 	};
 
 	useEffect(() => {
-		if (!localStorage.getItem('authTokenRestaurants')) {
-			return history.push(`${path}/login`);
-		}
-		const fetchUser = async () => {
-			try {
-				const { data } = await api.get(
-					`${path}/profile`,
-					config('authTokenRestaurants')
-				);
-				setRestaurantData(data);
-			} catch (error) {
-				localStorage.removeItem('authTokenRestaurants');
-				history.push(`${path}/login`);
+		if (!profile?.restaurant || !profile?.token) {
+			if (localStorage.getItem('authTokenRestaurants')) {
+				fetchFromToken(setProfile);
+			} else {
+				history.push(`/restaurants/login`);
+				return;
 			}
-		};
-		fetchUser();
-	}, []);
-
-	useEffect(() => {
+		}
 		renderMenu();
-	}, [restaurantData]);
+	}, [profile?.restaurant]);
 
 	const handleAddDish = () => {
 		history.push(`${path}/menu`);
@@ -79,7 +78,7 @@ const RestaurantsHome = ({ history }) => {
 		const fd = new FormData();
 		fd.append('dish-image', dishImage, dishImage.name);
 		try {
-			await api.post(
+			const { data } = await api.post(
 				`/menu/add-dish-image/${id}`,
 				fd,
 				config('authTokenRestaurants')
@@ -88,7 +87,7 @@ const RestaurantsHome = ({ history }) => {
 				setSuccessMsg('');
 			}, 2000);
 			setSuccessMsg('Image Uploaded Succesfully');
-			renderMenu();
+			updateMenu(data);
 		} catch (error) {
 			setTimeout(() => {
 				setErrorMsg('');
@@ -99,8 +98,11 @@ const RestaurantsHome = ({ history }) => {
 
 	const deleteDish = async (e, dish) => {
 		try {
-			await api.delete(`/menu/delete-dish/${dish._id}`, config);
-			renderMenu();
+			await api.delete(
+				`/menu/delete-dish/${dish._id}`,
+				config('authTokenRestaurants')
+			);
+			setMenu((prevState) => prevState.filter((el) => dish._id !== el._id));
 		} catch (error) {
 			setTimeout(() => {
 				setErrorMsg('');
@@ -109,7 +111,7 @@ const RestaurantsHome = ({ history }) => {
 		}
 	};
 	const getMenu = () => {
-		if (menu.length === 0) {
+		if (!menu) {
 			return;
 		}
 		const categories = [];
@@ -193,8 +195,8 @@ const RestaurantsHome = ({ history }) => {
 	};
 	return (
 		<>
-			<Navbar personalDetails={restaurantData} />
-			{!restaurantData ? (
+			<Navbar personalDetails={profile?.restaurant && profile.restaurant} />
+			{!profile?.restaurant ? (
 				<Spinner />
 			) : (
 				<div className="menu-container">
@@ -206,12 +208,12 @@ const RestaurantsHome = ({ history }) => {
 						</div>
 					) : (
 						<div className="dishes-container">
-							{restaurantData &&
-								(restaurantData.coverPhoto ? (
+							{profile.restaurant &&
+								(profile.restaurant.coverPhoto ? (
 									<div
 										className="cover-container"
 										style={{
-											background: `url(/api/restaurants/profile/coverPhoto/${restaurantData._id}) no-repeat center center/cover`,
+											background: `url(/api/restaurants/profile/coverPhoto/${profile.restaurant._id}) no-repeat center center/cover`,
 										}}
 									></div>
 								) : (
@@ -227,10 +229,10 @@ const RestaurantsHome = ({ history }) => {
 								))}
 							{getMenu()}
 							{isEdit && (
-								<EditDishImage
+								<EditDish
 									setErrorMsg={setErrorMsg}
 									setSuccessMsg={setSuccessMsg}
-									renderMenu={renderMenu}
+									updateMenu={updateMenu}
 									setIsEdit={setIsEdit}
 									dish={dishToEdit}
 								/>

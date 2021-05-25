@@ -36,7 +36,7 @@ const editDish = async (req, res) => {
 	}
 };
 
-const deleteDish = async (req, res) => {
+const deleteDish = async (req, res, next) => {
 	try {
 		const dish = await Menu.findByIdAndDelete(req.params.id);
 		res.send(dish);
@@ -54,7 +54,7 @@ const addDishImage = async (req, res, next) => {
 		const dish = await Menu.findById(req.params.id);
 		dish.image = buffer;
 		await dish.save();
-		res.status(201).send();
+		res.status(201).send(dish);
 	} catch (error) {
 		return next(new ErrorResponse('dish not found', 404));
 	}
@@ -79,7 +79,7 @@ const deleteDishImage = async (req, res, next) => {
 		}
 		dish.image = undefined;
 		await dish.save();
-		res.send();
+		res.send(dish);
 	} catch (error) {
 		return next(new ErrorResponse('Image not found', 404));
 	}

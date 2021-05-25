@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import api from '../../api/api';
 import { Link } from 'react-router-dom';
-import './LoginScreen.css';
 import Navbar from '../../components/NavbarMedium/NavbarMedium';
 import Spinner from '../../components/Spinner/Spinner';
+import AppContext from '../../context/AppContext';
+import fetchFromToken from '../../utils/fetchFromToken';
+
+import './LoginScreen.css';
 
 const LoginScreen = ({ history }) => {
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
@@ -13,14 +16,20 @@ const LoginScreen = ({ history }) => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
+	const { setProfile } = useContext(AppContext);
+
 	const tokenType =
 		path === '/users' ? 'authTokenUsers' : 'authTokenRestaurants';
 
 	useEffect(() => {
 		if (localStorage.getItem(tokenType)) {
-			return history.push(path);
+			const fetchData = async () => {
+				await fetchFromToken(setProfile);
+				history.push(path);
+			};
+			fetchData();
 		}
-	}, [history]);
+	}, []);
 
 	const loginHandler = async (e) => {
 		e.preventDefault();
@@ -28,6 +37,7 @@ const LoginScreen = ({ history }) => {
 			const { data } = await api.post(`${path}/login`, { email, password });
 			localStorage.setItem(tokenType, data.token);
 			setIsLoading(true);
+			setProfile(data);
 			history.push(path);
 		} catch (error) {
 			setTimeout(() => {

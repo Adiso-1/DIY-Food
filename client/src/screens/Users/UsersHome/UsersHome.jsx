@@ -17,7 +17,7 @@ const UsersHome = ({ history }) => {
 
 	useEffect(() => {
 		if (!localStorage.getItem('authTokenUsers')) {
-			return history.push(`users/login`);
+			return history.push(`/users/login`);
 		}
 		const fetchUser = async () => {
 			try {
@@ -32,6 +32,7 @@ const UsersHome = ({ history }) => {
 			}
 		};
 		fetchUser();
+		getAllRestaurants();
 	}, []);
 
 	const getAllRestaurants = async () => {
@@ -43,14 +44,6 @@ const UsersHome = ({ history }) => {
 			console.log(error);
 		}
 	};
-
-	useEffect(() => {
-		if (!localStorage.getItem('authTokenUsers')) {
-			return history.push(`${path}/login`);
-		} else {
-			getAllRestaurants();
-		}
-	}, []);
 
 	const renderRestaurants = () => {
 		if (!restaurantsData) {

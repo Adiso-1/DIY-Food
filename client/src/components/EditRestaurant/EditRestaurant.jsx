@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Address from '../Address/Address';
 import Button from '../Button/Button';
 import api from '../../api/api';
+import config from '../../utils/authConfig';
 import './EditRestaurant.css';
 
 const EditRestaurant = (props) => {
@@ -19,14 +20,6 @@ const EditRestaurant = (props) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const config = {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem(
-						'authTokenRestaurants'
-					)}`,
-				},
-			};
 			const changeObj = {
 				name,
 				address: {
@@ -40,9 +33,13 @@ const EditRestaurant = (props) => {
 				deliveryTime,
 				minPayment,
 			};
-			await api.patch('/restaurants/updateRestaurant', changeObj, config);
+			const { data } = await api.patch(
+				'/restaurants/updateRestaurant',
+				changeObj,
+				config('authTokenRestaurants')
+			);
 			props.closeUpdateProfile(false);
-			props.renderRestaurant();
+			props.setProfile({ ...props.profile, restaurant: data });
 		} catch (error) {
 			setErrorMsg(error.response.data.error);
 		}
@@ -111,7 +108,7 @@ const EditRestaurant = (props) => {
 					<label htmlFor="delivery-time">Delivery time</label>
 					<input
 						onChange={(e) => {
-							e.target.value.match(/[0-9]%/) && setDeliveryTime(e.target.value);
+							e.target.value.match(/[0-9]$/) && setDeliveryTime(e.target.value);
 						}}
 						required
 						value={deliveryTime}
@@ -125,7 +122,7 @@ const EditRestaurant = (props) => {
 					<label htmlFor="min-payment">Min payment</label>
 					<input
 						onChange={(e) => {
-							e.target.value.match(/[0-9]%/) && setMinPayment(e.target.value);
+							e.target.value.match(/[0-9]$/) && setMinPayment(e.target.value);
 						}}
 						required
 						value={minPayment}
