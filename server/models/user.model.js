@@ -104,11 +104,12 @@ userSchema.methods.generateAuthToken = async function () {
 };
 
 userSchema.methods.getResetPasswordToken = function () {
-	const resetToken = crypto.randomBytes(20).toString('hex');
+	const resetToken = crypto.randomBytes(20).toString('hex'); // hex = type of hashing
+	// hash the token
 	this.resetPasswordToken = crypto
-		.createHash('sha256')
-		.update(resetToken)
-		.digest('hex');
+		.createHash('sha256') // type of algorithm
+		.update(resetToken) // what to encode
+		.digest('hex'); // will return string
 	this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
 	return resetToken;
 };

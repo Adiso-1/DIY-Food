@@ -4,6 +4,7 @@ import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Button from '../../../components/Button/Button';
 import Spinner from '../../../components/Spinner/Spinner';
 import EditRestaurant from '../../../components/EditRestaurant/EditRestaurant';
+import config from '../../../utils/authConfig';
 import './RestaurantProfileDetails.css';
 
 const RestaurantProfileDetails = ({ history }) => {
@@ -15,15 +16,13 @@ const RestaurantProfileDetails = ({ history }) => {
 	const [successMessage, setSuccessMessage] = useState('');
 	const profileInput = useRef();
 	const coverInput = useRef();
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-		},
-	};
+
 	const renderRestaurant = async () => {
 		try {
-			const { data } = await api.get(`/restaurants/profile`, config);
+			const { data } = await api.get(
+				`/restaurants/profile`,
+				config('authTokenRestaurants')
+			);
 			setPersonalDetails(data);
 		} catch (error) {
 			console.log(error);
@@ -50,15 +49,14 @@ const RestaurantProfileDetails = ({ history }) => {
 		if (!logo) {
 			return;
 		}
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
 		const fd = new FormData();
 		fd.append('logo', logo, logo.name);
 		try {
-			await api.post('/restaurants/profile/upload', fd, config);
+			await api.post(
+				'/restaurants/profile/upload',
+				fd,
+				config('authTokenRestaurants')
+			);
 			setTimeout(() => {
 				setSuccess(false);
 			}, 2000);
@@ -74,15 +72,14 @@ const RestaurantProfileDetails = ({ history }) => {
 		if (!cover) {
 			return;
 		}
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
 		const fd = new FormData();
 		fd.append('coverPhoto', cover, cover.name);
 		try {
-			await api.post('/restaurants/profile/uploadCoverPhoto', fd, config);
+			await api.post(
+				'/restaurants/profile/uploadCoverPhoto',
+				fd,
+				config('authTokenRestaurants')
+			);
 			setTimeout(() => {
 				setSuccess(false);
 			}, 2000);

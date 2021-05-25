@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from 'react';
 import Button from '../../../components/Button/Button';
 import api from '../../../api/api';
-import './Payment.css';
 import Address from '../../../components/Address/Address';
+import config from '../../../utils/authConfig';
+import './Payment.css';
 
 const Payment = (props) => {
 	const [cardOwner, setCardOwner] = useState('');
@@ -19,14 +20,9 @@ const Payment = (props) => {
 
 	const onsubmit = async (e) => {
 		e.preventDefault();
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-			},
-		};
 		const cart = [];
 		let deliveryAddress;
+		// this block handles the checkbox of the address to delivery
 		if (!isChecked) {
 			deliveryAddress = {
 				city,
@@ -58,7 +54,7 @@ const Payment = (props) => {
 				price: Number(props.price),
 				deliveryAddress,
 			},
-			config
+			config('authTokenUsers')
 		);
 		setTimeout(() => {
 			SetIsSuccessMsg(false);

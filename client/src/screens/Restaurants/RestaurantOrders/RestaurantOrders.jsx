@@ -4,6 +4,7 @@ import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import OrderToShow from '../../../components/OrderToShow/OrderToShow';
 import Spinner from '../../../components/Spinner/Spinner';
 import dateFormat from 'dateformat';
+import config from '../../../utils/authConfig';
 import './RestaurantOrders.css';
 
 const RestaurantOrders = () => {
@@ -12,19 +13,14 @@ const RestaurantOrders = () => {
 	const [orderToShow, setOrderToShow] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-		},
-	};
-
 	const getOrders = async () => {
 		setIsLoading(true);
-		const { data } = await api.get(`/orders/restaurantInfo`, config);
-		setOrders(data);
-		const response = await api.get(`/restaurants/profile`, config);
-		setPersonalDetails(response.data);
+		const [orders, personalDetails] = await Promise.allSettled([
+			api.get(`/orders/restaurantInfo`, config('authTokenRestaurants')),
+			api.get(`/restaurants/profile`, config('authTokenRestaurants')),
+		]);
+		setOrders(orders.value.data);
+		setPersonalDetails(personalDetails.value.data);
 		setIsLoading(false);
 	};
 
@@ -33,7 +29,11 @@ const RestaurantOrders = () => {
 	}, []);
 
 	const markAsCompleted = async (e, el) => {
-		await api.patch(`/orders/markAsCompleted/${el._id}`, {}, config);
+		await api.patch(
+			`/orders/markAsCompleted/${el._id}`,
+			{},
+			config('authTokenRestaurants')
+		);
 		getOrders();
 	};
 

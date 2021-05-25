@@ -3,6 +3,7 @@ import api from '../../../api/api';
 import AddDishImage from '../../../components/AddDishImage/AddDishImage';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
+import config from '../../../utils/authConfig';
 import './RestaurantMenu.css';
 
 const RestaurantMenu = ({ history }) => {
@@ -14,21 +15,17 @@ const RestaurantMenu = ({ history }) => {
 	const [category, setCategory] = useState('');
 	const [errorMsg, setErrorMsg] = useState('');
 	const [successMsg, setSuccessMsg] = useState('');
-	console.log(dishAdded);
 
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-		},
-	};
 	useEffect(() => {
 		if (!localStorage.getItem('authTokenRestaurants')) {
 			return history.push(`/restaurants/login`);
 		}
 		const renderRestaurant = async () => {
 			try {
-				const { data } = await api.get(`/restaurants/profile`, config);
+				const { data } = await api.get(
+					`/restaurants/profile`,
+					config('authTokenRestaurants')
+				);
 				setPersonalDetails(data);
 			} catch (error) {
 				console.log(error);

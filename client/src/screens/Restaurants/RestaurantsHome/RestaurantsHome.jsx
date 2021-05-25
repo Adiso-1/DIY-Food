@@ -4,8 +4,9 @@ import { useState, useEffect, useRef, Fragment } from 'react';
 import Button from '../../../components/Button/Button';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import Spinner from '../../../components/Spinner/Spinner';
-import './RestaurantsHome.css';
 import EditDishImage from '../../../components/EditDishImage/EditDishImage';
+import config from '../../../utils/authConfig';
+import './RestaurantsHome.css';
 
 const RestaurantsHome = ({ history }) => {
 	const [restaurantData, setRestaurantData] = useState(null);
@@ -21,12 +22,6 @@ const RestaurantsHome = ({ history }) => {
 	const fileInput = useRef();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
-	const config = {
-		headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-		},
-	};
 	const renderMenu = async () => {
 		if (!restaurantData) {
 			return;
@@ -54,7 +49,10 @@ const RestaurantsHome = ({ history }) => {
 		}
 		const fetchUser = async () => {
 			try {
-				const { data } = await api.get(`${path}/profile`, config);
+				const { data } = await api.get(
+					`${path}/profile`,
+					config('authTokenRestaurants')
+				);
 				setRestaurantData(data);
 			} catch (error) {
 				localStorage.removeItem('authTokenRestaurants');
@@ -78,15 +76,14 @@ const RestaurantsHome = ({ history }) => {
 	};
 
 	const uploadHandler = async (e, id) => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenRestaurants')}`,
-			},
-		};
 		const fd = new FormData();
 		fd.append('dish-image', dishImage, dishImage.name);
 		try {
-			await api.post(`/menu/add-dish-image/${id}`, fd, config);
+			await api.post(
+				`/menu/add-dish-image/${id}`,
+				fd,
+				config('authTokenRestaurants')
+			);
 			setTimeout(() => {
 				setSuccessMsg('');
 			}, 2000);

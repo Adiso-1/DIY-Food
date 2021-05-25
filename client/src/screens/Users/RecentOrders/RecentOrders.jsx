@@ -5,6 +5,7 @@ import OrderToShow from '../../../components/OrderToShow/OrderToShow';
 import StarRating from '../../../components/StarRating/StarRating';
 import Spinner from '../../../components/Spinner/Spinner';
 import dateFormat from 'dateformat';
+import config from '../../../utils/authConfig';
 import './RecentOrders.css';
 
 const RecentOrders = () => {
@@ -14,17 +15,14 @@ const RecentOrders = () => {
 	const [orderTofeedback, setOrderTofeedback] = useState(false);
 
 	const getUserInfo = async () => {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-			},
-		};
-		const respone = await api.get(`users/profile`, config);
-		setPersonalDetails(respone.data);
-		const { data } = await api.get('/orders/userInfo', config);
-		setOrders(data);
+		const [userDetails, recentOrders] = await Promise.allSettled([
+			api.get(`/users/profile`, config('authTokenUsers')),
+			api.get('/orders/userInfo', config('authTokenUsers')),
+		]);
+		setOrders(recentOrders.value.data);
+		setPersonalDetails(userDetails.value.data);
 	};
+
 	useEffect(() => {
 		getUserInfo();
 	}, []);

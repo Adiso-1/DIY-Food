@@ -15,7 +15,7 @@ const RegisterScreen = ({ history }) => {
 	const [allCities, setAllcities] = useState({});
 	const [city, setCity] = useState('');
 	const [street, setStreet] = useState('');
-	const [number, setNumber] = useState('');
+	const [apartmentNumber, setApartmentNumber] = useState('');
 	const [addressesToShow, setAddressesToShow] = useState([]);
 	const [confirmpassword, setConfirmPassword] = useState('');
 	const [tagInput, setTagInput] = useState('');
@@ -66,7 +66,7 @@ const RegisterScreen = ({ history }) => {
 				address: {
 					city,
 					street,
-					number,
+					apartmentNumber,
 				},
 				password,
 				tags,
@@ -196,18 +196,18 @@ const RegisterScreen = ({ history }) => {
 								onClick={() => setCurrent('street')}
 							/>
 						</div>
-						<div className="number">
-							<label htmlFor="number">Number:</label>
+						<div className="apartment-number">
+							<label htmlFor="apartment-number">Number:</label>
 							<input
 								type="text"
 								required
-								id="number"
+								id="apartment-number"
 								autoComplete="new-password"
 								placeholder={street ? '' : 'fill street'}
 								disabled={street.length > 0 ? false : true}
-								value={number}
+								value={apartmentNumber}
 								onChange={(e) => {
-									setNumber(
+									setApartmentNumber(
 										e.target.value.match(/[0-9]$/) ? e.target.value : ''
 									);
 									handleAddress(e.target.value);

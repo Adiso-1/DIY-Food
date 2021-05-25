@@ -6,6 +6,7 @@ import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 import Spinner from '../../../components/Spinner/Spinner';
 import SearchRestaurant from '../../../components/SearchRestaurant/SearchRestaurant';
+import config from '../../../utils/authConfig';
 
 const UsersHome = ({ history }) => {
 	const [restaurantsData, setRestaurantsData] = useState(null);
@@ -19,14 +20,11 @@ const UsersHome = ({ history }) => {
 			return history.push(`users/login`);
 		}
 		const fetchUser = async () => {
-			const config = {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-				},
-			};
 			try {
-				const { data } = await api.get(`users/profile`, config);
+				const { data } = await api.get(
+					`users/profile`,
+					config('authTokenUsers')
+				);
 				setPersonalDetails(data);
 			} catch (error) {
 				localStorage.removeItem('authTokenUsers');

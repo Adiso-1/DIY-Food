@@ -4,6 +4,7 @@ import Navbar from '../../../components/NavbarUser/NavbarUser';
 import Button from '../../../components/Button/Button';
 import EditUser from '../../../components/EditUser/EditUser';
 import Spinner from '../../../components/Spinner/Spinner';
+import config from '../../../utils/authConfig';
 import './UserProfileDetails.css';
 
 const UserProfileDetails = ({ history }) => {
@@ -15,14 +16,8 @@ const UserProfileDetails = ({ history }) => {
 	const fileInput = useRef();
 
 	const fetchUser = async () => {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-			},
-		};
 		try {
-			const { data } = await api.get(`users/profile`, config);
+			const { data } = await api.get(`users/profile`, config('authTokenUsers'));
 			setPersonalDetails(data);
 		} catch (error) {
 			console.log(error);
@@ -41,15 +36,10 @@ const UserProfileDetails = ({ history }) => {
 	};
 
 	const uploadHandler = async (e) => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-			},
-		};
 		const fd = new FormData();
 		fd.append('avatar', avatar, avatar.name);
 		try {
-			await api.post('/users/profile/upload', fd, config);
+			await api.post('/users/profile/upload', fd, config('authTokenUsers'));
 			setTimeout(() => {
 				setSuccess(false);
 				fetchUser();
@@ -62,13 +52,8 @@ const UserProfileDetails = ({ history }) => {
 	};
 
 	const deleteImageHandler = async () => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('authTokenUsers')}`,
-			},
-		};
 		try {
-			await api.delete('/users/profile/upload', config);
+			await api.delete('/users/profile/upload', config('authTokenUsers'));
 			setTimeout(() => {
 				setSuccessMessage('');
 				fetchUser();

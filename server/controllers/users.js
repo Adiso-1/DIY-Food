@@ -60,7 +60,7 @@ const forgotPassword = async (req, res) => {
 			throw new Error('Email could not be sent');
 		}
 	} catch (error) {
-		res.status(404).send(error);
+		next(error);
 	}
 };
 
@@ -84,7 +84,6 @@ const resetPassword = async (req, res, next) => {
 		await user.save();
 		res.status(201).json('Password Reset Success');
 	} catch (error) {
-		// res.status(400).json(error);
 		return next(new ErrorResponse('Token Expired', 404));
 	}
 };
