@@ -1,30 +1,39 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import api from '../../../api/api';
 import Navbar from '../../../components/NavbarRestaurant/NavbarRestaurant';
 import OrderToShow from '../../../components/OrderToShow/OrderToShow';
 import Spinner from '../../../components/Spinner/Spinner';
 import dateFormat from 'dateformat';
 import config from '../../../utils/authConfig';
+import AppContext from '../../../context/AppContext';
+import fetchFromToken from '../../../utils/fetchFromToken';
 import './RestaurantOrders.css';
 
-const RestaurantOrders = () => {
+const RestaurantOrders = ({ history }) => {
 	const [orders, setOrders] = useState([]);
-	const [personalDetails, setPersonalDetails] = useState(null);
 	const [orderToShow, setOrderToShow] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const { profile, setProfile } = useContext(AppContext);
 
 	const getOrders = async () => {
 		setIsLoading(true);
-		const [orders, personalDetails] = await Promise.allSettled([
-			api.get(`/orders/restaurantInfo`, config('authTokenRestaurants')),
-			api.get(`/restaurants/profile`, config('authTokenRestaurants')),
-		]);
-		setOrders(orders.value.data);
-		setPersonalDetails(personalDetails.value.data);
+		const { data } = await api.get(
+			`/orders/restaurantInfo`,
+			config('authTokenRestaurants')
+		);
+		setOrders(data);
 		setIsLoading(false);
 	};
 
 	useEffect(() => {
+		if (!profile?.restaurant || !profile?.token) {
+			if (localStorage.getItem('authTokenRestaurants')) {
+				fetchFromToken(setProfile);
+			} else {
+				history.push(`/restaurants/login`);
+				return;
+			}
+		}
 		getOrders();
 	}, []);
 
@@ -39,7 +48,10 @@ const RestaurantOrders = () => {
 
 	return (
 		<div>
-			<Navbar personalDetails={personalDetails} restaurantOrders={orders} />
+			<Navbar
+				personalDetails={profile?.restaurant && profile.restaurant}
+				restaurantOrders={orders}
+			/>
 			{isLoading ? (
 				<Spinner />
 			) : (
