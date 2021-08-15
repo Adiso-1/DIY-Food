@@ -4,11 +4,8 @@ const Restaurant = require('../models/restaurant.model');
 const Order = require('../models/order.model');
 const sendEmail = require('../utils/sendEmail');
 const sharp = require('sharp');
-const Redis = require('redis');
 const ErrorResponse = require('../utils/errorResponse');
-
-const redisClient = Redis.createClient();
-const DEFAULT_EXPIRATION = 3600; // 1 hour
+const getOrSetKey = require('../utils/getOrSetKey');
 
 const signUp = async (req, res, next) => {
 	const user = new User(req.body);
@@ -148,26 +145,15 @@ const deleteProfileImage = async (req, res) => {
 };
 
 const getAllRestaurants = async (req, res) => {
-	redisClient.get('restaurants', async (error, restaurants) => {
-		if (error) console.error(error);
-		if (restaurants !== null) {
-			console.log('Cache Hit');
-			return res.json(JSON.parse(restaurants));
-		} else {
-			console.log('Cache Missed');
-			try {
-				const restaurants = await Restaurant.find({});
-				redisClient.setex(
-					'restaurants',
-					DEFAULT_EXPIRATION,
-					JSON.stringify(restaurants)
-				);
-				res.status(200).json(restaurants);
-			} catch (error) {
-				res.status(400).send();
-			}
+	const allRestaurants = await getOrSetKey('allRestaurants', async () => {
+		try {
+			const data = await Restaurant.find({});
+			return data;
+		} catch (error) {
+			res.status(400).send();
 		}
 	});
+	res.status(200).json(allRestaurants);
 };
 
 const getRestaurant = async (req, res) => {
