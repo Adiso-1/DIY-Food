@@ -10,14 +10,17 @@ import fetchFromToken from '../../../utils/fetchFromToken';
 const UsersHome = ({ history }) => {
 	const { profile, setProfile } = useContext(AppContext);
 
-	useEffect(async () => {
-		if (!profile?.user || !profile?.token) {
-			if (localStorage.getItem('authTokenUsers')) {
-				await fetchFromToken(setProfile);
-			} else {
-				history.push(`/users/login`);
+	useEffect(() => {
+		const fetchUser = async () => {
+			if (!profile?.user || !profile?.token) {
+				if (localStorage.getItem('authTokenUsers')) {
+					await fetchFromToken(setProfile);
+				} else {
+					history.push(`/users/login`);
+				}
 			}
-		}
+		};
+		fetchUser();
 	}, [profile?.user]);
 
 	return (
