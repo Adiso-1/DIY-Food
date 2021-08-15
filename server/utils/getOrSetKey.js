@@ -1,5 +1,4 @@
-const Redis = require('redis');
-const redisClient = Redis.createClient();
+const redisClient = require('./init_redis');
 const DEFAULT_EXPIRATION = 3600; // 1 hour
 
 const getOrSetKey = (key, cb) => {

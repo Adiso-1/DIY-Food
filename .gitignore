@@ -104,4 +104,4 @@ dist
 .tern-port
 
 dump.rdb
-/.vscode
+.vscode/
