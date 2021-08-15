@@ -19,7 +19,6 @@ const RestaurantsHome = ({ history }) => {
 	const [errorMsg, setErrorMsg] = useState('');
 
 	const { profile, setProfile, menu, setMenu } = useContext(AppContext);
-
 	const fileInput = useRef();
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 

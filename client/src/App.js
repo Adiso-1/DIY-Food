@@ -14,19 +14,21 @@ import RecentOrders from './screens/Users/RecentOrders/RecentOrders';
 import RestaurantProfileDetails from './screens/Restaurants/RestaurantProfileDetails/RestaurantProfileDetails';
 import RestaurantMenu from './screens/Restaurants/RestaurantMenu/RestaurantMenu';
 import RestaurantOrders from './screens/Restaurants/RestaurantOrders/RestaurantOrders';
-import NavbarRestaurant from './components/NavbarRestaurant/NavbarRestaurant';
 import AppContext from './context/AppContext';
 import Order from './screens/Users/Order/Order';
 
 const App = () => {
 	const [profile, setProfile] = useState(null);
 	const [menu, setMenu] = useState(null);
+	const [allRestaurants, setAllRestaurants] = useState(null);
 
 	const context = {
 		profile,
 		setProfile,
 		menu,
 		setMenu,
+		allRestaurants,
+		setAllRestaurants,
 	};
 	return (
 		<AppContext.Provider value={context}>

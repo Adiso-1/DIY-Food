@@ -12,9 +12,6 @@ const Navbar = (props) => {
 	const path = window.location.pathname.match(/^\/([^/]*)/)[0];
 
 	useEffect(() => {
-		if (!localStorage.getItem('authTokenUsers')) {
-			return history.push(`/users/login`);
-		}
 		const getOrders = async () => {
 			const { data } = await api.get(
 				'/orders/userInfo',
@@ -24,6 +21,7 @@ const Navbar = (props) => {
 		};
 		getOrders();
 	}, []);
+
 	const handleSelect = async (e) => {
 		switch (e.target.textContent) {
 			case 'Home':
@@ -112,19 +110,19 @@ const Navbar = (props) => {
 				>
 					<div className="menu-btn__burger"></div>
 				</div>
-				{props.personalDetails && (
+				{props.personalDetails?.user && (
 					<div className="welcome-container">
 						<Link to={`${path}/UserProfileDetails`}>
 							<img
 								src={
-									props.personalDetails.avatar
-										? `/api${path}/profile/${props.personalDetails._id}`
+									props.personalDetails?.user.avatar
+										? `/api${path}/profile/${props.personalDetails?.user._id}`
 										: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROff7WS6bXhnE-oyKXPuAzdg1Q1DxbfebuXCEHucqt7kHlCx8ogUokNMFF51gWeHDptS8&usqp=CAU'
 								}
 								alt="user-avatar"
 							/>
 						</Link>
-						<span>Hello, {props.personalDetails.name}</span>
+						<span>Hello, {props.personalDetails?.user.name}</span>
 					</div>
 				)}
 				<Link to="/">
