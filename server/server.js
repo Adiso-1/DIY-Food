@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const path = require('path');
 const errorHandler = require('./middleware/error');
+const connectToMongoose = require('./database/mongodb');
 
 const publicDirectory = path.join(__dirname, '../client/build');
 
@@ -14,19 +14,7 @@ app.use(express.json());
 app.use(express.static(publicDirectory));
 
 const port = process.env.PORT || 5000;
-
-const uri = process.env.ATLAS_URI;
-
-mongoose.connect(uri, {
-	useNewUrlParser: true,
-	useCreateIndex: true,
-	useUnifiedTopology: true,
-});
-
-const connection = mongoose.connection;
-connection.once('open', () => {
-	console.log('MongoDB database connection established successfully');
-});
+connectToMongoose();
 
 app.use('/api/users', require('./routes/users'));
 app.use('/api/restaurants', require('./routes/restaurants'));
