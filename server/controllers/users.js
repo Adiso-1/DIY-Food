@@ -144,14 +144,6 @@ const deleteProfileImage = async (req, res) => {
 	res.send();
 };
 
-// const getAllRestaurants = async (req, res) => {
-// 	try {
-// 		const restaurants = await Restaurant.find({});
-// 		res.status(200).json(restaurants);
-// 	} catch (error) {
-// 		res.status(400).send();
-// 	}
-// };
 const getAllRestaurants = async (req, res) => {
 	const allRestaurants = await getOrSetKey('allRestaurants', async () => {
 		try {

@@ -1,11 +1,8 @@
 const Redis = require('redis');
 
 const redisClient = Redis.createClient({
-	port: 6379,
-	host:
-		process.env.NODE_ENV === 'production'
-			? 'https://delicious-by-adi.herokuapp.com/'
-			: '127.0.0.1',
+	url: `redis://${process.env.REDIS_URL}`,
+	auth_pass: process.env.REDIS_PASS,
 });
 
 redisClient.on('connect', () => {
@@ -13,7 +10,7 @@ redisClient.on('connect', () => {
 });
 
 redisClient.on('ready', () => {
-	console.log('redisClient connected to redis abnd ready to use');
+	console.log('redisClient connected to redis and ready to use');
 });
 
 redisClient.on('error', (err) => {
