@@ -5,7 +5,7 @@ const Order = require('../models/order.model');
 const sendEmail = require('../utils/sendEmail');
 const sharp = require('sharp');
 const ErrorResponse = require('../utils/errorResponse');
-// const getOrSetKey = require('../utils/getOrSetKey');
+const getOrSetKey = require('../utils/getOrSetKey');
 
 const signUp = async (req, res, next) => {
 	const user = new User(req.body);
@@ -144,25 +144,25 @@ const deleteProfileImage = async (req, res) => {
 	res.send();
 };
 
-const getAllRestaurants = async (req, res) => {
-	try {
-		const restaurants = await Restaurant.find({});
-		res.status(200).json(restaurants);
-	} catch (error) {
-		res.status(400).send();
-	}
-};
 // const getAllRestaurants = async (req, res) => {
-// 	const allRestaurants = await getOrSetKey('allRestaurants', async () => {
-// 		try {
-// 			const data = await Restaurant.find({});
-// 			return data;
-// 		} catch (error) {
-// 			res.status(400).send();
-// 		}
-// 	});
-// 	res.status(200).json(allRestaurants);
+// 	try {
+// 		const restaurants = await Restaurant.find({});
+// 		res.status(200).json(restaurants);
+// 	} catch (error) {
+// 		res.status(400).send();
+// 	}
 // };
+const getAllRestaurants = async (req, res) => {
+	const allRestaurants = await getOrSetKey('allRestaurants', async () => {
+		try {
+			const data = await Restaurant.find({});
+			return data;
+		} catch (error) {
+			res.status(400).send();
+		}
+	});
+	res.status(200).json(allRestaurants);
+};
 
 const getRestaurant = async (req, res) => {
 	try {
